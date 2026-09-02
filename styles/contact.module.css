@@ -1,0 +1,149 @@
+/* /contact — the email set as large as it will go, the practical detail under
+   it, and the sun rings wheeling behind the lot. */
+
+.page {
+  position: relative;
+  overflow: hidden;
+  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem))
+    clamp(2rem, 6vw, 4rem);
+}
+
+.rings {
+  position: absolute;
+  left: 58%;
+  top: -18%;
+  width: min(680px, 74vw);
+  aspect-ratio: 1;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.lede {
+  max-width: 46ch;
+  margin-bottom: clamp(1.5rem, 3.5vw, 2.4rem);
+  position: relative;
+}
+
+/* Deliberately enormous — it is the single thing this page is for.
+
+   The size comes off the width of this wrapper rather than the window: the
+   address measures 15.1em wide in Intro Rust, so anything above ~6.6cqi
+   overflows however wide the screen is. */
+.mailWrap {
+  container-type: inline-size;
+}
+.mail {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5.6vw, 4.6rem);
+  font-size: clamp(1.35rem, 6.2cqi, 4.6rem);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  /* a plain underline, invisible at rest — see globals.css → .footerMail,
+     the same treatment */
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.1em;
+  text-decoration-thickness: clamp(2px, 0.28vw, 4px);
+  transition: text-decoration-color 340ms var(--ease-out);
+}
+.mail span {
+  white-space: nowrap;
+}
+.mail:hover,
+.mail:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+.cols {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.helpfulHead {
+  color: var(--ember);
+  margin-bottom: 1.1rem;
+}
+.helpfulList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+  max-width: 40ch;
+}
+.helpfulList li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--ink-dim);
+  font-size: 0.97em;
+}
+/* a single band as the bullet */
+.helpfulList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.8rem;
+  height: 3px;
+  background: var(--bands-h);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+.detail {
+  padding-top: 0.9rem;
+  border-top: var(--band-h) solid transparent;
+  border-image: var(--bands-h) 1;
+}
+.details dt {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 0.6rem;
+}
+.details dd {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+@media (max-width: 820px) {
+  .cols {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+  .rings {
+    left: 30%;
+    opacity: 0.28;
+  }
+}
+
+
+.faqLink {
+  position: relative;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  font-size: 0.92em;
+  color: var(--ink-dim);
+}
+.faqLink a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-ink-strong);
+  text-underline-offset: 0.14em;
+  transition: text-decoration-color 260ms var(--ease-out);
+}
+.faqLink a:hover,
+.faqLink a:focus-visible {
+  text-decoration-color: var(--ember);
+}

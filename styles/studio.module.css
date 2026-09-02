@@ -1,0 +1,130 @@
+/* /studio — showreel, gallery, specs. */
+
+.page {
+  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
+}
+
+.lede {
+  max-width: 54ch;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+/* ---- the showreel ---- */
+.reel {
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+.reelPlate {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--paper-3);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.reelScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 23, 20, 0.25) 0%,
+    rgba(28, 23, 20, 0.6) 100%
+  );
+}
+.reelLabel {
+  position: relative;
+  z-index: 1;
+  color: var(--on-dark);
+  border: 1px solid rgba(247, 241, 231, 0.45);
+  padding: 0.85em 1.5em;
+}
+
+/* ---- the gallery --------------------------------------------------------
+   Six columns, each frame claiming --span of them, so the rhythm can be set
+   per-photograph in the page rather than by a rule here. */
+.gallery {
+  list-style: none;
+  padding: 0;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: clamp(150px, 19vw, 260px);
+  gap: clamp(0.6rem, 1.4vw, 1.1rem);
+}
+.frame {
+  position: relative;
+  grid-column: span var(--span);
+  overflow: hidden;
+  background: var(--paper-3);
+}
+.tall {
+  grid-row: span 2;
+}
+.frame :global(img) {
+  transition: transform 1100ms var(--ease-out), filter 600ms var(--ease-out);
+}
+.frame:hover :global(img) {
+  transform: scale(1.05);
+}
+
+@media (max-width: 700px) {
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 44vw;
+  }
+  /* every frame goes half-width, and the tall one takes the whole line */
+  .frame {
+    grid-column: span 1;
+  }
+  .tall {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+}
+
+/* ---- the specs ---- */
+.specs {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.spec {
+  padding-top: 1rem;
+  border-top: var(--band-h) solid transparent;
+  border-image: var(--bands-h) 1;
+}
+.specs dt {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 0.7rem;
+}
+.specs dd {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .specs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- the way out ---- */
+.visit {
+  margin-top: clamp(3rem, 8vw, 5rem);
+  max-width: 46ch;
+}
+.visitHead {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+.visitBody {
+  color: var(--ink-dim);
+  margin-bottom: 1.75rem;
+}

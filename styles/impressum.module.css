@@ -1,0 +1,58 @@
+/* /impressum — a legal page. Set in --font-fine throughout: this is dense
+   German legal prose at small sizes, exactly where Brodille's hairlines give
+   up, and legibility beats house style on the one page nobody reads for fun. */
+
+.page {
+  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
+}
+
+.warning {
+  font-family: var(--font-fine);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 62ch;
+  padding: 1rem 1.15rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  background: var(--paper-2);
+  border-left: var(--band-h) solid transparent;
+  border-image: var(--bands) 1;
+  color: var(--ink-dim);
+}
+.warning strong {
+  color: var(--ember);
+}
+
+.cols {
+  columns: 2;
+  column-gap: clamp(2rem, 5vw, 4rem);
+  max-width: 92ch;
+}
+@media (max-width: 780px) {
+  .cols {
+    columns: 1;
+  }
+}
+
+.block {
+  break-inside: avoid;
+  margin-bottom: 1.9rem;
+}
+.blockHead {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 0.6rem;
+}
+.line {
+  font-family: var(--font-fine);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-dim);
+  margin-bottom: 0.55rem;
+}
+
+.sectionGap {
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+}

@@ -1,0 +1,79 @@
+/* /live-sessions — the argument, then the films.
+   The video facades themselves are in styles/components.css. */
+
+.page {
+  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
+}
+
+/* The opening line stays a half-width column — a pull quote, not a running
+   paragraph — and the argument that follows it stretches the full page
+   width. min(44ch, 100%) rather than a media query: it degrades to the
+   viewport on its own once 44ch stops fitting, no breakpoint needed. */
+.about {
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  max-width: 88ch;
+}
+.aboutLede {
+  max-width: min(44ch, 100%);
+  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+}
+.aboutBody p {
+  margin-bottom: 1.1rem;
+}
+.aboutBody p:last-child {
+  margin-bottom: 0;
+}
+
+.films {
+  list-style: none;
+  padding: 0;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* The films alternate side to side down the page rather than sitting in a
+   tidy grid — they're the point of this page, so they get the room. */
+.film {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+}
+
+.filmTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.6vw, 1.9rem);
+  text-transform: uppercase;
+  margin-top: 0.45rem;
+}
+.filmNote {
+  margin-top: 0.7rem;
+  color: var(--ink-dim);
+  font-size: 0.95em;
+}
+
+@media (max-width: 780px) {
+  .film {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+.book {
+  margin-top: clamp(3rem, 8vw, 5.5rem);
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+  border-top: var(--band-h) solid transparent;
+  border-image: var(--bands-h) 1;
+  max-width: 46ch;
+}
+.bookHead {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+.bookBody {
+  color: var(--ink-dim);
+  margin-bottom: 1.75rem;
+}

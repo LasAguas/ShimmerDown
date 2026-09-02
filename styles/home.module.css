@@ -1,0 +1,55 @@
+/* / — home. The hero's own styles are in globals.css, since the component is
+   built to be reused; everything below the fold is here. */
+
+.sessions {
+  padding-block: clamp(3.5rem, 9vw, 7rem) 0;
+}
+
+.lede {
+  max-width: 54ch;
+  margin-bottom: clamp(2.2rem, 5vw, 3.5rem);
+}
+
+.films {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.1rem, 2.6vw, 2rem);
+}
+
+.film {
+  min-width: 0;
+}
+
+.filmMeta {
+  padding-top: 0.95rem;
+  /* the band tucked under each film, drawn short and thickening on hover of
+     the card as a whole */
+  border-top: 4px solid transparent;
+  border-image: var(--bands-h) 1;
+}
+
+.filmTitle {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin-top: 0.4rem;
+}
+
+.more {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+}
+
+@media (max-width: 900px) {
+  .films {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .films {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

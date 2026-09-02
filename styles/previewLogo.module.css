@@ -1,0 +1,49 @@
+/* PREVIEW ONLY — styling for the logo-in-nav / logo-in-hero experiment.
+   Used by components/SiteNavLogo.js and pages/preview-logo.js. Nothing here
+   is imported by any real page. Delete alongside them if the experiment
+   doesn't stick. */
+
+/* ---- nav wordmark ----------------------------------------------------
+   The source PNG is black-on-transparent. The text version it replaces
+   gets its colour from `color` (cream over the hero, ink once landed) — an
+   image can't take `color`, so the same swap is done with a filter:
+   brightness(0) invert(1) forces flat white (close enough to --on-dark),
+   removed once .nav.landed matches the paper background instead. */
+.navMarkLogo {
+  height: clamp(13px, 1.4vw, 16px);
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1);
+  transition: filter 420ms var(--ease-out);
+}
+:global(.nav.landed) .navMarkLogo {
+  filter: none;
+}
+
+/* ---- hero lockup -------------------------------------------------------
+   Stands in for the <h1> text: the mark stacked over the wordmark, built
+   from the two assets that are genuinely transparent (logo+text.png looked
+   right in a file browser but turned out to be ~96% opaque white behind the
+   art, not transparent — over anything but a white page it painted a solid
+   white block, so this rebuilds the same lockup from shimmer-down-logo-
+   simple-medium.png + logo-text-only.png instead). Always over the photo's
+   dark scrim, so it stays forced-cream rather than switching like the nav
+   mark does. */
+.heroLogoStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+.heroLogoMarkImg {
+  display: block;
+  height: clamp(56px, 9vw, 120px);
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+.heroLogoWordmarkImg {
+  display: block;
+  width: clamp(220px, 30vw, 460px);
+  height: auto;
+  filter: brightness(0) invert(1);
+}

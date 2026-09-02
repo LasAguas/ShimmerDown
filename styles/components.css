@@ -1,0 +1,1034 @@
+/* ===========================================================================
+   Shimmer Down Studios — the shared components.
+
+   Anything drawn by a file in components/ and used on more than one page ends
+   up here: the sign-up, the video facades, the hero, the record player, the
+   carousels and the storefront. Page-specific layout lives in that page's own
+   styles/<page>.module.css; the palette and the type live in globals.css.
+   Both files are imported once, in pages/_app.js.
+   =========================================================================== */
+
+/* =========================================================================
+   the sign-up
+   Lives in the footer on every page, so it belongs here rather than in any
+   one page's module. Form controls use --font-fine: Brodille's hairlines
+   vanish at input size, and a placeholder you can't read isn't a placeholder.
+   ========================================================================= */
+.signup {
+  max-width: 46ch;
+}
+.signupHead {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.65rem;
+}
+.signupBlurb {
+  color: var(--ink-dim);
+  font-size: 0.95em;
+  margin-bottom: 1.4rem;
+}
+
+.signupFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.signupField {
+  margin: 0;
+  min-width: 0;
+}
+.signupPair {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.signupPair .signupField {
+  flex: 1 1 9rem;
+}
+.signup input[type="email"],
+.signup input[type="text"] {
+  width: 100%;
+  font-family: var(--font-fine);
+  font-size: 15px;
+  background: var(--paper);
+  border: 1px solid var(--rule-ink);
+  border-radius: 2px;
+  padding: 0.72rem 0.85rem;
+  transition: border-color 240ms var(--ease-out);
+}
+.signup input::placeholder {
+  color: var(--ink-faint);
+  opacity: 1;
+}
+.signup input:focus {
+  border-color: var(--accent);
+}
+.signup input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.signupConsent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  font-family: var(--font-fine);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-dim);
+  cursor: pointer;
+}
+.signupConsent input {
+  margin-top: 0.2em;
+  accent-color: var(--ember);
+  flex: none;
+}
+
+.signupNotice {
+  font-family: var(--font-fine);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-faint);
+  margin: 0.6rem 0 1.3rem;
+}
+.signupNotice a {
+  color: var(--ink-dim);
+  border-bottom: 1px solid var(--rule-ink);
+}
+.signupNotice a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ember);
+}
+
+.signup .cta:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signupHp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.signupErr {
+  font-family: var(--font-fine);
+  font-size: 13px;
+  color: var(--ember);
+  margin-top: 0.9rem;
+}
+.signupDone {
+  border-left: var(--band-h) solid transparent;
+  border-image: var(--bands) 1;
+  padding-left: 1rem;
+  color: var(--ink);
+}
+
+/* =========================================================================
+   video embeds
+   Used on the home page and the Live Sessions page, so they live here.
+   ========================================================================= */
+.vid {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--paper-3);
+  overflow: hidden;
+}
+.vidFrame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.vidFacade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.vidPoster {
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out), filter 500ms var(--ease-out);
+  /* the posters come off YouTube cold and blue; warm them into the palette */
+  filter: saturate(0.92) sepia(0.12);
+}
+.vidFacade:hover .vidPoster,
+.vidFacade:focus-visible .vidPoster {
+  transform: scale(1.035);
+  filter: saturate(1) sepia(0);
+}
+
+.vidPlay {
+  position: relative;
+  z-index: 1;
+  transition: transform 420ms var(--ease-out);
+}
+.vidPlayBg {
+  fill: rgba(28, 23, 20, 0.62);
+  transition: fill 320ms var(--ease-out);
+}
+.vidFacade:hover .vidPlay,
+.vidFacade:focus-visible .vidPlay {
+  transform: scale(1.08);
+}
+.vidFacade:hover .vidPlayBg,
+.vidFacade:focus-visible .vidPlayBg {
+  fill: var(--sun-7);
+}
+
+/* =========================================================================
+   the hero
+   ========================================================================= */
+.hero {
+  position: relative;
+  /* svh, not vh: on iOS Safari 100vh is taller than the visible window, so
+     the bottom band and the scroll cue get hidden under the browser chrome. */
+  height: 100svh;
+  min-height: 33rem;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--ink);
+}
+.heroMedia {
+  position: absolute;
+  inset: 0;
+}
+.heroSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1600ms var(--ease-out);
+}
+.heroSlide.on {
+  opacity: 1;
+}
+.heroVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  /* dark at the top for the nav, dark at the bottom for the title, and the
+     photograph left alone through the middle */
+  background: linear-gradient(
+    180deg,
+    rgba(28, 23, 20, 0.34) 0%,
+    rgba(28, 23, 20, 0) 32%,
+    rgba(28, 23, 20, 0.12) 58%,
+    rgba(28, 23, 20, 0.78) 100%
+  );
+}
+
+.heroBody {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: clamp(4.5rem, 11vh, 8rem);
+  color: var(--on-dark);
+}
+.heroTitle {
+  /* Intro Rust is a caps face — this is set at the size it wants to be read,
+     which on a wide screen is very large indeed. */
+  font-size: clamp(2.6rem, 11vw, 9.5rem);
+  max-width: 15ch;
+  text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35);
+}
+.heroTagline {
+  margin-top: clamp(1rem, 2.4vw, 1.6rem);
+  max-width: 42ch;
+  color: var(--on-dark-dim);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+}
+.heroBody .cta {
+  margin-top: clamp(1.6rem, 3.5vw, 2.4rem);
+}
+
+/* the band seam along the bottom of the photo */
+.heroBands {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(14px, 2.2vw, 24px);
+  background: var(--bands-rev);
+  z-index: 2;
+}
+
+/* =========================================================================
+   the record player
+   ========================================================================= */
+.ap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+.ap.broken {
+  opacity: 0.55;
+}
+.apEmpty {
+  margin-top: 0.9rem;
+  color: var(--ink-faint);
+}
+
+.apBtn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule-ink-strong);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink);
+  transition: background 320ms var(--ease-out), color 320ms var(--ease-out),
+    border-color 320ms var(--ease-out), transform 320ms var(--ease-out);
+}
+.apBtn svg {
+  fill: currentColor;
+}
+.apBtn:hover:enabled,
+.apBtn:focus-visible:enabled {
+  background: var(--sun-7);
+  border-color: transparent;
+  color: var(--paper);
+  transform: scale(1.06);
+}
+.apBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* The scrub bar. The full ramp sits there at fixed proportions the whole
+   time — it never restretches as the track plays, the way a bare
+   `background-size: var(--pct) 100%` would (that scales the GRADIENT itself,
+   so each band's width keeps changing as playback moves).
+
+   Instead a second, pale layer sits on top and gets pulled back as --pct
+   grows, so the true colours are REVEALED behind the playhead rather than
+   stretched to meet it — like a curtain opening on a fixed backdrop, not a
+   picture being redrawn wider. --pct is set inline by the component. */
+.apScrub {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.apScrub::-webkit-slider-runnable-track {
+  height: var(--band-h);
+  border-radius: 999px;
+  background-image: linear-gradient(
+      to right,
+      transparent var(--pct),
+      var(--paper-3) var(--pct)
+    ),
+    var(--bands-h);
+  background-repeat: no-repeat;
+  background-size: 100% 100%, 100% 100%;
+}
+.apScrub::-moz-range-track {
+  height: var(--band-h);
+  border-radius: 999px;
+  background-image: linear-gradient(
+      to right,
+      transparent var(--pct),
+      var(--paper-3) var(--pct)
+    ),
+    var(--bands-h);
+  background-repeat: no-repeat;
+  background-size: 100% 100%, 100% 100%;
+}
+.apScrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4px;
+  height: 22px;
+  margin-top: -4px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+}
+.apScrub::-moz-range-thumb {
+  width: 4px;
+  height: 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+}
+.apScrub:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.apTime {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+}
+
+/* =========================================================================
+   the carousels
+   ========================================================================= */
+.car {
+  position: relative;
+}
+.carTrack {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 1.25rem;
+  display: grid;
+  grid-auto-flow: column;
+  /* four across on a wide screen, and the card keeps that width as the
+     viewport narrows until it hits the minimum, at which point fewer fit */
+  grid-auto-columns: minmax(230px, calc((100% - 3 * 20px) / 4));
+  gap: 20px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  /* the scrollbar is redundant next to the arrows, and it shifts the layout */
+  scrollbar-width: none;
+}
+.carTrack::-webkit-scrollbar {
+  display: none;
+}
+.carTrack > * {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+.carNav {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+.carBtn {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--rule-ink-strong);
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 300ms var(--ease-out), color 300ms var(--ease-out),
+    border-color 300ms var(--ease-out), opacity 300ms var(--ease-out);
+}
+.carBtn:hover:enabled,
+.carBtn:focus-visible:enabled {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.carBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .carTrack {
+    grid-auto-columns: minmax(0, 78%);
+  }
+}
+
+/* =========================================================================
+   the shop
+   ========================================================================= */
+.shopState,
+.shopReceipt {
+  padding: clamp(2rem, 5vw, 3.5rem) 0;
+  max-width: 46ch;
+  border-top: var(--band-h) solid transparent;
+  border-image: var(--bands-h) 1;
+}
+.shopStateBody {
+  margin-top: 0.85rem;
+  color: var(--ink-dim);
+}
+.shopReceiptHead {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.4vw, 2.2rem);
+  text-transform: uppercase;
+  margin: 0.6rem 0 0.9rem;
+}
+.shopReceiptCode {
+  font-family: var(--font-fine);
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+.shopReceiptNote {
+  margin-top: 0.6rem;
+  color: var(--ink-dim);
+  font-size: 0.95em;
+}
+
+/* ---- the artist rail -------------------------------------------------
+   A persistent strip down the right edge of the viewport, one colour per
+   artist, running from the top of the screen down to the top of the footer —
+   including behind the nav, so it reaches the true top rather than starting
+   under it. Closed, each artist is just its spine; click one and it
+   stretches all the way across the screen, its own colour becoming the
+   backdrop, to show that artist's goods. Click the same spine again to
+   collapse it.
+
+   With nothing open the rail is just the row of spines, and the page shows
+   every artist's goods together in the ordinary .shopGrid inside .shopBody
+   below — see Storefront.js's `allProducts`.
+
+   WIDTH, NOT flex-grow, is what animates open/closed. An earlier version
+   used flex-grow, which has to be solved jointly across every flex sibling
+   each frame — closing one spine while opening another meant the browser was
+   renegotiating BOTH values' share of the row at once, and a mismatch
+   between that and the old max-width cap made the closing spine briefly
+   overshoot sideways before settling ("flash to the left"). An explicit
+   `width` transitions independently per element: the closing spine just
+   shrinks in place, the opening one just grows in place, and the row
+   reflows around whatever the current widths happen to be — nothing to
+   jointly solve, nothing to glitch.
+
+   The open width is computed in pure CSS (`calc()`), not measured in JS: it's
+   100vw minus however many OTHER spines are staying put at --spine-w each,
+   so it always reaches exactly to them — "stretch all the way across" is the
+   default, not a capped approximation. --rail-count is set inline in
+   Storefront.js from tabs.length.
+
+   The colour on each spine comes from --tone, set per spine in Storefront.js,
+   stepped across the whole ramp rather than adjacent stops so neighbours
+   don't read as one block. The open slide reuses that same --tone as its own
+   background, so the spine and the panel it opens read as one continuous
+   piece of colour rather than a coloured tab attached to a cream page. */
+.slides {
+  position: fixed;
+  right: 0;
+  /* A full screen tall, always — never squeezed shorter than that. It's hung
+     from its BOTTOM edge rather than its top: --rail-bottom is how far the
+     footer currently reaches up into the viewport (measured in
+     Storefront.js), so the bottom edge rides up on the footer's top edge and
+     the whole 100vh of rail travels up with it, its top running off the top
+     of the screen. `top` stays auto — set it as well and the box would be
+     over-constrained and the browser would drop `bottom` instead.
+
+     What you see is the same either way: rail from the top of the screen
+     down to the top of the footer, never past either one. The difference is
+     that the panel inside keeps its full height and slides, rather than
+     reflowing into a shorter and shorter box as you reach the bottom. */
+  bottom: var(--rail-bottom, 0px);
+  height: 100vh;
+  left: 0;
+  z-index: 40; /* under the nav's pill (100) — passes BEHIND it, not over it */
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+.slide {
+  pointer-events: auto;
+  display: flex;
+  min-width: 0;
+  flex: none;
+  width: var(--spine-w, 68px);
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: -1px 0 0 var(--rule-ink); /* a hairline between spines */
+  transition: width 1000ms var(--ease-panel), background 800ms var(--ease-panel);
+}
+.slide.open {
+  width: calc(100vw - (var(--rail-count, 1) - 1) * var(--spine-w, 68px));
+  background: var(--tone, var(--sun-4));
+}
+
+/* ---- the spine ---- */
+.slideSpine {
+  flex: 0 0 var(--spine-w, 68px);
+  border: 0;
+  padding: 1.1rem 0;
+  cursor: pointer;
+  background: var(--tone, var(--sun-4));
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 320ms var(--ease-out);
+}
+.slideSpine:hover,
+.slideSpine:focus-visible {
+  filter: brightness(1.07);
+}
+/* reads bottom-to-top, the way a spine on a shelf does */
+.slideSpineInner {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+.slideName {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---- what the spine opens ---- */
+.slidePanel {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* the rail's own background reaches the true top of the page, behind the
+     nav — this is what keeps the CONTENT clear of the floating pill sitting
+     on top of it */
+  padding: calc(var(--nav-block) + 1.4rem) clamp(1.3rem, 2.6vw, 2.1rem)
+    clamp(1.5rem, 3vw, 2.3rem);
+  opacity: 0;
+  visibility: hidden; /* also takes it out of the accessibility tree */
+  transition: opacity 400ms var(--ease-out), visibility 0s linear 1000ms;
+  scrollbar-width: thin;
+}
+.slide.open .slidePanel {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 700ms var(--ease-out) 380ms, visibility 0s;
+}
+
+/* the reserved right-hand margin on the page's own content, so the resting
+   rail never sits on top of the goods or the basket. --rail-w is set from
+   Storefront.js: the spine width × how many artists there are. */
+@media (min-width: 821px) {
+  .shopBody.railGutter {
+    padding-right: calc(var(--rail-w, 0px) + var(--gutter));
+  }
+
+  /* Opening a panel takes the flat grid out of the page (Storefront.js only
+     renders it with nothing open), which leaves the document so short that
+     the footer sits a third of the way up the screen. The rail is a full
+     screen tall and stops at the footer, so it would have to hang its own
+     top off the top of the viewport to clear it — cutting the first row of
+     goods in half. Holding a screen's worth of height open underneath keeps
+     the footer below the fold, so the panel gets its whole 100vh on screen
+     and you scroll to the footer rather than starting halfway into it. */
+  .shop.shopOpen {
+    min-height: 100vh;
+  }
+}
+/* ---- tipped over, on a phone ----
+   A fixed rail eating 200+px of a 375px screen doesn't work, so under 821px
+   this stops being a viewport overlay and becomes an ordinary stack of rows
+   that open in place — same mechanics, laid out top to bottom instead. */
+@media (max-width: 820px) {
+  .slides {
+    position: static;
+    inset: auto;
+    height: auto; /* the 100vh above is a viewport overlay's business only */
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  }
+  .slide {
+    width: 100%;
+    flex-basis: auto;
+    flex-direction: column;
+  }
+  .slide.open {
+    width: 100%;
+  }
+  .slideSpine {
+    flex: 0 0 auto;
+    padding: 1.05rem 1.15rem;
+    justify-content: space-between;
+  }
+  /* upright again — a spine you have to tilt your head for is a poster, not a
+     control, and on a phone this is the only way in */
+  .slideSpineInner {
+    writing-mode: horizontal-tb;
+    transform: none;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .slidePanel {
+    height: auto;
+    max-height: 0;
+    padding: 0 1.15rem;
+    transition: max-height 420ms var(--ease-out), opacity 300ms var(--ease-out),
+      padding-block 420ms var(--ease-out), visibility 0s linear 420ms;
+  }
+  .slide.open .slidePanel {
+    max-height: 160rem;
+    padding: clamp(1.1rem, 3vw, 1.6rem) 1.15rem;
+    transition: max-height 520ms var(--ease-out), opacity 340ms var(--ease-out) 120ms,
+      padding-block 420ms var(--ease-out), visibility 0s;
+  }
+}
+
+/* ---- goods on the left, basket on the right ---- */
+.shopBody {
+  min-width: 0;
+}
+.shopGrid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: clamp(1.1rem, 2.4vw, 1.75rem);
+}
+.shopCard {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.shopArt {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--paper-3);
+  overflow: hidden;
+  margin-bottom: 0.85rem;
+}
+.shopArt :global(img) {
+  transition: transform 900ms var(--ease-out);
+}
+.shopCard:hover .shopArt :global(img) {
+  transform: scale(1.04);
+}
+.shopName {
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  text-transform: uppercase;
+}
+.shopDesc {
+  margin-top: 0.4rem;
+  color: var(--ink-dim);
+  font-size: 0.92em;
+}
+.shopPrice {
+  margin-top: 0.5rem;
+  color: var(--ink);
+}
+
+.shopVariants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.shopVariant {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55em 0.95em;
+  border-radius: 999px;
+  border: 1px solid var(--rule-ink-strong);
+  background: transparent;
+  cursor: pointer;
+  transition: background 240ms var(--ease-out), color 240ms var(--ease-out),
+    border-color 240ms var(--ease-out);
+}
+.shopVariant.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+.shopVariant:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* NOT margin-top: auto — the grid gives every card in a row the same
+   height, and auto-margin used to shove this down to match the tallest
+   neighbour, opening a huge gap above it on any shorter card (e.g. one with
+   no variants). A fixed gap keeps it right under whatever precedes it. */
+.shopAdd {
+  margin-top: 1rem;
+  padding-top: 0.85em;
+  padding-bottom: 0.85em;
+}
+.shopAdd:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.shopLow {
+  margin-top: 0.55rem;
+  color: var(--ember);
+}
+
+/* ---- the basket ----
+   Lives as a dropdown off the nav's cart icon now (CartButton.js +
+   .navCartDrop in globals.css), not a sidebar on the store page — this rule
+   is just the panel's own look, positioning is the dropdown wrapper's job.
+   The ring is a solid-colour padding-box background plus the ramp on the
+   border-box, behind a transparent border — not border-image, which (like
+   the nav frame, see globals.css) ignores border-radius. */
+.shopCart {
+  border-radius: 1.5rem;
+  border: var(--frame-w) solid transparent;
+  background: linear-gradient(var(--paper-2), var(--paper-2)) padding-box,
+    var(--bands-h) border-box;
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+}
+.shopCartHead {
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.shopCartEmpty {
+  color: var(--ink-faint);
+  font-size: 0.95em;
+}
+.shopCartList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.9rem;
+}
+.shopCartLine {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "info sum"
+    "qty  sum";
+  gap: 0.35rem 0.6rem;
+  align-items: center;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--rule-ink);
+}
+.shopCartInfo {
+  grid-area: info;
+  min-width: 0;
+}
+.shopCartName {
+  font-size: 0.92em;
+  line-height: 1.3;
+}
+.shopCartVariant {
+  margin-top: 0.15rem;
+  color: var(--ink-faint);
+}
+.shopCartSum {
+  grid-area: sum;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.shopQty {
+  grid-area: qty;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-fine);
+  font-size: 13px;
+}
+.shopQty button {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--rule-ink-strong);
+  background: transparent;
+  cursor: pointer;
+  line-height: 1;
+}
+.shopQty button:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.shopSubtotal {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+.shopShipNote {
+  font-family: var(--font-fine);
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin: 0.5rem 0 1.1rem;
+  line-height: 1.5;
+}
+.shopPay {
+  width: 100%;
+  justify-content: center;
+}
+.shopPay:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.shopErr {
+  font-family: var(--font-fine);
+  font-size: 13px;
+  color: var(--ember);
+  margin-top: 0.9rem;
+}
+
+/* =========================================================================
+   the page field — the backdrop under every page that hasn't got a hero
+   ========================================================================= */
+.field {
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* behind everything, including the footer's own ground */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---- the warm wash ---------------------------------------------------- */
+/* Two soft suns, one warm and one ember, drifting against each other. Kept
+   under 0.2 alpha: past that the cream turns orange and every photograph on
+   the page starts fighting the ground it sits on. */
+.fieldWash {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(
+      44% 38% at var(--wash-x, 22%) var(--wash-y, 26%),
+      rgba(255, 138, 66, 0.17),
+      rgba(255, 138, 66, 0) 68%
+    ),
+    radial-gradient(
+      52% 44% at var(--wash-x2, 82%) var(--wash-y2, 72%),
+      rgba(221, 168, 96, 0.19),
+      rgba(221, 168, 96, 0) 66%
+    );
+  animation: washDrift 38s ease-in-out infinite alternate;
+}
+@keyframes washDrift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2%, 1.5%, 0) scale(1.06);
+  }
+}
+
+/* ---- the strip of bands down the edge --------------------------------- */
+/* Mostly off-screen: what shows is the tail of the ramp, as though the page
+   were sitting on a wider sheet. */
+.fieldEdge {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: clamp(28px, 3.6vw, 54px);
+  background: var(--bands);
+  opacity: 0.5;
+  left: auto;
+  right: calc(-1 * clamp(10px, 1.4vw, 20px));
+  animation: edgeBreathe 26s ease-in-out infinite alternate;
+}
+@keyframes edgeBreathe {
+  from {
+    transform: translateY(-2%);
+  }
+  to {
+    transform: translateY(2%);
+  }
+}
+
+.fieldRings {
+  position: absolute;
+  width: min(880px, 92vw);
+  aspect-ratio: 1;
+  opacity: 0.22;
+  left: var(--rings-x, -14%);
+  top: var(--rings-y, 42%);
+}
+
+/* ---- the grain --------------------------------------------------------- */
+/* Fractal noise, generated by the browser — no image to download. It is what
+   stops the large flat areas of cream reading as a screenshot of a colour
+   swatch, and it is why the wash can stay as faint as it does. */
+.fieldGrain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
+}
+
+/* ---- one arrangement per page ----------------------------------------- */
+.field[data-field="work"] {
+  --wash-x: 16%;
+  --wash-y: 22%;
+  --wash-x2: 88%;
+  --wash-y2: 78%;
+  --rings-x: -18%;
+  --rings-y: 34%;
+}
+.field[data-field="studio"] {
+  --wash-x: 78%;
+  --wash-y: 18%;
+  --wash-x2: 18%;
+  --wash-y2: 74%;
+  --rings-x: -18%;
+  --rings-y: -26%;
+}
+.field[data-field="sessions"] .fieldRings {
+  display: none;
+}
+.field[data-field="sessions"] {
+  --wash-x: 50%;
+  --wash-y: 12%;
+  --wash-x2: 24%;
+  --wash-y2: 86%;
+}
+.field[data-field="store"] {
+  --wash-x: 12%;
+  --wash-y: 62%;
+  --wash-x2: 74%;
+  --wash-y2: 14%;
+  --rings-x: -26%;
+  --rings-y: 8%;
+}
+.field[data-field="contact"] {
+  --wash-x: 68%;
+  --wash-y: 30%;
+  --wash-x2: 14%;
+  --wash-y2: 82%;
+  /* the contact page draws its own rings, large and on purpose */
+  --rings-x: -60%;
+  --rings-y: 70%;
+}
+/* A legal page is not the place for a light show. */
+.field[data-field="legal"] .fieldWash {
+  opacity: 0.45;
+}
+.field[data-field="legal"] .fieldRings {
+  display: none;
+}
+.field[data-field="legal"] {
+  --wash-x: 82%;
+  --wash-y: 16%;
+  --wash-x2: 10%;
+  --wash-y2: 88%;
+}
+
+@media (max-width: 700px) {
+  /* the edge strip eats real width on a phone, and the rings get busy */
+  .fieldEdge {
+    width: 16px;
+  }
+  .fieldRings {
+    opacity: 0.14;
+  }
+}

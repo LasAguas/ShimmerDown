@@ -1,0 +1,840 @@
+/* ===========================================================================
+   Shimmer Down Studios — the design system.
+   The things that must never disagree between pages: the palette, the type,
+   the gradient bands, the shared furniture, the nav and the footer. Shared
+   components are in styles/components.css; a page's own layout is in its
+   styles/<page>.module.css.
+
+   THE ONE IDEA: the golden-hour ramp is never drawn as a smooth blend. It is
+   always cut into hard-edged bands — the 80s studio look off the reference,
+   done with the client's own palette. Smooth gradients look like 2014; hard
+   bands look like a sun-strip on the side of a Fender case.
+   =========================================================================== */
+
+/* ---- fonts ---------------------------------------------------------------
+   Served as .otf/.ttf rather than .woff2 — the conversion needs brotli, which
+   this machine hasn't got. Both files are small enough (72KB / 52KB) that it
+   isn't urgent, and the licensed replacements will arrive as woff2 anyway.
+   See TODO.md items 1 and 2 — NEITHER FONT IS CLEARED FOR THIS SITE YET. */
+@font-face {
+  font-family: "Intro Rust";
+  src: url("/fonts/IntroRust-Base.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Brodille";
+  src: url("/fonts/Brodille-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- the golden-hour ramp, outer → inner, straight off the client's
+     palette card. Referenced by name everywhere; never hard-code a hex. */
+  --sun-1: #dda860;
+  --sun-2: #e89b55;
+  --sun-3: #f28e4a;
+  --sun-4: #fc8140;
+  --sun-5: #ff7435;
+  --sun-6: #ff672b;
+  --sun-7: #ff5a20;
+
+  /* ---- ground and ink. Warm cream paper, warm near-black type: a neutral
+     grey against this cream reads as dirty, so every "grey" here is browned. */
+  --paper: #f7f1e7;
+  --paper-2: #efe6d8; /* panels, cards, the store's shelf column */
+  --paper-3: #e6dbc9; /* pressed/active state, image placeholders */
+  --ink: #1c1714;
+  --ink-dim: #5a4f45;
+  --ink-faint: #9a8d7e;
+  --rule-ink: rgba(28, 23, 20, 0.14);
+  --rule-ink-strong: rgba(28, 23, 20, 0.28);
+
+  /* on a photo: cream type, and the scrim that keeps it legible */
+  --on-dark: #f7f1e7;
+  --on-dark-dim: rgba(247, 241, 231, 0.72);
+
+  --accent: var(--sun-4);
+  --ember: var(--sun-7);
+
+  /* ---- type ---------------------------------------------------------------
+     Intro Rust is a CAPS-ONLY face — lowercase glyphs are drawn as capitals —
+     so anything set in it is uppercase whether or not you ask. That makes it
+     the display face AND the small-label face (11px + wide tracking), which is
+     exactly how the reference sets its meta lines.
+
+     Brodille is a display serif, not a text face. It's set no smaller than
+     16px anywhere on this site; below that its thin strokes disappear. Form
+     fields and legal fine print use --font-fine instead — see TODO.md item 3. */
+  --font-display: "Intro Rust", "Futura", "Trebuchet MS", sans-serif;
+  --font-body: "Brodille", "Hoefler Text", Georgia, serif;
+  --font-fine: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, Arial, sans-serif;
+
+  /* ---- measure ---- */
+  --page-max: 1240px;
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  /* 14px — two pixels per band. Everything banded reads this, so the whole
+     site's stripes thicken or thin from this one line. */
+  --band-h: 14px;
+  --frame-w: 6px; /* the gradient frame around the nav */
+  --nav-h: 64px;
+  --nav-radius: 34px; /* a pill, matching the buttons */
+  /* How much vertical room the floating bar actually occupies: the pill, its
+     gradient frame on both sides, and the gap above it. Pages clear THIS, not
+     --nav-h, or their first line hides behind the frame. */
+  --nav-block: calc(var(--nav-h) + 2 * var(--frame-w) + clamp(0.55rem, 1.4vw, 1rem));
+  /* the basket bubble beside the pill — sized close to the pill's own outer
+     height (--nav-h + 2*--frame-w = 76px) so the two read as a matched pair
+     rather than a big pill next to a small dot */
+  --cart-size: 56px;
+  --cart-gap: 0.85rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* a gentler deceleration than --ease-out's sharp snap — used where a motion
+     needs to read as slow and smooth rather than quick and punchy, e.g. the
+     store rail opening. */
+  --ease-panel: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: light; /* stop iOS/Android auto-darkening the form controls */
+}
+
+/* ---- the bands ------------------------------------------------------------
+   Seven hard stops, no blending. Two directions, because a rule under a dark
+   photo wants the ramp running the other way from one on paper. */
+:root {
+  --bands: linear-gradient(
+    180deg,
+    var(--sun-1) 0 14.2857%,
+    var(--sun-2) 14.2857% 28.5714%,
+    var(--sun-3) 28.5714% 42.8571%,
+    var(--sun-4) 42.8571% 57.1428%,
+    var(--sun-5) 57.1428% 71.4285%,
+    var(--sun-6) 71.4285% 85.7142%,
+    var(--sun-7) 85.7142% 100%
+  );
+  --bands-rev: linear-gradient(
+    180deg,
+    var(--sun-7) 0 14.2857%,
+    var(--sun-6) 14.2857% 28.5714%,
+    var(--sun-5) 28.5714% 42.8571%,
+    var(--sun-4) 42.8571% 57.1428%,
+    var(--sun-3) 57.1428% 71.4285%,
+    var(--sun-2) 71.4285% 85.7142%,
+    var(--sun-1) 85.7142% 100%
+  );
+  /* the same ramp lying on its side, for vertical rules and sweeps */
+  --bands-h: linear-gradient(
+    90deg,
+    var(--sun-1) 0 14.2857%,
+    var(--sun-2) 14.2857% 28.5714%,
+    var(--sun-3) 28.5714% 42.8571%,
+    var(--sun-4) 42.8571% 57.1428%,
+    var(--sun-5) 57.1428% 71.4285%,
+    var(--sun-6) 71.4285% 85.7142%,
+    var(--sun-7) 85.7142% 100%
+  );
+}
+
+/* =========================================================================
+   reset
+   ========================================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  /* 17px floor: Brodille's hairlines break up below this. */
+  font-size: clamp(17px, 1.05vw, 19px);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* keyboard users get a visible ring; mouse users don't */
+:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+}
+
+/* =========================================================================
+   type
+   ========================================================================= */
+.display {
+  font-family: var(--font-display);
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* The small uppercase meta line — section numerals, eyebrow labels, prices,
+   captions. Straight off the reference: 11px, 0.14em tracking, caps. */
+.label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--ink-dim);
+}
+
+.lede {
+  font-size: 1.24em;
+  line-height: 1.45;
+  color: var(--ink-dim);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =========================================================================
+   shared furniture
+   ========================================================================= */
+.shell {
+  width: min(var(--page-max), 100%);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* A section's header: the numeral, the rule, the title — the reference's
+   "01 / THE STUDIO" arrangement, rebuilt. */
+.sectionHead {
+  margin-bottom: clamp(1.6rem, 3.5vw, 2.8rem);
+}
+.sectionHead h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5.2vw, 3.6rem);
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+}
+
+/* ---- the banded rule -----------------------------------------------------
+   A hard-band divider. Default 7px — one row of pixels per band. Set
+   --band-h on the element for a chunkier one. */
+.bandRule {
+  height: var(--band-h);
+  background: var(--bands);
+  border: 0;
+  width: 100%;
+}
+.bandRule.rev {
+  background: var(--bands-rev);
+}
+
+/* ---- the primary call to action ------------------------------------------
+   A pill, filled with the band ramp rather than merely outlined by it — the
+   gradient IS the button. The fill is drawn at twice the pill's width so that
+   hovering can slide the whole ramp across, which steps band by band rather
+   than blending, the same way every other gradient on the site behaves.
+
+   Ink on the ramp, not cream: the palette's light end (#DDA860) can't carry
+   white text at this size, and a button that changes text colour halfway
+   along its own fill is a button nobody can read. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 1.05em 1.9em;
+  border: 0;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--bands-h);
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  cursor: pointer;
+  position: relative;
+  transition: background-position 760ms var(--ease-out),
+    transform 420ms var(--ease-out);
+}
+.cta:hover,
+.cta:focus-visible {
+  background-position: 100% 0;
+  transform: translateY(-2px);
+}
+.cta:active {
+  transform: translateY(0);
+}
+.cta .arrow {
+  transition: transform 460ms var(--ease-out);
+}
+.cta:hover .arrow {
+  transform: translateX(4px);
+}
+/* On a photograph the pill needs a hairline of paper around it, or its light
+   end dissolves into a bright patch of the picture — a ring, not a shadow. */
+.cta.onDark {
+  box-shadow: 0 0 0 1px rgba(247, 241, 231, 0.55);
+}
+.cta.onDark:hover,
+.cta.onDark:focus-visible {
+  box-shadow: 0 0 0 1px rgba(247, 241, 231, 0.75);
+}
+
+/* =========================================================================
+   the nav
+   -------------------------------------------------------------------------
+   Over the hero it is transparent with cream type; once the page scrolls past
+   the hero it lands on paper with ink type. The bands are the fixture: a
+   7-band rule runs the full width under the bar, and every link carries its
+   own short band stack that blooms from 2 bands to all 7 on hover, with a
+   light sweeping across it. That's the "dynamic when hovered" ask.
+   ========================================================================= */
+/* The bar doesn't span the window — it floats inset from every edge inside a
+   rectangle whose BORDER is the band ramp. The frame is a padded wrapper
+   rather than a border-image: padding gives a true gradient on all four sides
+   and takes a border-radius cleanly, which border-image does not. */
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  padding: clamp(0.55rem, 1.4vw, 1rem) var(--gutter) 0;
+  pointer-events: none; /* the gutter around the row stays click-through */
+}
+/* the pill and the basket bubble, as two independent shapes sharing one
+   centred row — see .navCartWrap below for why this replaced absolute
+   positioning */
+.navRow {
+  width: min(var(--page-max), 100%);
+  margin-inline: auto;
+  display: flex;
+  /* NOT center — on a phone .navFrame grows much taller when the menu opens
+     (the links list expands inside it), and centring against that would
+     drag the bubble down into the middle of the open dropdown. flex-start
+     plus a fixed margin-top on the bubble (below) gets the same "centred
+     against the closed pill" look without depending on the frame's current,
+     variable height. */
+  align-items: flex-start;
+  gap: var(--cart-gap, 0.85rem);
+}
+.navFrame {
+  pointer-events: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--frame-w);
+  border-radius: calc(var(--nav-radius) + var(--frame-w));
+  background: var(--bands-h);
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  transition: background-position 900ms var(--ease-out);
+}
+/* the ramp drifts across the frame when the bar is used */
+.nav:hover .navFrame,
+.nav:focus-within .navFrame {
+  background-position: 100% 0;
+}
+
+.navInner {
+  position: relative;
+  height: var(--nav-h);
+  border-radius: var(--nav-radius);
+  padding-inline: clamp(0.9rem, 2.2vw, 1.6rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  /* Over the hero the inside of the frame is a smoked panel, so cream type
+     stays legible over a photograph we don't control. The frame's own ramp
+     shows through it, which warms the glass from gold at one end to ember at
+     the other — 0.62 rather than 0.5 because at the gold end a thinner smoke
+     drops the mark's contrast to about 5:1, and it carries small caps. */
+  background: rgba(28, 23, 20, 0.62);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  transition: background 420ms var(--ease-out);
+}
+.nav.landed .navInner {
+  background: var(--paper);
+}
+
+.navMark {
+  font-family: var(--font-display);
+  font-size: clamp(13px, 1.4vw, 16px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-dark);
+  transition: color 420ms var(--ease-out);
+  white-space: nowrap;
+}
+.nav.landed .navMark {
+  color: var(--ink);
+}
+.navBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+}
+.navMark {
+  flex: none;
+}
+.navMarkLogo {
+  height: clamp(15px, 1.6vw, 19px);
+  width: auto;
+  display: block;
+}
+/* Compact stand-in for the wordmark below 880px — see the comment in
+   SiteNav.js. Hidden here; the @media block below (same breakpoint
+   .navToggle uses) swaps the two. Black-on-transparent source, so it needs
+   the on-dark/landed swap done as a filter rather than `color`. */
+.navMarkCompact {
+  display: none;
+  height: clamp(20px, 5.5vw, 26px);
+  width: auto;
+  filter: brightness(0) invert(1);
+  transition: filter 420ms var(--ease-out);
+}
+.nav.landed .navMarkCompact {
+  filter: none;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.15rem, 0.8vw, 0.4rem);
+  list-style: none;
+  padding: 0;
+}
+
+/* The pill sits BEHIND the label (z-index: -1 on .bands, below), so the
+   label itself can just be centred text — no padding held open on one edge
+   to clear an underline, which is what threw it off-centre before. */
+.navLink {
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.62em 1.05em;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-dim);
+  transition: color 300ms var(--ease-out);
+}
+.nav.landed .navLink {
+  color: var(--ink-dim);
+}
+/* Ink, not cream, on hover/current in EITHER nav state: the block behind it
+   is always the warm end of the ramp, and ink is what reads on that. */
+.navLink:hover,
+.navLink:focus-visible,
+.navLink.current {
+  color: var(--ink);
+}
+
+/* each link's own piece of the ramp — a filled block, not a line under it */
+.navLink .bands {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--bands-h);
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 300ms var(--ease-out), transform 380ms var(--ease-out),
+    background-position 700ms var(--ease-out);
+}
+.navLink.current .bands {
+  opacity: 1;
+  transform: scale(1);
+}
+.navLink:hover .bands,
+.navLink:focus-visible .bands {
+  opacity: 1;
+  transform: scale(1);
+  background-position: 100% 0;
+}
+/* the shimmer: a soft light travelling left→right across the block */
+.navLink .bands::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-120%);
+}
+.navLink:hover .bands::after,
+.navLink:focus-visible .bands::after {
+  animation: shimmer 900ms var(--ease-out);
+}
+@keyframes shimmer {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+/* ---- the phone menu ---- */
+.navToggle {
+  display: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: -0.5rem;
+}
+.navToggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--on-dark);
+  transition: transform 300ms var(--ease-out), opacity 200ms,
+    background 420ms var(--ease-out);
+}
+.navToggle span + span {
+  margin-top: 5px;
+}
+.nav.landed .navToggle span,
+.nav.open .navToggle span {
+  background: var(--ink);
+}
+.navToggle {
+  flex: none;
+}
+.nav.open .navToggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav.open .navToggle span:nth-child(2) {
+  opacity: 0;
+}
+.nav.open .navToggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 880px) {
+  .navToggle {
+    display: block;
+  }
+
+  .navMarkLogo {
+    display: none;
+  }
+  .navMarkCompact {
+    display: block;
+  }
+
+  /* The frame doesn't get escaped — it GROWS. Opening the menu turns the pill
+     into a panel with the links inside it, so the gradient border still wraps
+     the whole thing instead of a bare list hanging off the bottom. */
+  .navInner {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding-inline: 0;
+  }
+  .navBar {
+    height: var(--nav-h);
+    padding-inline: clamp(0.9rem, 3vw, 1.4rem);
+  }
+
+  .navLinks {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 clamp(0.9rem, 3vw, 1.4rem);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 380ms var(--ease-out), opacity 260ms var(--ease-out),
+      padding-bottom 380ms var(--ease-out);
+  }
+  .nav.open .navLinks {
+    max-height: 26rem;
+    opacity: 1;
+    padding-bottom: 1.1rem;
+  }
+
+  /* a pill is the wrong shape for a tall panel */
+  .nav.open .navFrame {
+    border-radius: calc(1.5rem + var(--frame-w));
+  }
+  .nav.open .navInner {
+    border-radius: 1.5rem;
+  }
+  /* the panel is paper whatever the scroll position, so the links are legible */
+  .nav.open .navInner {
+    background: var(--paper);
+  }
+  .nav.open .navMark {
+    color: var(--ink);
+  }
+
+  .navLink {
+    width: 100%;
+    justify-content: flex-start;
+    font-size: 13px;
+    padding: 0.95rem 1.1rem;
+    border-radius: 14px;
+    color: var(--ink-dim);
+  }
+  /* no hover on a phone, so the block only ever shows for the current page —
+     the base rule above already does that (.navLink.current .bands) */
+}
+
+/* ---- the basket bubble --------------------------------------------------
+   Its own separate circle riding alongside the pill — not an icon glued onto
+   it — so it's a plain flex sibling in .navRow now rather than something
+   absolutely-positioned over the pill's own content. Same smoked-glass /
+   paper treatment as .navInner, so the two read as a matched pair despite
+   being two independent shapes — and now the same ramp framing it, via the
+   same padded-wrapper trick as .navFrame/.navInner (a circle stays a circle
+   at any radius, so this one skips the nav's radius+frame-w calc). */
+.navCartWrap {
+  flex: none;
+  width: var(--cart-size);
+  height: var(--cart-size);
+  padding: var(--frame-w);
+  border-radius: 50%;
+  background: var(--bands-h);
+  /* .nav sets pointer-events: none on itself so the empty gutter around the
+     pill stays click-through, and only re-enables it on .navFrame — the
+     bubble sits OUTSIDE .navFrame now (see .navRow), so without this it
+     silently inherits none too. It still looked clickable (nothing about
+     inert pointer-events changes how an element paints) and every automated
+     click in testing "worked", because element.click() fires the handler
+     directly and doesn't go through hit-testing the way a real pointer click
+     does — so this shipped without ever actually being clickable by a mouse
+     or a finger. */
+  pointer-events: auto;
+  /* centres against the pill's CLOSED-state height specifically — see the
+     .navRow comment above for why this isn't flex align-items:center */
+  margin-top: calc((var(--nav-h) + 2 * var(--frame-w) - var(--cart-size)) / 2);
+}
+.navCartBtn {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 0;
+  color: var(--on-dark);
+  cursor: pointer;
+  background: rgba(28, 23, 20, 0.62);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  transition: color 420ms var(--ease-out), background 420ms var(--ease-out);
+}
+.nav.landed .navCartBtn {
+  color: var(--ink);
+  background: var(--paper);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.navCartBtn:hover,
+.navCartBtn:focus-visible {
+  background: var(--sun-7);
+  color: var(--paper);
+}
+.navCartBadge {
+  position: absolute;
+  /* the badge floats just outside the CIRCLE, i.e. the frame's outer edge —
+     .navCartBtn itself is now inset by --frame-w, so its own corner is no
+     longer that edge */
+  top: calc(-2px - var(--frame-w));
+  right: calc(-2px - var(--frame-w));
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--ember);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 11px;
+  line-height: 19px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--paper);
+}
+.nav:not(.landed) .navCartBadge {
+  box-shadow: 0 0 0 2px rgba(28, 23, 20, 0.62);
+}
+
+/* the dropdown reuses .shopCart's own styling (components.css) for its
+   content — same list, subtotal, checkout button as the old in-page basket.
+   It's portalled to <body> (see CartButton.js) rather than nested here, so
+   `top`/`right` come in as inline styles computed from the button's own
+   on-screen position — this rule is just size, scroll and stacking. */
+.navCartDrop {
+  position: fixed;
+  width: min(320px, 86vw);
+  max-height: min(28rem, 70vh);
+  overflow-y: auto;
+  z-index: 200; /* a portal to <body> — above the nav (100) it opened from */
+  box-shadow: 0 18px 40px -14px rgba(28, 23, 20, 0.35);
+}
+
+/* =========================================================================
+   the footer
+   -------------------------------------------------------------------------
+   Two deliberately mismatched sizes, after the reference: the sign-up and
+   the small print sit compact on the left, dwarfed by one huge gradiented
+   ring-figure filling the right column.
+   ========================================================================= */
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-2);
+  margin-top: clamp(4rem, 10vw, 8rem);
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(1.5rem, 3vw, 2.25rem);
+}
+.footerInner {
+  position: relative;
+  z-index: 1;
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  /* leaves the right side clear for the ring-figure to bleed into */
+  max-width: 34rem;
+}
+
+/* The ring-figure: a circle whose radius equals the footer's own height
+   (--footer-h, measured in SiteFooter.js — CSS can't read that off an
+   auto-height parent any other way), centred exactly on the footer's
+   bottom-right corner so only its top-left quarter shows; the rest runs
+   off the top, right and bottom edges, clipped by .footer's overflow. */
+.footerRingsWrap {
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  width: calc(var(--footer-h, 32rem) * 2);
+  aspect-ratio: 1;
+  transform: translate(50%, 50%);
+  pointer-events: none;
+}
+.footerRings {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.footerBase {
+  position: relative;
+  z-index: 1;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule-ink);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
+}
+.footerBase,
+.footerBase a {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.footerMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.footerMark img {
+  display: block;
+  opacity: 0.85;
+}
+.footerBaseMail {
+  margin-right: auto;
+}
+.footerBase a:hover,
+.footerBase a:focus-visible {
+  color: var(--ink);
+}
+.footerLegal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+@media (max-width: 860px) {
+  .footerLeft {
+    max-width: none;
+  }
+  /* the footer runs much taller here (form fields stack), so tying the
+     radius to --footer-h would swallow the whole corner — cap it instead */
+  .footerRingsWrap {
+    width: min(420px, 85vw);
+  }
+  .footerBaseMail {
+    margin-right: 0;
+    flex-basis: 100%;
+  }
+}

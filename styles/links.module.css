@@ -1,0 +1,47 @@
+/* /links — a stack of full-width rows rather than the site's usual pill CTAs,
+   closer to what a link-in-bio page wants on a phone screen (this is reached
+   from the Instagram bio, not from the main nav). Same open-list treatment as
+   faq.module.css's .question, so it still reads as part of the site. */
+
+.page {
+  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem))
+    clamp(3rem, 7vw, 5rem);
+}
+
+.lede {
+  max-width: 52ch;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  max-width: 40rem;
+  border-top: 1px solid var(--rule-ink);
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--rule-ink);
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  transition: color 260ms var(--ease-out);
+}
+.link:hover,
+.link:focus-visible {
+  color: var(--ember);
+}
+
+.arrow {
+  transition: transform 260ms var(--ease-out);
+}
+.link:hover .arrow {
+  transform: translateX(4px);
+}
