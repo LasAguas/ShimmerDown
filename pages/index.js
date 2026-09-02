@@ -23,7 +23,7 @@ const META = {
 const HERO = {
   title: "Shimmer Down Studios",
   tagline:
-    "A room built for feel. Records tracked, mixed and filmed, so the take you hear is the take you can watch.",
+    "Welcome to our Berlin Studio. A room built to bring out creativity and a collection of beautiful instruments to bring it to life.",
   slides: [
     {
       type: "video",
@@ -36,7 +36,7 @@ const HERO = {
 const SESSIONS = {
   heading: "Live Sessions",
   lede:
-    "Every one of these was recorded and filmed while it happened — one room, one band, no overdubs hiding in the mix. Most sessions at Shimmer Down aren't filmed like this; these are the ones that were.",
+    "More than just the audio, Shimmer Down, has been a audio-visual concept from the start. Combining high quality tracking with professional lighting, we bring music to video with live sessions.",
   films: [
     {
       url: "https://www.youtube.com/watch?v=rWM3Y1eG_WI",
@@ -64,7 +64,7 @@ export default function Home() {
     <Layout {...META} path="/" overHero>
       <Hero title={HERO.title} tagline={HERO.tagline} slides={HERO.slides}>
         <Link href="/contact" className="cta onDark">
-          Book the room
+          Book a session
           <span className="arrow" aria-hidden="true">
             →
           </span>

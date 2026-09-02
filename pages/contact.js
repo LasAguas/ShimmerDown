@@ -28,7 +28,7 @@ const [MAIL_LOCAL, MAIL_DOMAIN] = EMAIL.split("@");
 
 const INTRO = {
   heading: "Contact",
-  lede: "Tell us what you're making and when you'd like to make it.",
+  lede: "Tell us about your project and let's see if we're the right fit for you.",
 };
 
 // The subject line is pre-filled so enquiries arrive sorted.
@@ -37,18 +37,18 @@ const MAIL_SUBJECT = "Studio enquiry";
 const HELPFUL = {
   heading: "What helps us answer quickly",
   items: [
-    "Roughly when — a month is enough to start with.",
+    "Roughly when you need a final mix.",
     "How many people are playing, and what they're playing.",
     "Whether you want it filmed as well as recorded.",
-    "A link to something you've already made, if there is one.",
+    "A link to something you've already made, if you have one.",
   ],
 };
 
 const DETAILS = [
-  { term: "Studio", lines: ["Placeholder Straße 12", "10999 Berlin", "Germany"] },
+  { term: "Studio", lines: ["Frank-Zappa-Straße 16", "12681 Berlin", "Germany"] },
   { term: "Bookings", lines: ["Day and block rates", "Engineer included", "Nights welcome"] },
   { term: "Hours", lines: ["By session", "Visits by appointment"] },
-  { term: "Elsewhere", lines: ["Instagram", "YouTube"] },
+  
 ];
 
 export default function Contact() {

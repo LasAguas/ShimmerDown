@@ -26,7 +26,7 @@ const META = {
 const INTRO = {
   heading: "The Work",
   lede:
-    "Two ways into the room. Records we mixed — sent to us finished, sent back finished properly — and records we tracked from the floor up. Press play on any of them.",
+    "A great recording is the first step towards a great mix. Here you can find records we mixed - sent to us ready, sent back sounding perfect — and records we tracked from scratch.",
 };
 
 const PLACEHOLDER_AUDIO = "/audio/placeholder-track.wav";
@@ -62,9 +62,9 @@ const SHELVES = [
 ];
 
 const OUTRO = {
-  heading: "Not every session is filmed",
+  heading: "A bigger project?",
   body:
-    "Most days here are just the room and the mics — tracked and mixed, camera-free. When the timing's right, we turn one into a Live Session: filmed, mixed and released as its own thing.",
+    "Mostly we spend time on audio-only projects but, for the modern audio-visual era, we've brought live sessions into our routine.",
   cta: "Watch the live sessions",
 };
 

@@ -15,9 +15,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const COPY = {
-  heading: "Sessions, in your inbox",
+  heading: "Be the first to know",
   blurb:
-    "New live sessions, records finished, and the odd open studio night. No more than once a month.",
+    "New live sessions, records released, and the odd exclusive discount rate. Unsubscribe at any time with one click.",
   email: "Email address",
   name: "Name",
   city: "City",
@@ -26,10 +26,10 @@ const COPY = {
   noticeLink: "Impressum & privacy",
   button: "Sign up",
   sending: "Signing you up…",
-  success: "You're on the list. See you at the next session.",
-  invalidEmail: "That email doesn't look right — mind checking it?",
+  success: "You're on the list. See you soon!",
+  invalidEmail: "That email doesn't look right — please double check it.",
   consentRequired: "Please tick the box so we know it's OK to email you.",
-  error: "Something went wrong at our end. Try again in a minute?",
+  error: "Something went wrong at our end. Try again in a minute.",
 };
 
 const looksLikeEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v || "").trim());

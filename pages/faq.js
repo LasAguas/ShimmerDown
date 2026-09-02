@@ -22,7 +22,7 @@ const META = {
 const INTRO = {
   heading: "Frequently Asked",
   lede:
-    "The things people usually ask before writing in. Still something else on your mind? The address is at the bottom.",
+    "Common questions we get. Something on your mind that isn't answered here? Get in touch - our email address is at the bottom.",
 };
 
 const FAQS = [
@@ -90,7 +90,7 @@ export default function Faq() {
           </ul>
 
           <div className={s.more}>
-            <span>Still stuck?</span>
+            <span>Can't find what you need?</span>
             <Link href="/contact" className="cta">
               Get in touch
               <span className="arrow" aria-hidden="true">

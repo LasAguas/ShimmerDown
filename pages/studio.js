@@ -25,7 +25,7 @@ const META = {
 const INTRO = {
   heading: "The Studio",
   lede:
-    "One live room, one control room, and a back wall of amplifiers that have all earned their place. Treated for the microphones, lit for the cameras.",
+    "Shimmer Down Studios is a single room, bringing producer and band into a shared space. Treated on all sides and full of beautiful instruments and amps to get the sound you need.",
 };
 
 const SHOWREEL = {
@@ -69,14 +69,14 @@ const GALLERY = [
 ];
 
 const SPECS = [
-  { term: "Live room", lines: ["Placeholder m² · daylight", "Wood floor, treated", "Lit for camera"] },
-  { term: "Control", lines: ["Placeholder console", "Placeholder monitoring", "Placeholder converters"] },
-  { term: "Backline", lines: ["Rhodes Seventy Three", "Marshall, Fender, Roland", "Full drum kit and percussion"] },
+  { term: "Keyboards", lines: ["Placeholder 1", "Placeholder 2", "Placeholder 3"] },
+  { term: "Amps", lines: ["Placeholder Ampeg", "Placeholder Marshal", "Placeholder Fender"] },
+  { term: "Guitars", lines: ["Keyboard Types Placeholder", "Placeholder", "Placeholder 3"] },
 ];
 
 const CTA = {
   heading: "Come and see it",
-  body: "Studio visits by appointment — it is a much easier room to explain standing in it.",
+  body: "Studio visits by appointment — make sure it's the right place to bring your album to life.",
   label: "Arrange a visit",
 };
 
