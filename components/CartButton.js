@@ -18,12 +18,14 @@
 // CSS anchoring, since there's no longer a positioned wrapper to hang off.
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useRouter } from "next/router";
 import { useCart } from "../lib/cartContext";
 
 const euro = (cents) => `€${((cents || 0) / 100).toFixed(2)}`;
 
 export default function CartButton() {
   const { cart, setQty, subtotal, checkout, leaving, checkoutError } = useCart();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState(null); // { top, right } in viewport px
   const btnRef = useRef(null);
@@ -75,11 +77,17 @@ export default function CartButton() {
   }, [open]);
 
   const count = cart.reduce((sum, l) => sum + l.qty, 0);
+  const onStorePage = router.pathname === "/store";
 
   const toggle = () => {
     if (!open) place();
     setOpen((v) => !v);
   };
+
+  // Nav chrome everywhere else — only earn a place there once there's
+  // something to check out, or on the store page itself where it's the
+  // whole point.
+  if (count === 0 && !onStorePage) return null;
 
   return (
     <div className="navCartWrap">
