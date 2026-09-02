@@ -11,8 +11,8 @@
 /* =========================================================================
    the sign-up
    Lives in the footer on every page, so it belongs here rather than in any
-   one page's module. Form controls use --font-fine: Brodille's hairlines
-   vanish at input size, and a placeholder you can't read isn't a placeholder.
+   one page's module. Form controls use --font-fine rather than the body
+   serif — see TODO.md item 3 for why that's still deliberate.
    ========================================================================= */
 .signup {
   max-width: 46ch;
@@ -243,8 +243,8 @@
   color: var(--on-dark);
 }
 .heroTitle {
-  /* Intro Rust is a caps face — this is set at the size it wants to be read,
-     which on a wide screen is very large indeed. */
+  /* set at the size it wants to be read, which on a wide screen is very
+     large indeed. */
   font-size: clamp(2.6rem, 11vw, 9.5rem);
   max-width: 15ch;
   text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35);

@@ -8,36 +8,28 @@ client · **[POLISH]** makes it better, not possible
 
 ---
 
-## 1. **[BLOCKER]** Brodille is licensed "just for personal use"
+## 1. **[DONE]** Brodille is licensed "just for personal use"
 
-`public/fonts/Brodille-Regular.ttf` carries the licence string *"Just for
-personal use"* (Alit Design, alitdesign.net/license). It is embedded in the
-font file itself, so this isn't a grey area — shipping it on a commercial
-studio's website is a licence breach, and it's the client who gets the letter.
+Swapped for **Source Serif 4** (Google Fonts, OFL) — a text-weight classic
+serif in the Georgia/Hoefler Text family, loaded via `pages/_document.js` and
+set as `--font-body` in `styles/globals.css`. `Brodille-Regular.ttf` is
+deleted from `public/fonts/`.
 
-Three ways out:
-- buy the commercial licence from Alit Design, if one exists for this face;
-- replace it with a licensed display serif of similar character — **Recoleta**,
-  **Ogg**, **Domaine Display**, or the free **Playfair Display** / **Bodoni
-  Moda** from Google Fonts;
-- keep it for headings only and set body text in something cleared.
+## 2. **[DONE]** Intro Rust needs a webfont licence
 
-Everything hangs off `--font-body` in `styles/globals.css`, so a swap is one
-line plus an `@font-face`.
-
-## 2. **[BLOCKER]** Intro Rust needs a webfont licence
-
-Fontfabric commercial face (Svet Simov, 2015). The desktop licence the client
-has does **not** cover serving it as a webfont — that's a separate purchase at
-fontfabric.com, priced by monthly pageviews. Buy it, or swap `--font-display`.
+Swapped for **Jost** (Google Fonts, OFL) — a geometric grotesque in the Futura
+family, matching the logo wordmark's character. Loaded via
+`pages/_document.js`, set as `--font-display`. `IntroRust-Base.otf` is deleted
+from `public/fonts/`.
 
 ## 3. **[POLISH]** Three typefaces, on purpose — check you're happy with it
 
-Brodille is a display serif; below about 16px its hairlines disappear. So form
-fields, legal prose and product prices use `--font-fine` (a plain system sans)
-rather than Brodille, and all the small uppercase labels use Intro Rust. If the
-licensed replacement in item 1 has a text-weight companion, `--font-fine` can
-go away and the site drops to two faces.
+Form fields, legal prose and product prices still use `--font-fine` (a plain
+system sans) rather than the body serif, and all the small uppercase labels
+use the display face. Unlike Brodille, Source Serif 4 doesn't break down below
+16px, so `--font-fine` is now a deliberate stylistic choice rather than a
+technical necessity — it could go away and the site would drop to two faces,
+if you'd rather.
 
 ## 4. **[BLOCKER]** The Impressum has real data now — still get it lawyered
 
@@ -175,11 +167,10 @@ in `public/images/gallery/`, downscaled to 2400px on the long edge and
 re-encoded on the way in (440–840KB each, down from 4–6.8MB straight off the
 camera).
 
-## 20. **[POLISH]** Fonts are .otf/.ttf, not .woff2
+## 20. **[DONE]** Fonts are .otf/.ttf, not .woff2
 
-About 40% larger than they need to be. Converting needs brotli, which wasn't
-available on this machine. Moot if item 1 or 2 replaces them — licensed
-webfonts arrive as woff2.
+Moot — items 1 and 2 replaced both faces with Google Fonts, served as woff2
+automatically.
 
 ## 21. **[DONE]** No favicon
 

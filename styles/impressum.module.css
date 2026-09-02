@@ -1,6 +1,6 @@
 /* /impressum — a legal page. Set in --font-fine throughout: this is dense
-   German legal prose at small sizes, exactly where Brodille's hairlines give
-   up, and legibility beats house style on the one page nobody reads for fun. */
+   German legal prose at small sizes, and legibility beats house style on the
+   one page nobody reads for fun. */
 
 .page {
   padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;

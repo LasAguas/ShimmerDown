@@ -12,24 +12,10 @@
    =========================================================================== */
 
 /* ---- fonts ---------------------------------------------------------------
-   Served as .otf/.ttf rather than .woff2 — the conversion needs brotli, which
-   this machine hasn't got. Both files are small enough (72KB / 52KB) that it
-   isn't urgent, and the licensed replacements will arrive as woff2 anyway.
-   See TODO.md items 1 and 2 — NEITHER FONT IS CLEARED FOR THIS SITE YET. */
-@font-face {
-  font-family: "Intro Rust";
-  src: url("/fonts/IntroRust-Base.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Brodille";
-  src: url("/fonts/Brodille-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+   Jost (display) + Source Serif 4 (body), loaded via Google Fonts in
+   pages/_document.js — both OFL-licensed, so no webfont-licence question
+   the way Intro Rust and Brodille had (TODO.md items 1 and 2, now resolved
+   by this swap). */
 
 :root {
   /* ---- the golden-hour ramp, outer → inner, straight off the client's
@@ -61,16 +47,19 @@
   --ember: var(--sun-7);
 
   /* ---- type ---------------------------------------------------------------
-     Intro Rust is a CAPS-ONLY face — lowercase glyphs are drawn as capitals —
-     so anything set in it is uppercase whether or not you ask. That makes it
-     the display face AND the small-label face (11px + wide tracking), which is
-     exactly how the reference sets its meta lines.
+     Jost is a geometric grotesque in the Futura family — the same character
+     as the logo wordmark (public/images/logos/logo-wordmark-dots.svg). It's
+     both the display face and the small-label face (11px + wide tracking,
+     text-transform: uppercase applied explicitly below since Jost, unlike
+     Intro Rust, has real lowercase glyphs).
 
-     Brodille is a display serif, not a text face. It's set no smaller than
-     16px anywhere on this site; below that its thin strokes disappear. Form
-     fields and legal fine print use --font-fine instead — see TODO.md item 3. */
-  --font-display: "Intro Rust", "Futura", "Trebuchet MS", sans-serif;
-  --font-body: "Brodille", "Hoefler Text", Georgia, serif;
+     Source Serif 4 is a text-weight serif — a Georgia/Hoefler Text-style
+     classic — so unlike the old Brodille it doesn't need a size floor. Form
+     fields and legal fine print still use --font-fine, kept as a deliberate
+     third face rather than because the body serif breaks down — see TODO.md
+     item 3. */
+  --font-display: "Jost", "Futura", "Trebuchet MS", sans-serif;
+  --font-body: "Source Serif 4", "Hoefler Text", Georgia, serif;
   --font-fine: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Helvetica, Arial, sans-serif;
 
@@ -170,7 +159,6 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  /* 17px floor: Brodille's hairlines break up below this. */
   font-size: clamp(17px, 1.05vw, 19px);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -214,6 +202,7 @@ h4 {
    ========================================================================= */
 .display {
   font-family: var(--font-display);
+  font-weight: 500;
   letter-spacing: 0.005em;
   line-height: 0.92;
   text-transform: uppercase;
@@ -263,6 +252,7 @@ h4 {
 }
 .sectionHead h2 {
   font-family: var(--font-display);
+  font-weight: 500;
   font-size: clamp(1.9rem, 5.2vw, 3.6rem);
   text-transform: uppercase;
   letter-spacing: 0.005em;
