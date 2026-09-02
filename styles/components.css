@@ -244,7 +244,9 @@
 }
 .heroTitle {
   /* set at the size it wants to be read, which on a wide screen is very
-     large indeed. */
+     large indeed. Lighter than the rest of .display — at this size the
+     500-weight reads heavy; 300 keeps it close to the logo's own thin cut. */
+  font-weight: 300;
   font-size: clamp(2.6rem, 11vw, 9.5rem);
   max-width: 15ch;
   text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35);

@@ -31,7 +31,7 @@ const INTRO = {
 const SHOWREEL = {
   src: "https://1skpzpfelionthck.public.blob.vercel-storage.com/Shimmer%20Down%20Showreel%20Compressed.mp4",
   title: "Shimmer Down Studios — Showreel",
-  poster: "/images/showreel-poster.jpg",
+  poster: "/images/gallery/studio-control-vinyls-wide.jpg",
   plate: "Showreel coming soon",
 };
 
@@ -82,7 +82,7 @@ const CTA = {
 
 export default function Studio() {
   return (
-    <Layout {...META} path="/studio" field="studio" ogImage="/images/showreel-poster.jpg">
+    <Layout {...META} path="/studio" field="studio" ogImage="/images/gallery/studio-control-vinyls-wide.jpg">
       <div className={s.page}>
         <div className="shell">
           <div className="sectionHead">
