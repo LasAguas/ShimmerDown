@@ -4,10 +4,11 @@
 //   over the hero   smoked glass inside the frame, cream type
 //   landed          paper inside the frame, ink type
 //
-// The frame is the fixture the client asked for; each link still carries its
-// own band stack that blooms from 2 bands to all 7 on hover. None of that is
-// set here — it's all CSS (globals.css → "the nav"); this file only decides
-// WHICH state the bar is in.
+// The frame is the fixture the client asked for; each link glows its own
+// colour on hover/current (`field`, below — matches the palette the page
+// itself uses). None of that is set here — it's all CSS (globals.css →
+// "the nav"); this file only decides WHICH state the bar is in and which
+// field each link carries.
 //
 // EDIT THE MENU HERE. It's chrome rather than page content, so it lives beside
 // the component that draws it rather than in any one page.
@@ -16,12 +17,16 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import CartButton from "./CartButton";
 
+// `field` matches the data-field values PageField/components.css already
+// use for each page's own palette (see globals.css → "the nav" → the
+// per-field .bands overrides) — Work carries none, so it falls through to
+// the default golden hour, the site's base colour.
 const LINKS = [
   { href: "/work", label: "Work" },
-  { href: "/studio", label: "Studio" },
-  { href: "/live-sessions", label: "Live Sessions" },
-  { href: "/contact", label: "Contact" },
-  { href: "/store", label: "Store" },
+  { href: "/studio", label: "Studio", field: "studio" },
+  { href: "/live-sessions", label: "Live Sessions", field: "sessions" },
+  { href: "/contact", label: "Contact", field: "contact" },
+  { href: "/store", label: "Store", field: "store" },
 ];
 
 export default function SiteNav({ overHero = false }) {
@@ -125,17 +130,17 @@ export default function SiteNav({ overHero = false }) {
             </div>
 
             <ul className="navLinks" id="nav-links">
-              {LINKS.map(({ href, label }) => {
+              {LINKS.map(({ href, label, field }) => {
                 const current = pathname === href;
                 return (
                   <li key={href}>
                     <Link
                       href={href}
                       className={`navLink${current ? " current" : ""}`}
+                      data-field={field}
                       aria-current={current ? "page" : undefined}
                     >
                       {label}
-                      <span className="bands" aria-hidden="true" />
                     </Link>
                   </li>
                 );

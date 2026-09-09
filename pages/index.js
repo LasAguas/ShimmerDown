@@ -22,8 +22,6 @@ const META = {
 
 const HERO = {
   title: "Shimmer Down Studios",
-  tagline:
-    "Welcome to our Berlin Studio. A room built to bring out creativity and a collection of beautiful instruments to bring it to life.",
   slides: [
     {
       type: "video",
@@ -35,8 +33,6 @@ const HERO = {
 
 const SESSIONS = {
   heading: "Live Sessions",
-  lede:
-    "More than just the audio, Shimmer Down, has been a audio-visual concept from the start. Combining high quality tracking with professional lighting, we bring music to video with live sessions.",
   films: [
     {
       url: "https://www.youtube.com/watch?v=rWM3Y1eG_WI",
@@ -62,8 +58,8 @@ const SESSIONS = {
 export default function Home() {
   return (
     <Layout {...META} path="/" overHero>
-      <Hero title={HERO.title} tagline={HERO.tagline} slides={HERO.slides}>
-        <Link href="/contact" className="cta onDark">
+      <Hero title={HERO.title} slides={HERO.slides}>
+        <Link href="/contact" className="ctaLink onDark">
           Book a session
           <span className="arrow" aria-hidden="true">
             →
@@ -76,7 +72,6 @@ export default function Home() {
           <div className="sectionHead">
             <h2>{SESSIONS.heading}</h2>
           </div>
-          <p className={`lede ${s.lede}`}>{SESSIONS.lede}</p>
 
           <ul className={s.films}>
             {SESSIONS.films.map((film) => (
@@ -96,7 +91,7 @@ export default function Home() {
           </ul>
 
           <p className={s.more}>
-            <Link href="/live-sessions" className="cta">
+            <Link href="/live-sessions" className="ctaLink">
               All live sessions
               <span className="arrow" aria-hidden="true">
                 →

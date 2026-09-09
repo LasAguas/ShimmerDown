@@ -19,7 +19,9 @@
 
 :root {
   /* ---- the golden-hour ramp, outer → inner, straight off the client's
-     palette card. Referenced by name everywhere; never hard-code a hex. */
+     palette card. Referenced by name everywhere; never hard-code a hex.
+     Golden hour is the site's BASE — the nav, the buttons, the band rules
+     and the footer stay this colour on every page. */
   --sun-1: #dda860;
   --sun-2: #e89b55;
   --sun-3: #f28e4a;
@@ -27,6 +29,42 @@
   --sun-5: #ff7435;
   --sun-6: #ff672b;
   --sun-7: #ff5a20;
+
+  /* ---- four more ramps off the same palette card, each given to ONE inner
+     page's ambient field (components.css → "one arrangement per page") so
+     the site has more colour in it without every page fighting for
+     attention. Same outer → inner convention as the sun ramp. */
+  --dawn-1: #b8a8d8; /* early dawn — contact: first light, before the reply */
+  --dawn-2: #c8a0cc;
+  --dawn-3: #d898c0;
+  --dawn-4: #e890b4;
+  --dawn-5: #f8a0a8;
+  --dawn-6: #ffb09c;
+  --dawn-7: #ffc090;
+
+  --vibrant-1: #c84b9b; /* vibrant sunset — the store */
+  --vibrant-2: #d65a90;
+  --vibrant-3: #e46985;
+  --vibrant-4: #f2787a;
+  --vibrant-5: #ff8870;
+  --vibrant-6: #ff9860;
+  --vibrant-7: #ffa850;
+
+  --dusk-1: #3a4575; /* deep dusk — the studio, after hours */
+  --dusk-2: #4d5588;
+  --dusk-3: #60659b;
+  --dusk-4: #8470a0;
+  --dusk-5: #a87ba5;
+  --dusk-6: #cc86aa;
+  --dusk-7: #e895ad;
+
+  --redsun-1: #b8405f; /* deep red sunset — live sessions, filmed and lit */
+  --redsun-2: #ca5263;
+  --redsun-3: #dc6467;
+  --redsun-4: #ee766b;
+  --redsun-5: #ff8877;
+  --redsun-6: #ffa88b;
+  --redsun-7: #ffc89f;
 
   /* ---- ground and ink. Warm cream paper, warm near-black type: a neutral
      grey against this cream reads as dirty, so every "grey" here is browned. */
@@ -125,6 +163,94 @@
     var(--sun-5) 57.1428% 71.4285%,
     var(--sun-6) 71.4285% 85.7142%,
     var(--sun-7) 85.7142% 100%
+  );
+
+  /* the four extra ramps, banded the same hard-stop way, for the page field's
+     --field-bands (components.css → .fieldEdge and "one arrangement per
+     page") — never used on the nav, the buttons or the band rules, which
+     stay --bands/--bands-h (golden hour) everywhere. */
+  --dawn-bands: linear-gradient(
+    180deg,
+    var(--dawn-1) 0 14.2857%,
+    var(--dawn-2) 14.2857% 28.5714%,
+    var(--dawn-3) 28.5714% 42.8571%,
+    var(--dawn-4) 42.8571% 57.1428%,
+    var(--dawn-5) 57.1428% 71.4285%,
+    var(--dawn-6) 71.4285% 85.7142%,
+    var(--dawn-7) 85.7142% 100%
+  );
+  --vibrant-bands: linear-gradient(
+    180deg,
+    var(--vibrant-1) 0 14.2857%,
+    var(--vibrant-2) 14.2857% 28.5714%,
+    var(--vibrant-3) 28.5714% 42.8571%,
+    var(--vibrant-4) 42.8571% 57.1428%,
+    var(--vibrant-5) 57.1428% 71.4285%,
+    var(--vibrant-6) 71.4285% 85.7142%,
+    var(--vibrant-7) 85.7142% 100%
+  );
+  --dusk-bands: linear-gradient(
+    180deg,
+    var(--dusk-1) 0 14.2857%,
+    var(--dusk-2) 14.2857% 28.5714%,
+    var(--dusk-3) 28.5714% 42.8571%,
+    var(--dusk-4) 42.8571% 57.1428%,
+    var(--dusk-5) 57.1428% 71.4285%,
+    var(--dusk-6) 71.4285% 85.7142%,
+    var(--dusk-7) 85.7142% 100%
+  );
+  --redsun-bands: linear-gradient(
+    180deg,
+    var(--redsun-1) 0 14.2857%,
+    var(--redsun-2) 14.2857% 28.5714%,
+    var(--redsun-3) 28.5714% 42.8571%,
+    var(--redsun-4) 42.8571% 57.1428%,
+    var(--redsun-5) 57.1428% 71.4285%,
+    var(--redsun-6) 71.4285% 85.7142%,
+    var(--redsun-7) 85.7142% 100%
+  );
+
+  /* and the same four ramps lying on their side (90deg), for horizontal
+     rules and border-images — the twin of --bands-h above. */
+  --dawn-bands-h: linear-gradient(
+    90deg,
+    var(--dawn-1) 0 14.2857%,
+    var(--dawn-2) 14.2857% 28.5714%,
+    var(--dawn-3) 28.5714% 42.8571%,
+    var(--dawn-4) 42.8571% 57.1428%,
+    var(--dawn-5) 57.1428% 71.4285%,
+    var(--dawn-6) 71.4285% 85.7142%,
+    var(--dawn-7) 85.7142% 100%
+  );
+  --vibrant-bands-h: linear-gradient(
+    90deg,
+    var(--vibrant-1) 0 14.2857%,
+    var(--vibrant-2) 14.2857% 28.5714%,
+    var(--vibrant-3) 28.5714% 42.8571%,
+    var(--vibrant-4) 42.8571% 57.1428%,
+    var(--vibrant-5) 57.1428% 71.4285%,
+    var(--vibrant-6) 71.4285% 85.7142%,
+    var(--vibrant-7) 85.7142% 100%
+  );
+  --dusk-bands-h: linear-gradient(
+    90deg,
+    var(--dusk-1) 0 14.2857%,
+    var(--dusk-2) 14.2857% 28.5714%,
+    var(--dusk-3) 28.5714% 42.8571%,
+    var(--dusk-4) 42.8571% 57.1428%,
+    var(--dusk-5) 57.1428% 71.4285%,
+    var(--dusk-6) 71.4285% 85.7142%,
+    var(--dusk-7) 85.7142% 100%
+  );
+  --redsun-bands-h: linear-gradient(
+    90deg,
+    var(--redsun-1) 0 14.2857%,
+    var(--redsun-2) 14.2857% 28.5714%,
+    var(--redsun-3) 28.5714% 42.8571%,
+    var(--redsun-4) 42.8571% 57.1428%,
+    var(--redsun-5) 57.1428% 71.4285%,
+    var(--redsun-6) 71.4285% 85.7142%,
+    var(--redsun-7) 85.7142% 100%
   );
 }
 
@@ -270,6 +396,23 @@ h4 {
 .bandRule.rev {
   background: var(--bands-rev);
 }
+/* colour modifiers — drop one of these onto ANY bandRule, anywhere on the
+   site, to run it in one of the site's other palettes instead of golden
+   hour. Part of the "wider, more experimental" colour pass — see
+   components.css → "one arrangement per page" for where each ramp already
+   lives, and pages/work.js for an example (the two shelf dividers). */
+.bandRule.dawn {
+  background: var(--dawn-bands);
+}
+.bandRule.vibrant {
+  background: var(--vibrant-bands);
+}
+.bandRule.dusk {
+  background: var(--dusk-bands);
+}
+.bandRule.redsun {
+  background: var(--redsun-bands);
+}
 
 /* ---- the primary call to action ------------------------------------------
    A pill, filled with the band ramp rather than merely outlined by it — the
@@ -308,12 +451,6 @@ h4 {
 .cta:active {
   transform: translateY(0);
 }
-.cta .arrow {
-  transition: transform 460ms var(--ease-out);
-}
-.cta:hover .arrow {
-  transform: translateX(4px);
-}
 /* On a photograph the pill needs a hairline of paper around it, or its light
    end dissolves into a bright patch of the picture — a ring, not a shadow. */
 .cta.onDark {
@@ -322,6 +459,91 @@ h4 {
 .cta.onDark:hover,
 .cta.onDark:focus-visible {
   box-shadow: 0 0 0 1px rgba(247, 241, 231, 0.75);
+}
+
+/* ---- the booking CTAs — a link, not a pill ------------------------------
+   Same type as .cta, but the room ask ("book a session") doesn't need a
+   button drawn around it — a line is enough. A hairline rule sits under it
+   at rest; on hover that rule is replaced by the band ramp, scaling in from
+   the left the way the pill's own fill sweeps, so it still reads as the
+   same fixture in a lighter weight. */
+.ctaLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--rule-ink-strong);
+  position: relative;
+  cursor: pointer;
+}
+.ctaLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--bands-h);
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 460ms var(--ease-out), background-position 760ms var(--ease-out);
+}
+.ctaLink:hover::after,
+.ctaLink:focus-visible::after {
+  transform: scaleX(1);
+  background-position: 100% 0;
+}
+.ctaLink:hover,
+.ctaLink:focus-visible {
+  border-bottom-color: transparent;
+}
+/* on the hero photo: cream ink, cream hairline */
+.ctaLink.onDark {
+  color: var(--on-dark);
+  border-bottom-color: rgba(247, 241, 231, 0.5);
+}
+
+/* =========================================================================
+   the cursor glow
+   -------------------------------------------------------------------------
+   A warm point of light that drifts with the pointer, site-wide — the
+   in-motion counterpart to the static shimmer already on the nav links
+   (below). Kept deliberately quiet: soft-light blend rather than screen,
+   ember tones rather than a bright white-cream, and a size that reads as
+   warmth in the air rather than a spotlight. CursorGlow.js never attaches
+   its listener for reduced motion or a touch device, so this rule only ever
+   matters on a pointer that can actually hover.
+   ========================================================================= */
+.cursorGlow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 300px;
+  margin: -150px 0 0 -150px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 90; /* above page content, below the nav's pill (100) */
+  background: radial-gradient(
+    circle,
+    rgba(255, 186, 122, 0.46),
+    rgba(255, 122, 53, 0.24) 45%,
+    transparent 72%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out);
+  will-change: transform;
+}
+.cursorGlow.on {
+  opacity: 1;
 }
 
 /* =========================================================================
@@ -450,9 +672,11 @@ h4 {
   padding: 0;
 }
 
-/* The pill sits BEHIND the label (z-index: -1 on .bands, below), so the
-   label itself can just be centred text — no padding held open on one edge
-   to clear an underline, which is what threw it off-centre before. */
+/* No pill any more — the label itself glows. --glow is set per link below
+   (data-field, the same values components.css uses for that page's own
+   field) so the colour range still lives in the nav, just as a warm light
+   around the letters rather than a block behind them. Work carries no
+   data-field and glows ember, the site's base colour. */
 .navLink {
   position: relative;
   z-index: 0;
@@ -466,64 +690,46 @@ h4 {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--on-dark-dim);
-  transition: color 300ms var(--ease-out);
+  --glow: var(--ember);
+  text-shadow: 0 0 0 transparent;
+  transition: color 300ms var(--ease-out), text-shadow 420ms var(--ease-out);
 }
 .nav.landed .navLink {
   color: var(--ink-dim);
 }
-/* Ink, not cream, on hover/current in EITHER nav state: the block behind it
-   is always the warm end of the ramp, and ink is what reads on that. */
+.navLink[data-field="studio"] {
+  --glow: var(--vibrant-1);
+}
+.navLink[data-field="sessions"] {
+  --glow: var(--redsun-1);
+}
+.navLink[data-field="contact"] {
+  --glow: var(--dawn-5);
+}
+.navLink[data-field="store"] {
+  --glow: var(--vibrant-1);
+}
+
+/* full brightness — cream over the hero, ink once landed — same as before;
+   the glow is the new part, breathing rather than snapping straight on. */
 .navLink:hover,
 .navLink:focus-visible,
 .navLink.current {
+  color: var(--on-dark);
+  animation: navGlow 2.2s ease-in-out infinite;
+}
+.nav.landed .navLink:hover,
+.nav.landed .navLink:focus-visible,
+.nav.landed .navLink.current {
   color: var(--ink);
 }
-
-/* each link's own piece of the ramp — a filled block, not a line under it */
-.navLink .bands {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  border-radius: inherit;
-  background: var(--bands-h);
-  background-size: 200% 100%;
-  background-position: 0% 0;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 300ms var(--ease-out), transform 380ms var(--ease-out),
-    background-position 700ms var(--ease-out);
-}
-.navLink.current .bands {
-  opacity: 1;
-  transform: scale(1);
-}
-.navLink:hover .bands,
-.navLink:focus-visible .bands {
-  opacity: 1;
-  transform: scale(1);
-  background-position: 100% 0;
-}
-/* the shimmer: a soft light travelling left→right across the block */
-.navLink .bands::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.75) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: translateX(-120%);
-}
-.navLink:hover .bands::after,
-.navLink:focus-visible .bands::after {
-  animation: shimmer 900ms var(--ease-out);
-}
-@keyframes shimmer {
-  to {
-    transform: translateX(120%);
+@keyframes navGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 6px var(--glow), 0 0 14px transparent;
+  }
+  50% {
+    text-shadow: 0 0 10px var(--glow), 0 0 22px var(--glow);
   }
 }
 
@@ -630,8 +836,8 @@ h4 {
     border-radius: 14px;
     color: var(--ink-dim);
   }
-  /* no hover on a phone, so the block only ever shows for the current page —
-     the base rule above already does that (.navLink.current .bands) */
+  /* no hover on a phone, so the glow only ever shows for the current page —
+     the base rule above already does that (.navLink.current) */
 }
 
 /* ---- the basket bubble --------------------------------------------------
@@ -733,6 +939,13 @@ h4 {
    the small print sit compact on the left, dwarfed by one huge gradiented
    ring-figure filling the right column.
    ========================================================================= */
+/* Layout.js's flushFooter drops the gap above entirely — for a page whose
+   own content is a full-bleed photo running right up to this edge, the
+   gap reads as a stray band of cream shoved between the picture and the
+   footer rather than as breathing room. */
+.mainFlush + .footer {
+  margin-top: 0;
+}
 .footer {
   position: relative;
   overflow: hidden;
@@ -767,11 +980,22 @@ h4 {
   aspect-ratio: 1;
   transform: translate(50%, 50%);
   pointer-events: none;
+  animation: footerRingsDrift 34s ease-in-out infinite alternate;
 }
 .footerRings {
   width: 100%;
   height: 100%;
   display: block;
+}
+/* a slow wheel, not a spin — the same "notice it only if you stop and look"
+   pace as the page field's own drift (components.css → washDrift/edgeBreathe) */
+@keyframes footerRingsDrift {
+  from {
+    transform: translate(50%, 50%) rotate(-2.5deg) scale(1);
+  }
+  to {
+    transform: translate(50%, 50%) rotate(2.5deg) scale(1.04);
+  }
 }
 
 .footerBase {

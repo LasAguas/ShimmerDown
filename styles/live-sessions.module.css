@@ -1,27 +1,19 @@
 /* /live-sessions — the argument, then the films.
-   The video facades themselves are in styles/components.css. */
+   The video facades themselves are in styles/components.css.
 
+   This page runs dark (components.css → .field[data-field="sessions"] is
+   its own background now, not the page's cream) — .page itself stays
+   transparent so that shows through, and everything below recolours for it.
+   The section head and .label are shared global classes, reached with
+   :global() the same way work.module.css already does for .bandRule. */
 .page {
   padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
 }
-
-/* The opening line stays a half-width column — a pull quote, not a running
-   paragraph — and the argument that follows it stretches the full page
-   width. min(44ch, 100%) rather than a media query: it degrades to the
-   viewport on its own once 44ch stops fitting, no breakpoint needed. */
-.about {
-  margin-bottom: clamp(2.5rem, 6vw, 4rem);
-  max-width: 88ch;
+.page :global(.sectionHead h2) {
+  color: var(--on-dark);
 }
-.aboutLede {
-  max-width: min(44ch, 100%);
-  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
-}
-.aboutBody p {
-  margin-bottom: 1.1rem;
-}
-.aboutBody p:last-child {
-  margin-bottom: 0;
+.page :global(.label) {
+  color: var(--on-dark-dim);
 }
 
 .films {
@@ -46,10 +38,11 @@
   font-size: clamp(1.2rem, 2.6vw, 1.9rem);
   text-transform: uppercase;
   margin-top: 0.45rem;
+  color: var(--on-dark);
 }
 .filmNote {
   margin-top: 0.7rem;
-  color: var(--ink-dim);
+  color: var(--on-dark-dim);
   font-size: 0.95em;
 }
 
@@ -71,9 +64,6 @@
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3.6vw, 2.4rem);
   text-transform: uppercase;
-  margin-bottom: 0.85rem;
-}
-.bookBody {
-  color: var(--ink-dim);
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.4rem;
+  color: var(--on-dark);
 }

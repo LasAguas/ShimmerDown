@@ -25,8 +25,6 @@ const META = {
 
 const INTRO = {
   heading: "The Work",
-  lede:
-    "A great recording is the first step towards a great mix. Here you can find records we mixed - sent to us ready, sent back sounding perfect — and records we tracked from scratch.",
 };
 
 const PLACEHOLDER_AUDIO = "/audio/placeholder-track.wav";
@@ -52,20 +50,22 @@ const SHELVES = [
     key: "mixing",
     label: "Mixing",
     records: MIXING,
+    // vibrant sunset — colour landing on a record that's already finished
+    ruleColour: "vibrant",
   },
   {
     key: "tracking",
     label: "Tracking",
-    blurb: "Cut in the live room, everyone in at once.",
+    //blurb: "Cut in the live room, everyone in at once.",
     records: TRACKING,
+    // deep dusk — echoes the studio page, where this side of the work happens
+    ruleColour: "dusk",
   },
 ];
 
 const OUTRO = {
-  heading: "A bigger project?",
-  body:
-    "Mostly we spend time on audio-only projects but, for the modern audio-visual era, we've brought live sessions into our routine.",
-  cta: "Watch the live sessions",
+  heading: "Live Sessions",
+  //cta: "Watch the live sessions",
 };
 
 function Sleeve({ record }) {
@@ -96,7 +96,6 @@ export default function Work() {
           <div className="sectionHead">
             <h2>{INTRO.heading}</h2>
           </div>
-          <p className={`lede ${s.lede}`}>{INTRO.lede}</p>
 
           {SHELVES.map((shelf) => (
             <section className={s.shelf} key={shelf.key} aria-labelledby={`shelf-${shelf.key}`}>
@@ -106,7 +105,7 @@ export default function Work() {
                 </h3>
                 {shelf.blurb && <p className={s.shelfBlurb}>{shelf.blurb}</p>}
               </div>
-              <hr className="bandRule" />
+              <hr className={`bandRule ${shelf.ruleColour}`} />
               <Carousel label={`${shelf.label} records`}>
                 {shelf.records.map((record) => (
                   <Sleeve key={`${shelf.key}-${record.title}`} record={record} />
@@ -116,14 +115,13 @@ export default function Work() {
           ))}
 
           <section className={s.outro}>
-            <h2 className={s.outroHead}>{OUTRO.heading}</h2>
-            <p className={s.outroBody}>{OUTRO.body}</p>
-            <Link href="/live-sessions" className="cta">
-              {OUTRO.cta}
+            <h2 className={s.outroHead}>
+            <Link href="/live-sessions">
+              {OUTRO.heading}
               <span className="arrow" aria-hidden="true">
                 →
               </span>
-            </Link>
+            </Link></h2>
           </section>
         </div>
       </div>

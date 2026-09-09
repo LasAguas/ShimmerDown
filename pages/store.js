@@ -20,8 +20,6 @@ const META = {
 
 const INTRO = {
   heading: "Store",
-  lede:
-    "Records, prints and shirts — ours and the artists'. Everything is made in short runs and posted from Berlin.",
 };
 
 export default function Store() {
@@ -32,7 +30,6 @@ export default function Store() {
           <div className="sectionHead">
             <h2>{INTRO.heading}</h2>
           </div>
-          <p className={`lede ${s.lede}`}>{INTRO.lede}</p>
 
           <Storefront />
         </div>

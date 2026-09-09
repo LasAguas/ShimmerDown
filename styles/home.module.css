@@ -1,5 +1,8 @@
 /* / — home. The hero's own styles are in globals.css, since the component is
-   built to be reused; everything below the fold is here. */
+   built to be reused; everything below the fold is here.
+
+   .lede is unused by the real home page now (the sessions intro moved to the
+   FAQ) but stays for pages/preview-logo.js, which still renders one. */
 
 .sessions {
   padding-block: clamp(3.5rem, 9vw, 7rem) 0;
@@ -28,6 +31,19 @@
      the card as a whole */
   border-top: 4px solid transparent;
   border-image: var(--bands-h) 1;
+}
+/* each film its own palette rather than three of the same golden strip —
+   the home page's own piece of the "wider, more experimental" colour pass.
+   :nth-child(3n+…) rather than 1/2/3 so a fourth film added later keeps
+   cycling through the same three instead of falling back to plain gold. */
+.film:nth-child(3n + 1) .filmMeta {
+  border-image: var(--dawn-bands-h) 1;
+}
+.film:nth-child(3n + 2) .filmMeta {
+  border-image: var(--vibrant-bands-h) 1;
+}
+.film:nth-child(3n + 3) .filmMeta {
+  border-image: var(--dusk-bands-h) 1;
 }
 
 .filmTitle {

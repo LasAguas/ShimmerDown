@@ -4,8 +4,3 @@
 .page {
   padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
 }
-
-.lede {
-  max-width: 52ch;
-  margin-bottom: clamp(2rem, 5vw, 3rem);
-}

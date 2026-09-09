@@ -6,6 +6,11 @@
 // sits with the component rather than being repeated in each one.
 // ⚠️ Everything below is PLACEHOLDER until the client confirms — see TODO.md
 // items 5 and 6.
+//
+// `ramp` lets the ring-figure pick up whatever palette blend the current
+// page is using (Layout.js passes it, keyed off the same PageField.RING_RAMPS
+// map the page's own field uses) — home, Work and the legal pages never pass
+// one, so their footer stays golden hour, matching their own plain field.
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -19,7 +24,7 @@ const SOCIAL = [
   { label: "YouTube", href: "https://www.youtube.com/@shimmerdownstudios", platform: "youtube" },
 ];
 
-export default function SiteFooter() {
+export default function SiteFooter({ ramp }) {
   // The ring-figure's radius is pinned to the footer's own height (see
   // .footerRingsWrap in globals.css), which CSS can't express against an
   // auto-height parent — so it's measured and written as a custom property.
@@ -75,7 +80,7 @@ export default function SiteFooter() {
           </div>
 
           <div className="footerRingsWrap">
-            <SunRings className="footerRings" />
+            <SunRings className="footerRings" ramp={ramp} />
           </div>
         </div>
       </div>

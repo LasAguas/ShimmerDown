@@ -6,11 +6,6 @@
   padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
 }
 
-.lede {
-  max-width: 52ch;
-  margin-bottom: clamp(2.5rem, 6vw, 4rem);
-}
-
 .shelf {
   margin-bottom: clamp(3rem, 7vw, 5rem);
 }
@@ -86,9 +81,5 @@
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3.6vw, 2.4rem);
   text-transform: uppercase;
-  margin-bottom: 0.85rem;
-}
-.outroBody {
-  color: var(--ink-dim);
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.4rem;
 }

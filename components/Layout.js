@@ -4,9 +4,10 @@
 // `overHero` tells the nav there's a full-bleed photo under it to start with,
 // so it opens transparent and lands on paper once you scroll past.
 import Head from "next/head";
-import PageField from "./PageField";
+import PageField, { RING_RAMPS } from "./PageField";
 import SiteNav from "./SiteNav";
 import SiteFooter from "./SiteFooter";
+import CursorGlow from "./CursorGlow";
 
 // Change this once the domain is live — it builds the canonical and og:url
 // tags on every page. See TODO.md item 7.
@@ -23,6 +24,12 @@ export default function Layout({
   // "one arrangement per page". Only used when there's no hero: a page with a
   // full-screen photograph doesn't need a field behind it.
   field = "work",
+  // The footer's own margin-top (globals.css → .footer) gives ordinary page
+  // content breathing room before it — right for a page of text, wrong for
+  // a page whose content IS a full-bleed photo ending right where the
+  // footer starts. Set this when that's the case (see pages/contact.js) and
+  // the gap collapses to zero.
+  flushFooter = false,
   ogImage = "/images/gallery/studio-control-wide.jpg",
 }) {
   // The home page's <title> is just the studio name; everywhere else is
@@ -46,9 +53,12 @@ export default function Layout({
       </Head>
 
       {!overHero && <PageField variant={field} />}
+      <CursorGlow />
       <SiteNav overHero={overHero} />
-      <main id="main">{children}</main>
-      <SiteFooter />
+      <main id="main" className={flushFooter ? "mainFlush" : undefined}>
+        {children}
+      </main>
+      <SiteFooter ramp={RING_RAMPS[field]} />
     </>
   );
 }

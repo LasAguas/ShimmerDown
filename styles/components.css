@@ -257,11 +257,20 @@
   color: var(--on-dark-dim);
   font-size: clamp(1rem, 1.5vw, 1.2rem);
 }
-.heroBody .cta {
+/* .cta covers preview-logo.js's own hero button; the real home page's
+   switched to the link style (.ctaLink) a couple of rounds back and this
+   rule was never updated to follow — it was sitting flush against the
+   title with no gap until now. */
+.heroBody .cta,
+.heroBody .ctaLink {
   margin-top: clamp(1.6rem, 3.5vw, 2.4rem);
 }
 
-/* the band seam along the bottom of the photo */
+/* the band seam along the bottom of the photo — blooms taller when the
+   cursor is actually over the strip itself, the reference file's own "frame
+   gradient... blooms inward as the cursor nears" idea (its ::before, growing
+   height anchored to the strip's own edge), scoped to a plain :hover on the
+   strip rather than the reference's cursor-distance JS. */
 .heroBands {
   position: absolute;
   left: 0;
@@ -270,6 +279,10 @@
   height: clamp(14px, 2.2vw, 24px);
   background: var(--bands-rev);
   z-index: 2;
+  transition: height 420ms var(--ease-out);
+}
+.heroBands:hover {
+  height: clamp(32px, 6vw, 64px);
 }
 
 /* =========================================================================
@@ -886,6 +899,12 @@
 
 /* =========================================================================
    the page field — the backdrop under every page that hasn't got a hero
+   -------------------------------------------------------------------------
+   Used to also carry a soft radial-gradient "wash" behind the edge strip and
+   the rings — pulled out. Two colours blurring into each other like that is
+   exactly the glowing-blob-behind-everything look every AI/SaaS landing page
+   already has; the hard-banded strip and the hard-edged rings below are the
+   site's own thing and don't need a gradient doing the same job worse.
    ========================================================================= */
 .field {
   position: fixed;
@@ -893,35 +912,6 @@
   z-index: -1; /* behind everything, including the footer's own ground */
   pointer-events: none;
   overflow: hidden;
-}
-
-/* ---- the warm wash ---------------------------------------------------- */
-/* Two soft suns, one warm and one ember, drifting against each other. Kept
-   under 0.2 alpha: past that the cream turns orange and every photograph on
-   the page starts fighting the ground it sits on. */
-.fieldWash {
-  position: absolute;
-  inset: -20%;
-  background:
-    radial-gradient(
-      44% 38% at var(--wash-x, 22%) var(--wash-y, 26%),
-      rgba(255, 138, 66, 0.17),
-      rgba(255, 138, 66, 0) 68%
-    ),
-    radial-gradient(
-      52% 44% at var(--wash-x2, 82%) var(--wash-y2, 72%),
-      rgba(221, 168, 96, 0.19),
-      rgba(221, 168, 96, 0) 66%
-    );
-  animation: washDrift 38s ease-in-out infinite alternate;
-}
-@keyframes washDrift {
-  from {
-    transform: translate3d(-1.5%, -1%, 0) scale(1);
-  }
-  to {
-    transform: translate3d(2%, 1.5%, 0) scale(1.06);
-  }
 }
 
 /* ---- the strip of bands down the edge --------------------------------- */
@@ -932,7 +922,10 @@
   top: -10%;
   bottom: -10%;
   width: clamp(28px, 3.6vw, 54px);
-  background: var(--bands);
+  /* --field-bands lets a page swap in another ramp (see below); unset on
+     the store on purpose, so this stays golden hour there like the rest of
+     its striped fixtures (the shopCart border, the artist-rail spines). */
+  background: var(--field-bands, var(--bands));
   opacity: 0.5;
   left: auto;
   right: calc(-1 * clamp(10px, 1.4vw, 20px));
@@ -968,61 +961,63 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.22'/%3E%3C/svg%3E");
 }
 
-/* ---- one arrangement per page ----------------------------------------- */
+/* ---- one arrangement per page -----------------------------------------
+   Just the ring position and, on four of the six, the edge strip's ramp —
+   see globals.css → --dawn-*/--vibrant-*/--dusk-*/--redsun-* and
+   PageField.js's RING_RAMPS for the rings themselves. Studio and the Store
+   share dusk + vibrant sunset (swapped which is primary); Contact and Live
+   Sessions share early dawn + deep red sunset. Work and the legal pages
+   stay plain golden hour. */
 .field[data-field="work"] {
-  --wash-x: 16%;
-  --wash-y: 22%;
-  --wash-x2: 88%;
-  --wash-y2: 78%;
   --rings-x: -18%;
   --rings-y: 34%;
 }
+/* Deep Dusk — the room after hours. */
 .field[data-field="studio"] {
-  --wash-x: 78%;
-  --wash-y: 18%;
-  --wash-x2: 18%;
-  --wash-y2: 74%;
   --rings-x: -18%;
   --rings-y: -26%;
+  --field-bands: var(--dusk-bands);
 }
 .field[data-field="sessions"] .fieldRings {
   display: none;
 }
+/* Deep Red Sunset — the films: lit, filmed, and bold about it. The only
+   field that's also its own dark BASE rather than sitting on the page's
+   cream — .page in live-sessions.module.css is left transparent on purpose
+   so this shows through behind the (now light-on-dark) text and film
+   cards, the same way the field always shows through every other page's
+   plain body. */
 .field[data-field="sessions"] {
-  --wash-x: 50%;
-  --wash-y: 12%;
-  --wash-x2: 24%;
-  --wash-y2: 86%;
+  background: var(--ink);
+  --field-bands: var(--redsun-bands);
 }
+/* multiply (the grain's default — see .fieldGrain) only ever darkens, which
+   crushes near-black on a dark base; overlay keeps the texture visible
+   without losing the page underneath it. */
+.field[data-field="sessions"] .fieldGrain {
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+/* Vibrant Sunset, on the rings only — --field-bands is deliberately NOT set
+   here, so the edge strip stays golden hour, matching the store's other
+   striped fixtures the client asked to leave alone (the shopCart border,
+   the artist-rail spines). */
 .field[data-field="store"] {
-  --wash-x: 12%;
-  --wash-y: 62%;
-  --wash-x2: 74%;
-  --wash-y2: 14%;
   --rings-x: -26%;
   --rings-y: 8%;
 }
+/* Early Dawn — first light, before the first reply. */
 .field[data-field="contact"] {
-  --wash-x: 68%;
-  --wash-y: 30%;
-  --wash-x2: 14%;
-  --wash-y2: 82%;
-  /* the contact page draws its own rings, large and on purpose */
+  /* the contact page draws its own rings, large and on purpose — though as
+     of the photo-background redesign it no longer renders this field at
+     all; kept in case that page comes back to a plain layout. */
   --rings-x: -60%;
   --rings-y: 70%;
+  --field-bands: var(--dawn-bands);
 }
-/* A legal page is not the place for a light show. */
-.field[data-field="legal"] .fieldWash {
-  opacity: 0.45;
-}
+/* A legal page is not the place for a light show — stays golden hour too. */
 .field[data-field="legal"] .fieldRings {
   display: none;
-}
-.field[data-field="legal"] {
-  --wash-x: 82%;
-  --wash-y: 16%;
-  --wash-x2: 10%;
-  --wash-y2: 88%;
 }
 
 @media (max-width: 700px) {

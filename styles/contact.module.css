@@ -1,27 +1,69 @@
-/* /contact — the email set as large as it will go, the practical detail under
-   it, and the sun rings wheeling behind the lot. */
+/* /contact — a full-bleed photo, the email as large as it'll go up top, and
+   the way to the FAQ at the bottom. Nothing else — see pages/contact.js for
+   why. Structured like Hero.js's own markup (media, scrim) without pulling
+   the component in, since there's no slideshow or video here — just the one
+   photo — but with two content blocks instead of one, pinned top and bottom
+   of the same flex column rather than stacked together in one place. */
 
-.page {
+.hero {
   position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
-  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem))
-    clamp(2rem, 6vw, 4rem);
+  background: var(--ink);
 }
-
-.rings {
+.heroMedia {
   position: absolute;
-  left: 58%;
-  top: -18%;
-  width: min(680px, 74vw);
-  aspect-ratio: 1;
-  opacity: 0.4;
-  pointer-events: none;
+  inset: 0;
+}
+.scrim {
+  position: absolute;
+  inset: 0;
+  /* dark at both ends — the nav and the email up top, the FAQ line and the
+     band seam at the bottom — lighter through the middle so the photo still
+     reads as a photo */
+  background: linear-gradient(
+    180deg,
+    rgba(28, 23, 20, 0.5) 0%,
+    rgba(28, 23, 20, 0.14) 28%,
+    rgba(28, 23, 20, 0.1) 65%,
+    rgba(28, 23, 20, 0.55) 100%
+  );
 }
 
-.lede {
-  max-width: 46ch;
-  margin-bottom: clamp(1.5rem, 3.5vw, 2.4rem);
+.body {
   position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: calc(var(--nav-block) + clamp(2rem, 6vw, 4rem));
+}
+
+.foot {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+/* the band seam along the bottom of the photo — the same fixture as the
+   home page hero's own (components.css → .heroBands), tuned to Early Dawn
+   rather than golden hour to match this page's own palette (see the nav's
+   glow and the footer's ring blend, both already Early Dawn here). Blooms
+   taller on hover of the strip itself, same as the home page's version. */
+.bands {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: clamp(14px, 2.2vw, 24px);
+  background: var(--dawn-bands);
+  transition: height 420ms var(--ease-out);
+}
+.bands:hover {
+  height: clamp(32px, 6vw, 64px);
 }
 
 /* Deliberately enormous — it is the single thing this page is for.
@@ -40,7 +82,8 @@
   text-transform: uppercase;
   line-height: 1;
   letter-spacing: -0.005em;
-  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  color: var(--on-dark);
+  text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35);
   /* a plain underline, invisible at rest — see globals.css → .footerMail,
      the same treatment */
   text-decoration: underline;
@@ -57,93 +100,18 @@
   text-decoration-color: currentColor;
 }
 
-.cols {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: clamp(2.5rem, 6vw, 5rem);
-  align-items: start;
-}
-
-.helpfulHead {
-  color: var(--ember);
-  margin-bottom: 1.1rem;
-}
-.helpfulList {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: 0.85rem;
-  max-width: 40ch;
-}
-.helpfulList li {
-  position: relative;
-  padding-left: 1.5rem;
-  color: var(--ink-dim);
-  font-size: 0.97em;
-}
-/* a single band as the bullet */
-.helpfulList li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.62em;
-  width: 0.8rem;
-  height: 3px;
-  background: var(--bands-h);
-}
-
-.details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3.5vw, 2.5rem);
-}
-.detail {
-  padding-top: 0.9rem;
-  border-top: var(--band-h) solid transparent;
-  border-image: var(--bands-h) 1;
-}
-.details dt {
-  font-family: var(--font-display);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ember);
-  margin-bottom: 0.6rem;
-}
-.details dd {
-  margin: 0;
-  color: var(--ink-dim);
-  font-size: 0.95em;
-  line-height: 1.5;
-}
-
-@media (max-width: 820px) {
-  .cols {
-    grid-template-columns: 1fr;
-    gap: 2.75rem;
-  }
-  .rings {
-    left: 30%;
-    opacity: 0.28;
-  }
-}
-
-
 .faqLink {
-  position: relative;
-  margin-top: clamp(2.5rem, 6vw, 4rem);
-  font-size: 0.92em;
-  color: var(--ink-dim);
+  font-size: 0.95em;
+  color: var(--on-dark-dim);
 }
 .faqLink a {
-  color: var(--ink);
+  color: var(--on-dark);
   text-decoration: underline;
-  text-decoration-color: var(--rule-ink-strong);
+  text-decoration-color: rgba(247, 241, 231, 0.45);
   text-underline-offset: 0.14em;
   transition: text-decoration-color 260ms var(--ease-out);
 }
 .faqLink a:hover,
 .faqLink a:focus-visible {
-  text-decoration-color: var(--ember);
+  text-decoration-color: var(--sun-6);
 }

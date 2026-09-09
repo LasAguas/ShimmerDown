@@ -24,14 +24,15 @@ const META = {
 
 const INTRO = {
   heading: "The Studio",
-  lede:
-    "Shimmer Down Studios is a single room, bringing producer and band into a shared space. Treated on all sides and full of beautiful instruments and amps to get the sound you need.",
 };
 
 const SHOWREEL = {
   src: "https://1skpzpfelionthck.public.blob.vercel-storage.com/Shimmer%20Down%20Showreel%20Compressed.mp4",
   title: "Shimmer Down Studios — Showreel",
-  poster: "/images/gallery/studio-control-vinyls-wide.jpg",
+  // a different shot from the one already carrying this page's gallery grid
+  // and OG image (studio-control-vinyls-wide), so the showreel gets its own
+  // thumbnail rather than repeating one already used twice on this page.
+  poster: "/images/gallery/studio-control-mid.jpg",
   plate: "Showreel coming soon",
 };
 
@@ -76,7 +77,6 @@ const SPECS = [
 
 const CTA = {
   heading: "Come and see it",
-  body: "Studio visits by appointment — make sure it's the right place to bring your album to life.",
   label: "Arrange a visit",
 };
 
@@ -88,7 +88,6 @@ export default function Studio() {
           <div className="sectionHead">
             <h2>{INTRO.heading}</h2>
           </div>
-          <p className={`lede ${s.lede}`}>{INTRO.lede}</p>
 
           {/* the showreel, or the plate that stands in for it */}
           <div className={s.reel}>
@@ -142,14 +141,13 @@ export default function Studio() {
           </dl>
 
           <section className={s.visit}>
-            <h2 className={s.visitHead}>{CTA.heading}</h2>
-            <p className={s.visitBody}>{CTA.body}</p>
-            <Link href="/contact" className="cta">
-              {CTA.label}
+            <h2 className={s.visitHead}>
+            <Link href="/contact">
+              {CTA.heading}
               <span className="arrow" aria-hidden="true">
                 →
               </span>
-            </Link>
+            </Link></h2>
           </section>
         </div>
       </div>
