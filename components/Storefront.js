@@ -1,8 +1,12 @@
-// The shop. Two or more artists get a rail: a persistent strip down the
-// right edge of the viewport, one colour per artist, that grows leftward
-// over the page when you click one and collapses back when you click it
-// again. With nothing open, the grid shows every artist's goods together.
-// One artist means there's nothing to filter, so the rail doesn't render at
+// The shop. Two or more categories (tags set in the dashboard — see
+// lib/categories.js) get a rail: a persistent strip down the right edge of
+// the viewport, one colour per category, that grows leftward over the page
+// when you click one and collapses back when you click it again. With
+// nothing open, the grid shows every product together. Categories aren't a
+// partition — a product can carry several tags, or none — so the flat grid
+// is the catalogue's own product list, not the categories flattened back
+// out; a product with two tags would otherwise show twice. Fewer than two
+// categories means there's nothing to filter, so the rail doesn't render at
 // all — just the flat grid. On a phone the rail can't be fixed (it would eat
 // too much of a 375px screen), so it tips over into an ordinary stack of
 // rows that open in place.
@@ -17,7 +21,7 @@
 // in the cart context now, since it can be triggered from the nav on any
 // page, not only from here:
 //
-//   on load    GET  /api/store/resolve   → tabs of products + live stock
+//   on load    GET  /api/store/resolve   → products, their categories + live stock
 //   on return  POST /api/store/confirm   → the receipt
 //
 // Prices shown are display only: the dashboard re-prices every line at
@@ -51,14 +55,15 @@ function priceLabel(p) {
 export default function Storefront() {
   const { cart, addLine, clear } = useCart();
   const [status, setStatus] = useState("loading"); // loading | open | closed
-  const [tabs, setTabs] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [availability, setAvailability] = useState({});
-  // null = nothing open, every artist's goods show together
+  // null = nothing open, every product shows together
   const [tab, setTab] = useState(null);
   const [picks, setPicks] = useState({}); // productId → chosen variant name
   const [error, setError] = useState("");
   const [receipt, setReceipt] = useState(null);
-  const hasRail = tabs.length > 1;
+  const hasRail = categories.length > 1;
 
   // ---- the rail stops at the footer --------------------------------------
   // The rail is fixed to the viewport so it can run the full height of the
@@ -131,9 +136,12 @@ export default function Storefront() {
         if (!res.ok) throw new Error("unavailable");
         const data = await res.json();
         if (!live) return;
-        setTabs(data.tabs || []);
+        setProducts(data.products || []);
+        setCategories(data.categories || []);
         setAvailability(data.availability || {});
-        setStatus((data.tabs || []).length ? "open" : "closed");
+        // Categories are optional tags, not a partition — a fully untagged
+        // catalogue is still an open shop, just with nothing to filter by.
+        setStatus((data.products || []).length ? "open" : "closed");
       } catch {
         if (live) setStatus("closed");
       }
@@ -216,8 +224,8 @@ export default function Storefront() {
     addLine({ productId: p.id, variant, qty: 1, name: p.name, price_cents: unit, image: p.images?.[0] });
   };
 
-  // One card. Shared between the flat "everything" grid and each artist's own
-  // panel, so the two views can never drift apart.
+  // One card. Shared between the flat "everything" grid and each category's
+  // own panel, so the two views can never drift apart.
   const renderCard = (p) => {
     const variant = picks[p.id];
     const left = stockLeft(p.id, p.has_variants ? variant : undefined);
@@ -305,23 +313,19 @@ export default function Storefront() {
     );
   }
 
-  const allProducts = tabs.flatMap((t) => t.products);
-
   return (
-    // shopOpen reserves a screen's worth of page height while a panel is
-    // open — see .shop.shopOpen in components.css for why.
-    <div className={`shop${tab ? " shopOpen" : ""}`}>
+    <div className="shop">
       {hasRail && (
         <div
           ref={railRef}
           className="slides"
-          style={{ "--rail-count": tabs.length }}
+          style={{ "--rail-count": categories.length }}
         >
-          {tabs.map((t, i) => {
-            const on = t.key === tab;
+          {categories.map((c, i) => {
+            const on = c.key === tab;
             return (
               <section
-                key={t.key}
+                key={c.key}
                 className={`slide${on ? " open" : ""}`}
                 // sun-1/sun-2 are too pale to read as a spine — they're close
                 // enough to the page's own cream/tan wash that the spine
@@ -334,16 +338,16 @@ export default function Storefront() {
                   type="button"
                   className="slideSpine"
                   aria-expanded={on}
-                  aria-controls={`slide-${t.key}`}
-                  onClick={() => setTab(on ? null : t.key)}
+                  aria-controls={`slide-${c.key}`}
+                  onClick={() => setTab(on ? null : c.key)}
                 >
                   <span className="slideSpineInner">
-                    <span className="slideName">{t.label}</span>
+                    <span className="slideName">{c.label}</span>
                   </span>
                 </button>
 
-                <div className="slidePanel" id={`slide-${t.key}`} role="region" aria-label={t.label}>
-                  <ul className="shopGrid">{t.products.map(renderCard)}</ul>
+                <div className="slidePanel" id={`slide-${c.key}`} role="region" aria-label={c.label}>
+                  <ul className="shopGrid">{c.products.map(renderCard)}</ul>
                 </div>
               </section>
             );
@@ -353,9 +357,9 @@ export default function Storefront() {
 
       <div
         className={`shopBody${hasRail ? " railGutter" : ""}`}
-        style={hasRail ? { "--rail-w": `${tabs.length * SPINE_W}px` } : undefined}
+        style={hasRail ? { "--rail-w": `${categories.length * SPINE_W}px` } : undefined}
       >
-        {!tab && <ul className="shopGrid">{allProducts.map(renderCard)}</ul>}
+        {!tab && <ul className="shopGrid">{products.map(renderCard)}</ul>}
         {error && (
           <p className="shopErr" role="alert">
             {error}

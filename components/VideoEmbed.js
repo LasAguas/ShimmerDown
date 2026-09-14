@@ -24,7 +24,16 @@ export function youTubeId(input) {
   return m ? m[1] : null;
 }
 
-export default function VideoEmbed({ url, src, title, artist, poster, className = "" }) {
+export default function VideoEmbed({
+  url,
+  src,
+  title,
+  artist,
+  poster,
+  badge,
+  hidePlayIcon = false,
+  className = "",
+}) {
   const [playing, setPlaying] = useState(false);
   const id = url ? youTubeId(url) : null;
   if (!src && !id) return null;
@@ -65,15 +74,22 @@ export default function VideoEmbed({ url, src, title, artist, poster, className 
             sizes="(max-width: 760px) 100vw, 33vw"
             unoptimized={!!id}
           />
-          <span className="vidPlay" aria-hidden="true">
-            <svg viewBox="0 0 68 48" width="54" height="38">
-              <path
-                className="vidPlayBg"
-                d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.2 0 34 0 34 0S12.8 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.8 48 34 48 34 48s21.2 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"
-              />
-              <path d="M45 24 27 14v20z" fill="#f7f1e7" />
-            </svg>
-          </span>
+          {!hidePlayIcon && (
+            <span className="vidPlay" aria-hidden="true">
+              <svg viewBox="0 0 68 48" width="54" height="38">
+                <path
+                  className="vidPlayBg"
+                  d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.2 0 34 0 34 0S12.8 0 7.5 1.6a8.6 8.6 0 0 0-6 6.1A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.8 48 34 48 34 48s21.2 0 26.5-1.6a8.6 8.6 0 0 0 6-6.1A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"
+                />
+                <path d="M45 24 27 14v20z" fill="#f7f1e7" />
+              </svg>
+            </span>
+          )}
+          {badge && (
+            <span className="label vidBadge" aria-hidden="true">
+              {badge}
+            </span>
+          )}
           <span className="sr-only">{label}</span>
         </button>
       )}

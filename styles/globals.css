@@ -252,6 +252,31 @@
     var(--redsun-6) 71.4285% 85.7142%,
     var(--redsun-7) 85.7142% 100%
   );
+
+  /* the nav pill's own hover ramp — the contact footer ring-figure's early
+     dawn colours (dawn-1 through dawn-5), five stops rather than the usual
+     seven since that's the exact set requested. Swapped in for --bands-h
+     only on .navFrame:hover, in place of the golden-hour ramp every other
+     band on the site keeps. */
+  --nav-hover-bands: linear-gradient(
+    90deg,
+    var(--dawn-1) 0 20%,
+    var(--dawn-2) 20% 40%,
+    var(--dawn-3) 40% 60%,
+    var(--dawn-4) 60% 80%,
+    var(--dawn-5) 80% 100%
+  );
+  /* the same five stops, vertical and reversed — the twin of --bands-rev
+     above, for .heroBands (the home hero's bottom seam), which sits under a
+     dark photo the same way. */
+  --nav-hover-bands-rev: linear-gradient(
+    180deg,
+    var(--dawn-5) 0 20%,
+    var(--dawn-4) 20% 40%,
+    var(--dawn-3) 40% 60%,
+    var(--dawn-2) 60% 80%,
+    var(--dawn-1) 80% 100%
+  );
 }
 
 /* =========================================================================
@@ -533,8 +558,8 @@ h4 {
   z-index: 90; /* above page content, below the nav's pill (100) */
   background: radial-gradient(
     circle,
-    rgba(255, 186, 122, 0.46),
-    rgba(255, 122, 53, 0.24) 45%,
+    rgba(255, 186, 122, 0.6),
+    rgba(255, 122, 53, 0.31) 45%,
     transparent 72%
   );
   mix-blend-mode: soft-light;
@@ -593,9 +618,14 @@ h4 {
   background-position: 0% 0;
   transition: background-position 900ms var(--ease-out);
 }
-/* the ramp drifts across the frame when the bar is used */
+/* the ramp drifts across the frame when the bar is used — and swaps from
+   golden hour to the purplish --nav-hover-bands ramp at the same moment, so
+   the frame reads as a different, brighter palette on hover rather than
+   just the same orange sliding sideways. */
 .nav:hover .navFrame,
 .nav:focus-within .navFrame {
+  background: var(--nav-hover-bands);
+  background-size: 200% 100%;
   background-position: 100% 0;
 }
 
@@ -672,11 +702,16 @@ h4 {
   padding: 0;
 }
 
-/* No pill any more — the label itself glows. --glow is set per link below
-   (data-field, the same values components.css uses for that page's own
-   field) so the colour range still lives in the nav, just as a warm light
-   around the letters rather than a block behind them. Work carries no
-   data-field and glows ember, the site's base colour. */
+/* No pill any more — the label itself glows. --glow-a/--glow-b are set per
+   link below, pulled from DAWN_REDSUN_CORE (SunRings.js) — the exact blend
+   behind the contact page's own footer ring-figure: early dawn's lavender →
+   mauve → orchid doing most of the work (those are the figure's big outer
+   rings), with a pop of deep-red-sunset coral only at the tiny core. That
+   reads as a purplish palette overall, so that's what the nav borrows,
+   rather than each field's own muted page colour or the full dawn ramp
+   (which drifts into peach — not what's actually behind the footer). Work
+   carries no data-field and gets the same base pair as the ring figure's
+   outermost bands. */
 .navLink {
   position: relative;
   z-index: 0;
@@ -690,7 +725,8 @@ h4 {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--on-dark-dim);
-  --glow: var(--ember);
+  --glow-a: var(--dawn-1);
+  --glow-b: var(--dawn-2);
   text-shadow: 0 0 0 transparent;
   transition: color 300ms var(--ease-out), text-shadow 420ms var(--ease-out);
 }
@@ -698,20 +734,26 @@ h4 {
   color: var(--ink-dim);
 }
 .navLink[data-field="studio"] {
-  --glow: var(--vibrant-1);
+  --glow-a: var(--dawn-1);
+  --glow-b: var(--dawn-3);
 }
 .navLink[data-field="sessions"] {
-  --glow: var(--redsun-1);
+  --glow-a: var(--dawn-2);
+  --glow-b: var(--dawn-4);
 }
 .navLink[data-field="contact"] {
-  --glow: var(--dawn-5);
+  --glow-a: var(--dawn-2);
+  --glow-b: var(--redsun-4);
 }
 .navLink[data-field="store"] {
-  --glow: var(--vibrant-1);
+  --glow-a: var(--dawn-1);
+  --glow-b: var(--dawn-3);
 }
 
 /* full brightness — cream over the hero, ink once landed — same as before;
-   the glow is the new part, breathing rather than snapping straight on. */
+   the glow is the new part, breathing rather than snapping straight on, now
+   swinging between two hues instead of one so it feels like it's cycling
+   through the dawn ramp rather than just pulsing a single colour. */
 .navLink:hover,
 .navLink:focus-visible,
 .navLink.current {
@@ -726,10 +768,10 @@ h4 {
 @keyframes navGlow {
   0%,
   100% {
-    text-shadow: 0 0 6px var(--glow), 0 0 14px transparent;
+    text-shadow: 0 0 8px var(--glow-a), 0 0 16px transparent;
   }
   50% {
-    text-shadow: 0 0 10px var(--glow), 0 0 22px var(--glow);
+    text-shadow: 0 0 14px var(--glow-b), 0 0 32px var(--glow-a);
   }
 }
 

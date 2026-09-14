@@ -1,12 +1,13 @@
 // ---------------------------------------------------------------------------
-// /store — the shop. Tabs per artist, then the goods.
+// /store — the shop. Tabs per category, then the goods.
 //
 // The shop itself is components/Storefront.js; this page is the frame around
 // it and the words on it.
 //
 // Products, prices, photos and stock all live in the DASHBOARD
-// (Admin → Webstore), not here. To file a product under an artist tab, prefix
-// its name there — "SD — Sun Tee", "LBJ — El Fuego Tote". See lib/artists.js.
+// (Admin → Webstore), not here. To file a product under a category tab, tag
+// it there — the product's own tags and its variants' tags both count. See
+// lib/categories.js.
 // ---------------------------------------------------------------------------
 import Layout from "../components/Layout";
 import Storefront from "../components/Storefront";

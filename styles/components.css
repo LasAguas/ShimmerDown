@@ -188,6 +188,14 @@
 .vidFacade:focus-visible .vidPlayBg {
   fill: var(--sun-7);
 }
+.vidBadge {
+  position: absolute;
+  left: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 1;
+  color: var(--on-dark);
+  font-size: clamp(28px, 9vw, 55px);
+}
 
 /* =========================================================================
    the hero
@@ -281,8 +289,24 @@
   z-index: 2;
   transition: height 420ms var(--ease-out);
 }
+/* the colour swap on hover — same purplish ramp as the nav pill's own
+   hover state, but crossfaded in via a stacked pseudo-element rather than
+   swapped outright, since opacity is the one thing a gradient can actually
+   transition smoothly. Fades in over the same span the strip takes to
+   bloom taller, so the two read as one motion. */
+.heroBands::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--nav-hover-bands-rev);
+  opacity: 0;
+  transition: opacity 420ms var(--ease-out);
+}
 .heroBands:hover {
   height: clamp(32px, 6vw, 64px);
+}
+.heroBands:hover::after {
+  opacity: 1;
 }
 
 /* =========================================================================
@@ -633,15 +657,17 @@
     padding-right: calc(var(--rail-w, 0px) + var(--gutter));
   }
 
-  /* Opening a panel takes the flat grid out of the page (Storefront.js only
-     renders it with nothing open), which leaves the document so short that
-     the footer sits a third of the way up the screen. The rail is a full
-     screen tall and stops at the footer, so it would have to hang its own
-     top off the top of the viewport to clear it — cutting the first row of
-     goods in half. Holding a screen's worth of height open underneath keeps
-     the footer below the fold, so the panel gets its whole 100vh on screen
-     and you scroll to the footer rather than starting halfway into it. */
-  .shop.shopOpen {
+  /* The rail is a full screen tall and stops at the footer (see .slides
+     above), which only works if the footer itself never rises above one
+     screen's height. Opening a panel takes the flat grid out of the page
+     (Storefront.js only renders it with nothing open) and a flat grid with
+     few products is short too — either way the document can end up shorter
+     than 100vh, the footer creeps up into view, and the rail has to shrink
+     to stop above it instead of running the full viewport. Reserving a
+     screen's worth of height on .shop itself, regardless of which state
+     it's in, keeps the footer below the fold so the rail always gets its
+     whole 100vh. */
+  .shop {
     min-height: 100vh;
   }
 }
@@ -963,7 +989,7 @@
 
 /* ---- one arrangement per page -----------------------------------------
    Just the ring position and, on four of the six, the edge strip's ramp —
-   see globals.css → --dawn-*/--vibrant-*/--dusk-*/--redsun-* and
+   see globals.css → the --dawn-, --vibrant-, --dusk- and --redsun- vars and
    PageField.js's RING_RAMPS for the rings themselves. Studio and the Store
    share dusk + vibrant sunset (swapped which is primary); Contact and Live
    Sessions share early dawn + deep red sunset. Work and the legal pages

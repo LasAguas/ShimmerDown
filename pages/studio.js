@@ -29,10 +29,7 @@ const INTRO = {
 const SHOWREEL = {
   src: "https://1skpzpfelionthck.public.blob.vercel-storage.com/Shimmer%20Down%20Showreel%20Compressed.mp4",
   title: "Shimmer Down Studios — Showreel",
-  // a different shot from the one already carrying this page's gallery grid
-  // and OG image (studio-control-vinyls-wide), so the showreel gets its own
-  // thumbnail rather than repeating one already used twice on this page.
-  poster: "/images/gallery/studio-control-mid.jpg",
+  poster: "/images/gallery/studio-piano-detail-2.jpg",
   plate: "Showreel coming soon",
 };
 
@@ -76,7 +73,7 @@ const SPECS = [
 ];
 
 const CTA = {
-  heading: "Come and see it",
+  heading: "Get in Touch",
   label: "Arrange a visit",
 };
 
@@ -92,7 +89,13 @@ export default function Studio() {
           {/* the showreel, or the plate that stands in for it */}
           <div className={s.reel}>
             {SHOWREEL.src ? (
-              <VideoEmbed src={SHOWREEL.src} title={SHOWREEL.title} poster={SHOWREEL.poster} />
+              <VideoEmbed
+                src={SHOWREEL.src}
+                title={SHOWREEL.title}
+                poster={SHOWREEL.poster}
+                badge="Showreel"
+                hidePlayIcon
+              />
             ) : (
               <div className={s.reelPlate}>
                 <Image
