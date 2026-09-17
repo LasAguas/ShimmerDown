@@ -55,59 +55,66 @@ export default function Hero({ slides = [], title, tagline, children }) {
   }, [slides.length]);
 
   return (
-    <section className="hero">
-      <div className="heroMedia" aria-hidden="true">
-        {slides.map((slide, n) => (
-          <div key={slide.src} className={`heroSlide${n === i ? " on" : ""}`}>
-            {slide.type === "video" ? (
-              reducedMotion ? (
+    <>
+      <section className="hero">
+        <div className="heroMedia" aria-hidden="true">
+          {slides.map((slide, n) => (
+            <div key={slide.src} className={`heroSlide${n === i ? " on" : ""}`}>
+              {slide.type === "video" ? (
+                reducedMotion ? (
+                  <Image
+                    src={slide.poster}
+                    alt=""
+                    fill
+                    priority={n === 0}
+                    sizes="100vw"
+                    quality={82}
+                    style={{ objectFit: "cover" }}
+                  />
+                ) : (
+                  <video
+                    className="heroVideo"
+                    src={slide.src}
+                    poster={slide.poster}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                )
+              ) : (
                 <Image
-                  src={slide.poster}
+                  src={slide.src}
                   alt=""
                   fill
+                  // The hero is the largest paint on the site; the first slide
+                  // is what LCP is measured against, so it isn't lazy.
                   priority={n === 0}
                   sizes="100vw"
                   quality={82}
                   style={{ objectFit: "cover" }}
                 />
-              ) : (
-                <video
-                  className="heroVideo"
-                  src={slide.src}
-                  poster={slide.poster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                />
-              )
-            ) : (
-              <Image
-                src={slide.src}
-                alt=""
-                fill
-                // The hero is the largest paint on the site; the first slide
-                // is what LCP is measured against, so it isn't lazy.
-                priority={n === 0}
-                sizes="100vw"
-                quality={82}
-                style={{ objectFit: "cover" }}
-              />
-            )}
-          </div>
-        ))}
-        <div className="heroScrim" />
-      </div>
+              )}
+            </div>
+          ))}
+          <div className="heroScrim" />
+        </div>
 
-      <div className="shell heroBody">
-        <h1 className="heroTitle display">{title}</h1>
-        {tagline && <p className="heroTagline">{tagline}</p>}
-        {children}
-      </div>
+        <div className="shell heroBody">
+          <h1 className="heroTitle display">{title}</h1>
+          {tagline && <p className="heroTagline">{tagline}</p>}
+          {children}
+        </div>
 
-      {/* the bands, laid along the bottom edge of the photo — the seam between
-          the hero and the paper below it */}
+        {/* the band along the top edge, just under the nav — the seam
+            between the nav and the photo */}
+        <div className="heroBandsTop" aria-hidden="true" />
+      </section>
+
+      {/* the twin band along the bottom — in normal flow after the hero
+          rather than overlaid on it, so it stays below the fold until the
+          visitor scrolls, instead of showing within the first screen */}
       <div className="heroBands" aria-hidden="true" />
-    </section>
+    </>
   );
 }

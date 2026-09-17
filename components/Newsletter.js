@@ -221,7 +221,7 @@ export default function Newsletter() {
               {COPY.notice} <Link href="/impressum">{COPY.noticeLink}</Link>.
             </p>
 
-            <button type="submit" className="cta" disabled={busy}>
+            <button type="submit" className="signupCta" disabled={busy}>
               {busy ? COPY.sending : COPY.button}
               <span className="arrow" aria-hidden="true">
                 →

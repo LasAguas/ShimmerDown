@@ -20,16 +20,20 @@
 // entirely (see "one arrangement per page" for why). RING_RAMPS is exported
 // so Layout.js can hand the same blend to the footer's own rings, which is
 // what makes those change per page too instead of sitting fixed at golden
-// hour. Home isn't in this map — its footer stays plain golden hour, same
-// as Work and the legal pages.
+// hour. Work and the legal pages aren't in this map — their footer stays
+// plain golden hour. Home isn't rendered by PageField at all (its own
+// full-bleed hero stands in for the field) but IS in this map, straight
+// deep-red-sunset, matching its hero bands (components.css → .heroBands).
 import SunRings, {
   DUSK_VIBRANT_CORE,
   VIBRANT_DUSK_CORE,
   REDSUN_DAWN_CORE,
   DAWN_REDSUN_CORE,
+  DEEP_RED_SUNSET,
 } from "./SunRings";
 
 export const RING_RAMPS = {
+  home: DEEP_RED_SUNSET,
   studio: DUSK_VIBRANT_CORE,
   sessions: REDSUN_DAWN_CORE,
   store: VIBRANT_DUSK_CORE,

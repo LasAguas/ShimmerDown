@@ -6,9 +6,9 @@
 //
 // `ramp` swaps the seven colours for one of the site's other palettes — see
 // globals.css's --dawn-*/--vibrant-*/--dusk-*/--redsun-* custom properties
-// and PageField.js, which is what actually picks a ramp per page. The
-// footer's own rings (SiteFooter.js) never pass one, so they stay golden
-// hour everywhere, same as the nav and the buttons.
+// and PageField.js, which is what actually picks a ramp per page. Work and
+// the legal pages' footer rings never pass one, so they stay golden hour,
+// same as the nav and the buttons; the other five pages each pick their own.
 export const GOLDEN_HOUR = [
   "var(--sun-1)",
   "var(--sun-2)",
@@ -98,7 +98,11 @@ export const DAWN_REDSUN_CORE = [
   "var(--redsun-5)",
 ];
 
-export default function SunRings({ className, gap = 3, ramp = GOLDEN_HOUR }) {
+// `bg` is the gap-stroke between rings — it should match whatever ground
+// the figure is actually sitting on. Defaults to --paper-2 for the page
+// field's own use (PageField.js, a light backdrop); the footer's rings sit
+// on a much darker ground now and pass --footer-bg instead (SiteFooter.js).
+export default function SunRings({ className, gap = 3, ramp = GOLDEN_HOUR, bg = "var(--paper-2)" }) {
   return (
     <svg
       className={className}
@@ -114,7 +118,7 @@ export default function SunRings({ className, gap = 3, ramp = GOLDEN_HOUR }) {
           // 98 down to 14 — evenly spaced, so each band reads as the same width
           r={98 - i * 14}
           fill={c}
-          stroke={i < ramp.length - 1 ? "var(--paper-2)" : "none"}
+          stroke={i < ramp.length - 1 ? bg : "none"}
           strokeWidth={gap}
         />
       ))}

@@ -9,8 +9,9 @@
 //
 // `ramp` lets the ring-figure pick up whatever palette blend the current
 // page is using (Layout.js passes it, keyed off the same PageField.RING_RAMPS
-// map the page's own field uses) — home, Work and the legal pages never pass
-// one, so their footer stays golden hour, matching their own plain field.
+// map the page's own field uses) — Work and the legal pages never pass one,
+// so their footer stays golden hour, matching their own plain field. Home
+// has no field to match but is still in the map, straight deep red sunset.
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -78,10 +79,13 @@ export default function SiteFooter({ ramp }) {
               </nav>
             </div>
           </div>
+        </div>
 
-          <div className="footerRingsWrap">
-            <SunRings className="footerRings" ramp={ramp} />
-          </div>
+        {/* a sibling of .footerInner, not nested in it — .footerRingsWrap's
+            right/bottom percentages need to resolve against .footer's own
+            true edge-to-edge box, not .footerInner's gutter-inset one */}
+        <div className="footerRingsWrap">
+          <SunRings className="footerRings" ramp={ramp} bg="var(--footer-bg)" />
         </div>
       </div>
     </footer>

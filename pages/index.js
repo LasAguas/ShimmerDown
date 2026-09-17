@@ -57,7 +57,7 @@ const SESSIONS = {
 
 export default function Home() {
   return (
-    <Layout {...META} path="/" overHero>
+    <Layout {...META} path="/" field="home" overHero>
       <Hero title={HERO.title} slides={HERO.slides}>
         <Link href="/contact" className="ctaLink onDark">
           Book a session

@@ -76,10 +76,18 @@
   --ink-faint: #9a8d7e;
   --rule-ink: rgba(28, 23, 20, 0.14);
   --rule-ink-strong: rgba(28, 23, 20, 0.28);
+  /* the twin of --rule-ink, for a hairline on the footer's own dark ground */
+  --rule-on-dark: rgba(247, 241, 231, 0.14);
 
   /* on a photo: cream type, and the scrim that keeps it legible */
   --on-dark: #f7f1e7;
   --on-dark-dim: rgba(247, 241, 231, 0.72);
+
+  /* the footer's own ground — deep wine rather than the paper the rest of
+     the chrome sits on, per the client's own mockup. A dedicated variable
+     rather than repointing --paper-2, which .shopCart and the Impressum
+     page also use and which needs to stay light there. */
+  --footer-bg: #3a1f22;
 
   --accent: var(--sun-4);
   --ember: var(--sun-7);
@@ -107,16 +115,15 @@
   /* 14px — two pixels per band. Everything banded reads this, so the whole
      site's stripes thicken or thin from this one line. */
   --band-h: 14px;
-  --frame-w: 6px; /* the gradient frame around the nav */
+  --frame-w: 6px; /* the shopping cart panel's own gradient ring (components.css → .shopCart) — the nav dropped its matching frame */
   --nav-h: 64px;
-  --nav-radius: 34px; /* a pill, matching the buttons */
-  /* How much vertical room the floating bar actually occupies: the pill, its
-     gradient frame on both sides, and the gap above it. Pages clear THIS, not
-     --nav-h, or their first line hides behind the frame. */
-  --nav-block: calc(var(--nav-h) + 2 * var(--frame-w) + clamp(0.55rem, 1.4vw, 1rem));
-  /* the basket bubble beside the pill — sized close to the pill's own outer
-     height (--nav-h + 2*--frame-w = 76px) so the two read as a matched pair
-     rather than a big pill next to a small dot */
+  --nav-radius: 34px; /* unused for now — the nav went flat; kept in case that reverts */
+  /* how much vertical room the flat bar actually occupies. Pages clear
+     THIS, not --nav-h directly, in case that ever diverges again. */
+  --nav-block: var(--nav-h);
+  /* the basket bubble beside the bar — sized close to the bar's own height
+     (--nav-h = 64px) so the two read as a matched pair rather than a big
+     bar next to a small dot */
   --cart-size: 56px;
   --cart-gap: 0.85rem;
 
@@ -252,12 +259,26 @@
     var(--redsun-6) 71.4285% 85.7142%,
     var(--redsun-7) 85.7142% 100%
   );
+  /* the vertical twin of --redsun-bands, reversed (ember end first) — the
+     home hero's own bands (components.css → .heroBands/.heroBandsTop) run
+     the deep-red-sunset ramp instead of golden hour, so they need both
+     directions the same way --bands/--bands-rev do. */
+  --redsun-bands-rev: linear-gradient(
+    180deg,
+    var(--redsun-7) 0 14.2857%,
+    var(--redsun-6) 14.2857% 28.5714%,
+    var(--redsun-5) 28.5714% 42.8571%,
+    var(--redsun-4) 42.8571% 57.1428%,
+    var(--redsun-3) 57.1428% 71.4285%,
+    var(--redsun-2) 71.4285% 85.7142%,
+    var(--redsun-1) 85.7142% 100%
+  );
 
-  /* the nav pill's own hover ramp — the contact footer ring-figure's early
-     dawn colours (dawn-1 through dawn-5), five stops rather than the usual
-     seven since that's the exact set requested. Swapped in for --bands-h
-     only on .navFrame:hover, in place of the golden-hour ramp every other
-     band on the site keeps. */
+  /* the nav's own hover ramp, from back when it had a gradient frame to
+     swap — the contact footer ring-figure's early dawn colours (dawn-1
+     through dawn-5), five stops rather than the usual seven since that's
+     the exact set requested. Currently unused (see globals.css → "the
+     nav"); kept in case the frame comes back. */
   --nav-hover-bands: linear-gradient(
     90deg,
     var(--dawn-1) 0 20%,
@@ -555,7 +576,7 @@ h4 {
   margin: -150px 0 0 -150px;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 90; /* above page content, below the nav's pill (100) */
+  z-index: 90; /* above page content, below the nav bar (100) */
   background: radial-gradient(
     circle,
     rgba(255, 186, 122, 0.6),
@@ -574,82 +595,76 @@ h4 {
 /* =========================================================================
    the nav
    -------------------------------------------------------------------------
-   Over the hero it is transparent with cream type; once the page scrolls past
-   the hero it lands on paper with ink type. The bands are the fixture: a
-   7-band rule runs the full width under the bar, and every link carries its
-   own short band stack that blooms from 2 bands to all 7 on hover, with a
-   light sweeping across it. That's the "dynamic when hovered" ask.
+   Over the hero it is solid black with cream type; once the page scrolls
+   past the hero it lands on paper with ink type. Flat and edge-to-edge, per
+   the client's own nav mockup — no more pill floating inside a
+   gradient-band frame. The bar's own background runs the full width; a
+   plain rule under the logo-to-links content (.navInner::after, below)
+   stands in for the old frame, and the content row (.navRow) carries the
+   same gutter inset the rest of the page uses so the wordmark lines up
+   with the hero title under it.
    ========================================================================= */
-/* The bar doesn't span the window — it floats inset from every edge inside a
-   rectangle whose BORDER is the band ramp. The frame is a padded wrapper
-   rather than a border-image: padding gives a true gradient on all four sides
-   and takes a border-radius cleanly, which border-image does not. */
 .nav {
   position: fixed;
   inset: 0 0 auto;
   z-index: 100;
-  padding: clamp(0.55rem, 1.4vw, 1rem) var(--gutter) 0;
-  pointer-events: none; /* the gutter around the row stays click-through */
+  background: #000;
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  transition: background 420ms var(--ease-out);
 }
-/* the pill and the basket bubble, as two independent shapes sharing one
-   centred row — see .navCartWrap below for why this replaced absolute
+.nav.landed {
+  background: var(--paper);
+}
+/* the row and the basket bubble, as two independent shapes sharing one
+   centred strip — see .navCartWrap below for why this replaced absolute
    positioning */
 .navRow {
   width: min(var(--page-max), 100%);
   margin-inline: auto;
+  padding-inline: var(--gutter);
   display: flex;
-  /* NOT center — on a phone .navFrame grows much taller when the menu opens
+  /* NOT center — on a phone .navInner grows much taller when the menu opens
      (the links list expands inside it), and centring against that would
      drag the bubble down into the middle of the open dropdown. flex-start
      plus a fixed margin-top on the bubble (below) gets the same "centred
-     against the closed pill" look without depending on the frame's current,
+     against the closed bar" look without depending on the row's current,
      variable height. */
   align-items: flex-start;
   gap: var(--cart-gap, 0.85rem);
 }
 .navFrame {
-  pointer-events: auto;
   flex: 1 1 auto;
   min-width: 0;
-  padding: var(--frame-w);
-  border-radius: calc(var(--nav-radius) + var(--frame-w));
-  background: var(--bands-h);
-  background-size: 200% 100%;
-  background-position: 0% 0;
-  transition: background-position 900ms var(--ease-out);
-}
-/* the ramp drifts across the frame when the bar is used — and swaps from
-   golden hour to the purplish --nav-hover-bands ramp at the same moment, so
-   the frame reads as a different, brighter palette on hover rather than
-   just the same orange sliding sideways. */
-.nav:hover .navFrame,
-.nav:focus-within .navFrame {
-  background: var(--nav-hover-bands);
-  background-size: 200% 100%;
-  background-position: 100% 0;
 }
 
 .navInner {
   position: relative;
   height: var(--nav-h);
-  border-radius: var(--nav-radius);
-  padding-inline: clamp(0.9rem, 2.2vw, 1.6rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  /* Over the hero the inside of the frame is a smoked panel, so cream type
-     stays legible over a photograph we don't control. The frame's own ramp
-     shows through it, which warms the glass from gold at one end to ember at
-     the other — 0.62 rather than 0.5 because at the gold end a thinner smoke
-     drops the mark's contrast to about 5:1, and it carries small caps. */
-  background: rgba(28, 23, 20, 0.62);
-  backdrop-filter: blur(12px) saturate(1.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+}
+/* the rule under the bar — sized to .navInner itself (0 to 100%) rather
+   than the row's own gutter-to-gutter width, so it runs exactly from the
+   wordmark's left edge to the last link's right edge (justify-content:
+   space-between on .navInner already pins them there) and stops short of
+   the basket bubble, which sits outside .navFrame/.navInner entirely. The
+   left edge lines up with .heroTitle/.ctaLink below, which share the same
+   --gutter inset via .shell. */
+.navInner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  height: 2px;
+  background: var(--on-dark);
   transition: background 420ms var(--ease-out);
 }
-.nav.landed .navInner {
-  background: var(--paper);
+.nav.landed .navInner::after {
+  background: var(--rule-ink-strong);
 }
 
 .navMark {
@@ -751,14 +766,13 @@ h4 {
 }
 
 /* full brightness — cream over the hero, ink once landed — same as before;
-   the glow is the new part, breathing rather than snapping straight on, now
-   swinging between two hues instead of one so it feels like it's cycling
-   through the dawn ramp rather than just pulsing a single colour. */
+   the glow used to breathe here (animation: navGlow, below) but that's
+   disabled for now per the client's plainer nav — kept for later. */
 .navLink:hover,
 .navLink:focus-visible,
 .navLink.current {
   color: var(--on-dark);
-  animation: navGlow 2.2s ease-in-out infinite;
+  /* animation: navGlow 2.2s ease-in-out infinite; */
 }
 .nav.landed .navLink:hover,
 .nav.landed .navLink:focus-visible,
@@ -824,9 +838,8 @@ h4 {
     display: block;
   }
 
-  /* The frame doesn't get escaped — it GROWS. Opening the menu turns the pill
-     into a panel with the links inside it, so the gradient border still wraps
-     the whole thing instead of a bare list hanging off the bottom. */
+  /* Opening the menu turns the bar into a taller panel with the links
+     stacked inside it, rather than a bare list hanging off the bottom. */
   .navInner {
     flex-direction: column;
     align-items: stretch;
@@ -855,13 +868,6 @@ h4 {
     padding-bottom: 1.1rem;
   }
 
-  /* a pill is the wrong shape for a tall panel */
-  .nav.open .navFrame {
-    border-radius: calc(1.5rem + var(--frame-w));
-  }
-  .nav.open .navInner {
-    border-radius: 1.5rem;
-  }
   /* the panel is paper whatever the scroll position, so the links are legible */
   .nav.open .navInner {
     background: var(--paper);
@@ -883,33 +889,25 @@ h4 {
 }
 
 /* ---- the basket bubble --------------------------------------------------
-   Its own separate circle riding alongside the pill — not an icon glued onto
-   it — so it's a plain flex sibling in .navRow now rather than something
-   absolutely-positioned over the pill's own content. Same smoked-glass /
-   paper treatment as .navInner, so the two read as a matched pair despite
-   being two independent shapes — and now the same ramp framing it, via the
-   same padded-wrapper trick as .navFrame/.navInner (a circle stays a circle
-   at any radius, so this one skips the nav's radius+frame-w calc). */
+   Its own separate circle riding alongside the bar — not an icon glued onto
+   it — so it's a plain flex sibling in .navRow rather than something
+   absolutely-positioned over the bar's own content. Same solid black/paper
+   treatment as .navInner, so the two read as a matched pair despite being
+   two independent shapes. */
 .navCartWrap {
   flex: none;
   width: var(--cart-size);
   height: var(--cart-size);
-  padding: var(--frame-w);
   border-radius: 50%;
-  background: var(--bands-h);
-  /* .nav sets pointer-events: none on itself so the empty gutter around the
-     pill stays click-through, and only re-enables it on .navFrame — the
-     bubble sits OUTSIDE .navFrame now (see .navRow), so without this it
-     silently inherits none too. It still looked clickable (nothing about
-     inert pointer-events changes how an element paints) and every automated
-     click in testing "worked", because element.click() fires the handler
-     directly and doesn't go through hit-testing the way a real pointer click
-     does — so this shipped without ever actually being clickable by a mouse
-     or a finger. */
+  /* .nav used to set pointer-events: none on itself so the empty gutter
+     around the pill stayed click-through, and only re-enabled it on
+     .navFrame — the bubble sits OUTSIDE .navFrame (see .navRow). The nav is
+     a solid bar now with nothing to click through, but this stays as a
+     harmless belt-and-braces in case that ever changes back. */
   pointer-events: auto;
-  /* centres against the pill's CLOSED-state height specifically — see the
-     .navRow comment above for why this isn't flex align-items:center */
-  margin-top: calc((var(--nav-h) + 2 * var(--frame-w) - var(--cart-size)) / 2);
+  /* centres against the bar's own height — see the .navRow comment above
+     for why this isn't flex align-items:center */
+  margin-top: calc((var(--nav-h) - var(--cart-size)) / 2);
 }
 .navCartBtn {
   position: relative;
@@ -921,16 +919,12 @@ h4 {
   border: 0;
   color: var(--on-dark);
   cursor: pointer;
-  background: rgba(28, 23, 20, 0.62);
-  backdrop-filter: blur(12px) saturate(1.1);
-  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  background: #000;
   transition: color 420ms var(--ease-out), background 420ms var(--ease-out);
 }
 .nav.landed .navCartBtn {
   color: var(--ink);
   background: var(--paper);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 .navCartBtn:hover,
 .navCartBtn:focus-visible {
@@ -939,11 +933,8 @@ h4 {
 }
 .navCartBadge {
   position: absolute;
-  /* the badge floats just outside the CIRCLE, i.e. the frame's outer edge —
-     .navCartBtn itself is now inset by --frame-w, so its own corner is no
-     longer that edge */
-  top: calc(-2px - var(--frame-w));
-  right: calc(-2px - var(--frame-w));
+  top: -2px;
+  right: -2px;
   min-width: 19px;
   height: 19px;
   padding: 0 4px;
@@ -957,7 +948,7 @@ h4 {
   box-shadow: 0 0 0 2px var(--paper);
 }
 .nav:not(.landed) .navCartBadge {
-  box-shadow: 0 0 0 2px rgba(28, 23, 20, 0.62);
+  box-shadow: 0 0 0 2px #000;
 }
 
 /* the dropdown reuses .shopCart's own styling (components.css) for its
@@ -991,7 +982,8 @@ h4 {
 .footer {
   position: relative;
   overflow: hidden;
-  background: var(--paper-2);
+  background: var(--footer-bg);
+  color: var(--on-dark);
   margin-top: clamp(4rem, 10vw, 8rem);
   padding-block: clamp(3rem, 7vw, 5.5rem) clamp(1.5rem, 3vw, 2.25rem);
 }
@@ -1008,21 +1000,30 @@ h4 {
   max-width: 34rem;
 }
 
-/* The ring-figure: a circle whose radius equals the footer's own height
-   (--footer-h, measured in SiteFooter.js — CSS can't read that off an
-   auto-height parent any other way), centred exactly on the footer's
-   bottom-right corner so only its top-left quarter shows; the rest runs
-   off the top, right and bottom edges, clipped by .footer's overflow. */
+/* The ring-figure: its CENTRE always sits 10% of the footer's own width/
+   height up and left of the footer's bottom-right corner, whatever the
+   figure's own size or the footer's — right/bottom:10% first pins the
+   figure's own bottom-right corner there (a percentage offset on an
+   absolutely-positioned element resolves against the CONTAINING BLOCK,
+   i.e. the footer, not the figure), then translate(50%,50%) — exactly half
+   the figure's own size — walks that anchor from the corner to the centre.
+   Sized per the client's own mockup: a fixed cap (560px, or 90% of the
+   footer on anything narrower) rather than the old size tied to
+   --footer-h. --footer-h (measured in SiteFooter.js — CSS can't read it
+   off an auto-height parent any other way) is now unused here; left wired
+   up in case the figure ever needs to scale with the footer again. */
 .footerRingsWrap {
   position: absolute;
   z-index: 0;
-  right: 0;
-  bottom: 0;
-  width: calc(var(--footer-h, 32rem) * 2);
+  right: 10%;
+  bottom: 10%;
+  width: min(560px, 90%);
   aspect-ratio: 1;
   transform: translate(50%, 50%);
   pointer-events: none;
-  animation: footerRingsDrift 34s ease-in-out infinite alternate;
+  /* drift disabled for now — client asked for a plainer, static footer;
+     keeping the keyframes below so it can be switched back on later. */
+  /* animation: footerRingsDrift 34s ease-in-out infinite alternate; */
 }
 .footerRings {
   width: 100%;
@@ -1044,7 +1045,7 @@ h4 {
   position: relative;
   z-index: 1;
   padding-top: 1.25rem;
-  border-top: 1px solid var(--rule-ink);
+  border-top: 1px solid var(--rule-on-dark);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1056,7 +1057,7 @@ h4 {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--on-dark-dim);
 }
 .footerMark {
   display: inline-flex;
@@ -1072,7 +1073,7 @@ h4 {
 }
 .footerBase a:hover,
 .footerBase a:focus-visible {
-  color: var(--ink);
+  color: var(--on-dark);
 }
 .footerLegal {
   display: flex;
@@ -1083,11 +1084,6 @@ h4 {
 @media (max-width: 860px) {
   .footerLeft {
     max-width: none;
-  }
-  /* the footer runs much taller here (form fields stack), so tying the
-     radius to --footer-h would swallow the whole corner — cap it instead */
-  .footerRingsWrap {
-    width: min(420px, 85vw);
   }
   .footerBaseMail {
     margin-right: 0;

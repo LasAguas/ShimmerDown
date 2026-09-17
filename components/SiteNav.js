@@ -1,14 +1,13 @@
-// The nav bar — a pill floating inside a rectangle whose border is the band
-// ramp. Two states:
+// The nav bar — flat and edge-to-edge, per the client's own mockup. Two
+// states:
 //
-//   over the hero   smoked glass inside the frame, cream type
-//   landed          paper inside the frame, ink type
+//   over the hero   solid black bar, cream type
+//   landed          paper bar, ink type
 //
-// The frame is the fixture the client asked for; each link glows its own
-// colour on hover/current (`field`, below — matches the palette the page
-// itself uses). None of that is set here — it's all CSS (globals.css →
-// "the nav"); this file only decides WHICH state the bar is in and which
-// field each link carries.
+// Each link still glows its own colour on hover/current (`field`, below —
+// matches the palette the page itself uses). None of that is set here —
+// it's all CSS (globals.css → "the nav"); this file only decides WHICH
+// state the bar is in and which field each link carries.
 //
 // EDIT THE MENU HERE. It's chrome rather than page content, so it lives beside
 // the component that draws it rather than in any one page.

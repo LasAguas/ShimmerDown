@@ -19,6 +19,9 @@
 }
 .signupHead {
   font-family: var(--font-display);
+  /* same boldest-loaded-weight as .heroTitle, for the same "client asked
+     for it heavier" reason */
+  font-weight: 700;
   font-size: clamp(1.1rem, 2.4vw, 1.6rem);
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -26,7 +29,7 @@
   margin-bottom: 0.65rem;
 }
 .signupBlurb {
-  color: var(--ink-dim);
+  color: var(--on-dark-dim);
   font-size: 0.95em;
   margin-bottom: 1.4rem;
 }
@@ -53,6 +56,7 @@
   width: 100%;
   font-family: var(--font-fine);
   font-size: 15px;
+  color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--rule-ink);
   border-radius: 2px;
@@ -79,7 +83,7 @@
   font-family: var(--font-fine);
   font-size: 13px;
   line-height: 1.5;
-  color: var(--ink-dim);
+  color: var(--on-dark-dim);
   cursor: pointer;
 }
 .signupConsent input {
@@ -92,19 +96,45 @@
   font-family: var(--font-fine);
   font-size: 12px;
   line-height: 1.55;
-  color: var(--ink-faint);
+  color: var(--on-dark-dim);
   margin: 0.6rem 0 1.3rem;
 }
 .signupNotice a {
-  color: var(--ink-dim);
-  border-bottom: 1px solid var(--rule-ink);
+  color: var(--on-dark-dim);
+  border-bottom: 1px solid var(--rule-on-dark);
 }
 .signupNotice a:hover {
-  color: var(--ink);
+  color: var(--on-dark);
   border-bottom-color: var(--ember);
 }
 
-.signup .cta:disabled {
+/* the sign-up's own submit button — a plain underlined link rather than
+   the site's usual filled .cta pill, per the client's own mockup. Big and
+   bold enough to read as the section's one deliberate action, not another
+   line of copy. */
+.signupCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.8vw, 1.375rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0 0 0.12em;
+  border: 0;
+  border-bottom: 3px solid var(--on-dark);
+  border-radius: 0;
+  color: var(--on-dark);
+  background: none;
+  cursor: pointer;
+  transition: opacity 300ms;
+}
+.signupCta:hover,
+.signupCta:focus-visible {
+  opacity: 0.6;
+}
+.signupCta:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -127,7 +157,7 @@
   border-left: var(--band-h) solid transparent;
   border-image: var(--bands) 1;
   padding-left: 1rem;
-  color: var(--ink);
+  color: var(--on-dark);
 }
 
 /* =========================================================================
@@ -246,18 +276,31 @@
 .heroBody {
   position: relative;
   z-index: 1;
-  width: 100%;
+  /* no width of its own — this used to redundantly restate .shell's own
+     100% (harmless below --page-max, 1240px), but since components.css
+     loads after globals.css it was actually WINNING over .shell's
+     width:min(var(--page-max),100%) above that width, letting the title
+     spread past the nav's own capped-width content on a wide screen. */
   padding-bottom: clamp(4.5rem, 11vh, 8rem);
   color: var(--on-dark);
 }
 .heroTitle {
   /* set at the size it wants to be read, which on a wide screen is very
-     large indeed. Lighter than the rest of .display — at this size the
-     500-weight reads heavy; 300 keeps it close to the logo's own thin cut. */
-  font-weight: 300;
-  font-size: clamp(2.6rem, 11vw, 9.5rem);
-  max-width: 15ch;
-  text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35);
+     large indeed — though scaled back from an earlier pass that ran too
+     big. Bolder than the rest of .display — the client asked for a heavier
+     title, so this is Jost's own boldest loaded weight rather than the 300
+     that used to keep it close to the logo's thin cut. */
+  font-weight: 700;
+  font-size: clamp(2.4rem, 9vw, 8rem);
+  /* no max-width of its own any more — .heroBody is .shell (see Hero.js),
+     the same box .navRow uses, so leaving the title to wrap at its
+     parent's natural width lines its line breaks up with the nav's own
+     content width instead of an arbitrary character count. */
+  /* the drop shadow for legibility over the photo, plus two soft warm
+     layers (cream, then amber, wider and fainter) that read as a glow
+     around the letterforms — straight off the client's own mockup. */
+  text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35),
+    0 0 18px rgba(250, 216, 165, 0.245), 0 0 46px rgba(255, 186, 122, 0.154);
 }
 .heroTagline {
   margin-top: clamp(1rem, 2.4vw, 1.6rem);
@@ -274,26 +317,27 @@
   margin-top: clamp(1.6rem, 3.5vw, 2.4rem);
 }
 
-/* the band seam along the bottom of the photo — blooms taller when the
-   cursor is actually over the strip itself, the reference file's own "frame
-   gradient... blooms inward as the cursor nears" idea (its ::before, growing
-   height anchored to the strip's own edge), scoped to a plain :hover on the
-   strip rather than the reference's cursor-distance JS. */
+/* the band seam along the bottom of the photo, echoed at the top (see
+   .heroBandsTop, inside Hero.js's own <section>) — both thickened and
+   recoloured to the deep-red-sunset ramp per the client's own home-page
+   mockup. This one now sits in normal flow AFTER the hero (Hero.js), not
+   overlaid on top of it, so it stays below the fold until the visitor
+   scrolls rather than showing within the very first screen. Used to be a
+   thin 14-24px strip, absolutely positioned, that bloomed taller on hover;
+   the mockup's own bands are this much thicker with no hover state at all,
+   so the bloom is retired (commented out below, not deleted — note it
+   assumes the old absolutely-positioned .heroBands, so it'd need that
+   position:absolute back too if it's ever switched on again). */
 .heroBands {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: clamp(14px, 2.2vw, 24px);
-  background: var(--bands-rev);
-  z-index: 2;
-  transition: height 420ms var(--ease-out);
+  height: clamp(56px, 7.5vw, 104px);
+  background: var(--redsun-bands-rev);
 }
-/* the colour swap on hover — same purplish ramp as the nav pill's own
-   hover state, but crossfaded in via a stacked pseudo-element rather than
-   swapped outright, since opacity is the one thing a gradient can actually
-   transition smoothly. Fades in over the same span the strip takes to
-   bloom taller, so the two read as one motion. */
+/* the colour swap on hover — same purplish ramp as the nav's own old hover
+   state, crossfaded in via a stacked pseudo-element since opacity is the
+   one thing a gradient can transition smoothly.
+.heroBands {
+  position: relative;
+}
 .heroBands::after {
   content: "";
   position: absolute;
@@ -303,10 +347,25 @@
   transition: opacity 420ms var(--ease-out);
 }
 .heroBands:hover {
-  height: clamp(32px, 6vw, 64px);
+  height: clamp(88px, 10vw, 140px);
 }
 .heroBands:hover::after {
   opacity: 1;
+}
+*/
+
+/* the same seam, echoed at the top of the photo, right under the nav —
+   new from the client's own mockup. Forward order (redsun-1 first) where
+   the bottom seam runs reversed, same outer-vs-inner logic as
+   --bands/--bands-rev. */
+.heroBandsTop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--nav-block);
+  height: clamp(56px, 7.5vw, 104px);
+  background: var(--redsun-bands);
+  z-index: 2;
 }
 
 /* =========================================================================
@@ -575,7 +634,7 @@
   bottom: var(--rail-bottom, 0px);
   height: 100vh;
   left: 0;
-  z-index: 40; /* under the nav's pill (100) — passes BEHIND it, not over it */
+  z-index: 40; /* under the nav bar (100) — passes BEHIND it, not over it */
   display: flex;
   justify-content: flex-end;
   pointer-events: none;
@@ -634,8 +693,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   /* the rail's own background reaches the true top of the page, behind the
-     nav — this is what keeps the CONTENT clear of the floating pill sitting
-     on top of it */
+     nav — this is what keeps the CONTENT clear of the bar sitting on top
+     of it */
   padding: calc(var(--nav-block) + 1.4rem) clamp(1.3rem, 2.6vw, 2.1rem)
     clamp(1.5rem, 3vw, 2.3rem);
   opacity: 0;
