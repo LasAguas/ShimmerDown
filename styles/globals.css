@@ -689,10 +689,20 @@ h4 {
 .navMark {
   flex: none;
 }
+/* the bolder wordmark image is a much wider crop (4956x129, ~38:1) than the
+   old inlined SVG (~23:1), so it needs a shorter height to occupy roughly
+   the same footprint next to the links — tuned against the nav, not
+   copied from the old value. Black-on-transparent source, same filter
+   trick as .navMarkCompact below. */
 .navMarkLogo {
-  height: clamp(15px, 1.6vw, 19px);
+  height: clamp(9px, 0.9vw, 11px);
   width: auto;
   display: block;
+  filter: brightness(0) invert(1);
+  transition: filter 420ms var(--ease-out);
+}
+.nav.landed .navMarkLogo {
+  filter: none;
 }
 /* Compact stand-in for the wordmark below 880px — see the comment in
    SiteNav.js. Hidden here; the @media block below (same breakpoint
@@ -717,16 +727,15 @@ h4 {
   padding: 0;
 }
 
-/* No pill any more — the label itself glows. --glow-a/--glow-b are set per
-   link below, pulled from DAWN_REDSUN_CORE (SunRings.js) — the exact blend
-   behind the contact page's own footer ring-figure: early dawn's lavender →
-   mauve → orchid doing most of the work (those are the figure's big outer
-   rings), with a pop of deep-red-sunset coral only at the tiny core. That
-   reads as a purplish palette overall, so that's what the nav borrows,
-   rather than each field's own muted page colour or the full dawn ramp
-   (which drifts into peach — not what's actually behind the footer). Work
-   carries no data-field and gets the same base pair as the ring figure's
-   outermost bands. */
+/* A solid colour pill on hover/current rather than a glow — the client
+   asked for colour highlights, not a text-shadow effect. --nav-highlight
+   is set per link below, pulled from DAWN_REDSUN_CORE (SunRings.js) — the
+   exact blend behind the contact page's own footer ring-figure: early
+   dawn's lavender → mauve → orchid doing most of the work, with a pop of
+   deep-red-sunset coral for Contact. That reads as a purplish palette
+   overall, so that's what the nav borrows, rather than each field's own
+   muted page colour. Work carries no data-field and gets the same default
+   as the ring figure's outermost band. */
 .navLink {
   position: relative;
   z-index: 0;
@@ -734,59 +743,52 @@ h4 {
   align-items: center;
   justify-content: center;
   padding: 0.62em 1.05em;
-  border-radius: 999px;
+  border-radius: 0;
   font-family: var(--font-display);
-  font-size: 11px;
+  /* 600, not 700 — checked against the client's own reference file
+     (nav <a> style="...font-weight:600..."), which is one weight lighter
+     than .heroTitle/.signupHead/.signupCta's 700. */
+  font-weight: 600;
+  /* matches .navMarkLogo's own height clamp, so the links read at the
+     same scale as the wordmark beside them */
+  font-size: clamp(12px, 0.9vw, 11px);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--on-dark-dim);
-  --glow-a: var(--dawn-1);
-  --glow-b: var(--dawn-2);
-  text-shadow: 0 0 0 transparent;
-  transition: color 300ms var(--ease-out), text-shadow 420ms var(--ease-out);
+  /* Live Sessions is two words, and at 700 the row doesn't have room to
+     let it wrap onto a second line without going noticeably taller than
+     its neighbours — one line, always. */
+  white-space: nowrap;
+  /* full-bright, same token as the wordmark/underline over the hero —
+     not the dimmed --on-dark-dim it had before */
+  color: var(--on-dark);
+  --nav-highlight: var(--dawn-2);
+  background: transparent;
+  transition: color 300ms var(--ease-out), background-color 300ms var(--ease-out);
 }
 .nav.landed .navLink {
   color: var(--ink-dim);
 }
 .navLink[data-field="studio"] {
-  --glow-a: var(--dawn-1);
-  --glow-b: var(--dawn-3);
+  --nav-highlight: var(--dawn-3);
 }
 .navLink[data-field="sessions"] {
-  --glow-a: var(--dawn-2);
-  --glow-b: var(--dawn-4);
+  --nav-highlight: var(--dawn-4);
 }
 .navLink[data-field="contact"] {
-  --glow-a: var(--dawn-2);
-  --glow-b: var(--redsun-4);
+  --nav-highlight: var(--redsun-4);
 }
 .navLink[data-field="store"] {
-  --glow-a: var(--dawn-1);
-  --glow-b: var(--dawn-3);
+  --nav-highlight: var(--dawn-3);
 }
 
-/* full brightness — cream over the hero, ink once landed — same as before;
-   the glow used to breathe here (animation: navGlow, below) but that's
-   disabled for now per the client's plainer nav — kept for later. */
+/* dark ink reads on every one of the highlight colours above, whether the
+   bar itself is over the hero or landed on paper — no landed-specific
+   override needed here, unlike the bar's own resting text colour. */
 .navLink:hover,
 .navLink:focus-visible,
 .navLink.current {
-  color: var(--on-dark);
-  /* animation: navGlow 2.2s ease-in-out infinite; */
-}
-.nav.landed .navLink:hover,
-.nav.landed .navLink:focus-visible,
-.nav.landed .navLink.current {
   color: var(--ink);
-}
-@keyframes navGlow {
-  0%,
-  100% {
-    text-shadow: 0 0 8px var(--glow-a), 0 0 16px transparent;
-  }
-  50% {
-    text-shadow: 0 0 14px var(--glow-b), 0 0 32px var(--glow-a);
-  }
+  background: var(--nav-highlight);
 }
 
 /* ---- the phone menu ---- */
@@ -875,17 +877,24 @@ h4 {
   .nav.open .navMark {
     color: var(--ink);
   }
+  /* --on-dark and --paper are the same hex value, so the rule under the
+     bar (.navInner::after) would otherwise vanish against the open
+     panel's own paper background whenever it opens over the hero, before
+     .nav.landed would normally have swapped it to the dark rule-ink. */
+  .nav.open .navInner::after {
+    background: var(--rule-ink-strong);
+  }
 
   .navLink {
     width: 100%;
     justify-content: flex-start;
     font-size: 13px;
     padding: 0.95rem 1.1rem;
-    border-radius: 14px;
+    border-radius: 0;
     color: var(--ink-dim);
   }
-  /* no hover on a phone, so the glow only ever shows for the current page —
-     the base rule above already does that (.navLink.current) */
+  /* no hover on a phone, so the highlight only ever shows for the current
+     page — the base rule above already does that (.navLink.current) */
 }
 
 /* ---- the basket bubble --------------------------------------------------
