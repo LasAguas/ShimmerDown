@@ -11,16 +11,18 @@ client · **[POLISH]** makes it better, not possible
 ## 1. **[DONE]** Brodille is licensed "just for personal use"
 
 Swapped for **Source Serif 4** (Google Fonts, OFL) — a text-weight classic
-serif in the Georgia/Hoefler Text family, loaded via `pages/_document.js` and
-set as `--font-body` in `styles/globals.css`. `Brodille-Regular.ttf` is
-deleted from `public/fonts/`.
+serif in the Georgia/Hoefler Text family, self-hosted via `next/font` in
+`pages/_app.js` and set as `--font-body`. `Brodille-Regular.ttf` is deleted
+from `public/fonts/`.
 
 ## 2. **[DONE]** Intro Rust needs a webfont licence
 
 Swapped for **Jost** (Google Fonts, OFL) — a geometric grotesque in the Futura
-family, matching the logo wordmark's character. Loaded via
-`pages/_document.js`, set as `--font-display`. `IntroRust-Base.otf` is deleted
-from `public/fonts/`.
+family, matching the logo wordmark's character. Self-hosted via `next/font` in
+`pages/_app.js`, set as `--font-display`. `IntroRust-Base.otf` is deleted from
+`public/fonts/`. (Both faces used to load from Google's servers on every
+visit, which sent each visitor's IP to Google and wasn't in the privacy
+notice; they're served from this site's own domain now, so item 16 stays true.)
 
 ## 3. **[POLISH]** Three typefaces, on purpose — check you're happy with it
 
@@ -54,10 +56,15 @@ instagram.com with no handle.
 
 ## 7. **[BLOCKER]** The real domain
 
-`components/Layout.js` → `SITE_ORIGIN` is `https://shimmerdownstudios.com`,
-guessed. It builds every canonical and `og:url`, so a wrong value means every
-share card points somewhere that doesn't exist. Also set `SITE_ORIGIN` in
-Vercel's environment variables (see item 18).
+`lib/site.js` → `SITE_ORIGIN` builds every canonical, `og:url` and `og:image`,
+the sitemap and the structured data. It was a guess
+(`https://shimmerdownstudios.com`, which doesn't resolve), so every canonical
+pointed at a site that doesn't exist. It now reads the `SITE_ORIGIN`
+environment variable and, until that's set, falls back to
+`https://www.shimmer-down-studios.com` — the address the site is live at today
+(the apex redirects to `www`). **Still open:** confirm that's the launch
+domain, and set `SITE_ORIGIN` in Vercel (see item 18) to match. A localhost
+value is ignored on purpose.
 
 ## 8. **[POLISH]** YouTube poster frames come from Google's CDN
 
@@ -177,9 +184,12 @@ automatically.
 `pages/_document.js` now links `public/images/logos/shimmer-down-logo-simple-small.png`
 as the favicon.
 
-## 22. **[POLISH]** No sitemap.xml or robots.txt
+## 22. **[DONE]** No sitemap.xml or robots.txt
 
-Six static pages; worth adding before asking Google to look.
+`pages/sitemap.xml.js` and `pages/robots.txt.js`, both built from
+`lib/site.js`. **Add new pages to `PATHS` in `pages/sitemap.xml.js`.** Once the
+domain is final (item 7), verify the site in Google Search Console and Bing
+Webmaster Tools and submit `/sitemap.xml`.
 
 ## 23. **[POLISH]** Not a git repository yet
 
@@ -236,3 +246,40 @@ treatment should ship, fold it into `pages/index.js` and delete
 `components/SiteNavLogo.js`, `components/LayoutLogo.js`,
 `pages/preview-logo.js` and `styles/previewLogo.module.css`. If not, delete
 those same four files anyway — nothing else references them.
+
+## 28. **[CONTENT]** SEO: what's done, and what needs the client
+
+Done in code (no visual change): canonical/`og:*` origin from `lib/site.js`,
+keyword titles and longer meta descriptions on every page, 1200×630 share
+images in `public/images/og/`, an H1 on every page, `noindex` on `/links`,
+sitemap + robots, a real 404, JSON-LD (studio + website on `/`, VideoObject on
+`/live-sessions` and `/studio`, Product on `/store`), products baked into the
+HTML of `/store` and `/`, optimised film thumbnails and hero poster, and
+self-hosted fonts.
+
+Still needs something from the client or a decision:
+
+- **Studio address, phone, opening hours.** The business markup in
+  `pages/index.js` (`SCHEMA`) only says "Berlin" — add `streetAddress` and
+  `postalCode` once item 5 is answered, and the Instagram URL to `sameAs`
+  once item 6 is. Needed for a Google Business Profile too.
+- **The hero video.** It's a ~57 MB mp4 (item 9) that autoplays for everyone,
+  including on mobile data. A 3–5 MB silent loop cut for the hero is the
+  single biggest remaining speed win, and speed is a ranking factor.
+- **Placeholder content is indexed as written.** `/work` (item 10), the
+  `/studio` specs (item 14) and the `/faq` answers (item 25) read as junk to
+  a crawler until they're real. Fill them before asking Google to index, or
+  add `robots="noindex"` to those pages until then.
+- **An "Example Item" (€1.00) is live in the dashboard store**, and so is now
+  in the product markup. Remove or unpublish it in **Admin → Webstore**.
+- **Copy that needs the client's OK** (it changes what's on screen): a plain
+  line saying what and where the studio is on `/` and `/contact` (the home
+  page has almost no body text and "Berlin" appears nowhere on it), a visible
+  "FAQ" link in the footer, and — the biggest long-term win — a page per
+  Live Session film.
+- **Impressum indexing.** `/impressum` is indexable and carries a personal
+  name, address, phone and tax number. Legally it must be reachable; whether
+  it's *indexed* is the client's call (`robots="noindex"` if not).
+- **German-language reach.** Most local searches for a Berlin studio are
+  probably German ("Tonstudio Berlin"). Decide whether the site stays
+  English-only.

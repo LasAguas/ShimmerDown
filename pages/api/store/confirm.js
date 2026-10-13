@@ -10,7 +10,11 @@ export default async function handler(req, res) {
 
   const { ok, status, data } = await callDashboard("/api/store-public/confirm", {
     method: "POST",
-    body: { sessionId },
+    // The dashboard reads `session_id` (snake_case). Sent as `sessionId` it
+    // answers 400 "session_id required", this route turns that into a 502,
+    // and the shop swallows it — the buyer has paid and simply never sees a
+    // receipt, the cart isn't cleared, and the conversion event never fires.
+    body: { session_id: sessionId },
   });
 
   if (!ok) {

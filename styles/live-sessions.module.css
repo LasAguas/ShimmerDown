@@ -1,69 +1,230 @@
-/* /live-sessions — the argument, then the films.
-   The video facades themselves are in styles/components.css.
+/* /live-sessions — the client's October mockup (Mockups/Live Sessions.dc.html).
+   The palette is the "plum" theme (globals.css → "page themes"); the header is
+   the nav's plum tone (SiteNav tone="plum"). The page's cream stage sits
+   inside seven nested rounded rings, drawn here as seven padded boxes.
 
-   This page runs dark (components.css → .field[data-field="sessions"] is
-   its own background now, not the page's cream) — .page itself stays
-   transparent so that shows through, and everything below recolours for it.
-   The section head and .label are shared global classes, reached with
-   :global() the same way work.module.css already does for .bandRule. */
+   Knobs, each with the mockup's saved value. Change them here: */
 .page {
-  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
-}
-.page :global(.sectionHead h2) {
-  color: var(--on-dark);
-}
-.page :global(.label) {
-  color: var(--on-dark-dim);
+  --frame-w: 16px; /* frameWidth */
+  --frame-r: 80px; /* frameInnerRadius */
+  --stage-bg: #faf0e6; /* stageBackground */
+  --stage-ink: #191919; /* stageTextColor */
+  --stage-dim: #5d5348;
+  --stage-rule: rgba(25, 25, 25, 0.15);
 }
 
-.films {
-  list-style: none;
-  padding: 0;
-  margin-top: clamp(2rem, 5vw, 3.5rem);
+/* the nav is plum; this keeps plum behind it before the outer ring starts */
+.navSpacer {
+  height: var(--nav-block);
+  background: var(--plum-1);
+}
+
+/* ---- the rings -----------------------------------------------------------
+   Ring 1 (darkest) is the page-wide outer box with square corners; each ring
+   inside it is the next plum with a radius 1 ring-width smaller, down to the
+   stage itself at --frame-r. "Dark outside", as the mockup's frameOrder. */
+.ring {
+  padding: var(--frame-w);
+}
+.ring1 {
+  background: var(--plum-1);
+  border-radius: 0;
+}
+.ring2 {
+  background: var(--plum-2);
+  border-radius: calc(var(--frame-r) + 6 * var(--frame-w));
+}
+.ring3 {
+  background: var(--plum-3);
+  border-radius: calc(var(--frame-r) + 5 * var(--frame-w));
+}
+.ring4 {
+  background: var(--plum-4);
+  border-radius: calc(var(--frame-r) + 4 * var(--frame-w));
+}
+.ring5 {
+  background: var(--plum-5);
+  border-radius: calc(var(--frame-r) + 3 * var(--frame-w));
+}
+.ring6 {
+  background: var(--plum-6);
+  border-radius: calc(var(--frame-r) + 2 * var(--frame-w));
+}
+.ring7 {
+  background: var(--plum-7);
+  border-radius: calc(var(--frame-r) + 1 * var(--frame-w));
+}
+
+.stage {
+  background: var(--stage-bg);
+  color: var(--stage-ink);
+  border-radius: var(--frame-r);
+  overflow: hidden;
+  padding: clamp(3rem, 7vw, 5.5rem) 0 clamp(3.5rem, 8vw, 6rem);
+}
+/* the head's numeral and rule colours read off the stage, not the page */
+.stage :global(.numHead .num) {
+  color: var(--stage-dim);
+}
+
+.cols {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: clamp(1.75rem, 4vw, 2.75rem);
+  align-items: start;
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
 }
 
-/* The films alternate side to side down the page rather than sitting in a
-   tidy grid — they're the point of this page, so they get the room. */
-.film {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  align-items: center;
+/* ---- the featured film ---- */
+.featured {
+  margin: 0;
+  min-width: 0;
+  background: #191919;
+  padding: 12px 12px 14px;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 10px rgba(25, 25, 25, 0.12);
 }
-
-.filmTitle {
+.featured figcaption {
+  padding: 12px 2px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.6vw, 1.9rem);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-top: 0.45rem;
-  color: var(--on-dark);
+  color: #faf0e6;
 }
-.filmNote {
-  margin-top: 0.7rem;
-  color: var(--on-dark-dim);
-  font-size: 0.95em;
+.captionTitle {
+  color: rgba(250, 240, 230, 0.62);
 }
 
-@media (max-width: 780px) {
-  .film {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+/* ---- the list ---- */
+.side {
+  min-width: 0;
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--stage-rule);
+}
+.item {
+  border-top: 1px solid var(--stage-rule);
+}
+.pick {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 24px;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--stage-ink);
+  transition: color 300ms var(--ease-out);
+}
+.pick:hover,
+.pick:focus-visible {
+  color: var(--plum-3);
+}
+.thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #2a2320;
+  outline: 0 solid transparent;
+  outline-offset: 2px;
+}
+.thumb :global(img) {
+  transition: transform 900ms var(--ease-out);
+}
+.pick:hover .thumb :global(img) {
+  transform: scale(1.08);
+}
+/* the one on stage wears a plum ring */
+.pick[aria-pressed="true"] .thumb {
+  outline: 2px solid var(--plum-3);
+}
+.text {
+  min-width: 0;
+}
+.artist,
+.name,
+.note {
+  display: block;
+}
+.artist {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stage-dim);
+}
+.name {
+  margin-top: 0.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+.note {
+  margin-top: 0.25rem;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--stage-dim);
+}
+.go {
+  font-family: var(--font-display);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.links a {
+  color: var(--stage-ink);
+  transition: color 300ms var(--ease-out);
+}
+.links a:hover,
+.links a:focus-visible {
+  color: var(--plum-3);
+}
+.book {
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid currentColor;
+}
+
+/* ---- phones: slimmer rings so the stage keeps its width ---- */
+@media (max-width: 820px) {
+  .page {
+    --frame-w: 8px;
+    --frame-r: 48px;
   }
 }
-
-.book {
-  margin-top: clamp(3rem, 8vw, 5.5rem);
-  padding-top: clamp(2.5rem, 6vw, 4rem);
-  border-top: var(--band-h) solid transparent;
-  border-image: var(--bands-h) 1;
-  max-width: 46ch;
-}
-.bookHead {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.6vw, 2.4rem);
-  text-transform: uppercase;
-  margin-bottom: 1.4rem;
-  color: var(--on-dark);
+@media (max-width: 520px) {
+  .page {
+    --frame-w: 4px;
+    --frame-r: 28px;
+  }
+  .pick {
+    grid-template-columns: 76px minmax(0, 1fr) 18px;
+    gap: 12px;
+  }
 }

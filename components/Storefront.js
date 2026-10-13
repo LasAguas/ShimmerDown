@@ -33,31 +33,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useCart, CART_KEY } from "../lib/cartContext";
+import { priceLabel } from "../lib/price";
 
-const SPINE_W = 68; // px — must match --spine-w in components.css
+const SPINE_W = 46; // px — must match the --spine-w fallback in components.css (mockup: drawerWidth)
 
-const euro = (cents) => `€${((cents || 0) / 100).toFixed(2)}`;
-
-// The price to show on the card: one figure when every variant agrees, a range
-// when they don't.
-function priceLabel(p) {
-  const { price_cents, price_min_cents, price_max_cents } = p;
-  if (
-    Number.isFinite(price_min_cents) &&
-    Number.isFinite(price_max_cents) &&
-    price_min_cents !== price_max_cents
-  ) {
-    return `${euro(price_min_cents)} – ${euro(price_max_cents)}`;
-  }
-  return euro(price_cents ?? price_min_cents);
-}
-
-export default function Storefront() {
+// `initial` is the catalogue the page was built with (pages/store.js →
+// getStaticProps), so the first paint — and the HTML a crawler reads — already
+// has the products in it. The browser still asks /api/store/resolve on mount
+// to pick up stock changes since the page was built. `initial` is null when
+// the dashboard couldn't be reached at build time; then it's the old
+// "Opening the shop…" until the fetch lands.
+export default function Storefront({ initial = null }) {
   const { cart, addLine, clear } = useCart();
-  const [status, setStatus] = useState("loading"); // loading | open | closed
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [availability, setAvailability] = useState({});
+  const [status, setStatus] = useState(
+    initial ? (initial.products?.length ? "open" : "closed") : "loading"
+  ); // loading | open | closed
+  const [products, setProducts] = useState(initial?.products || []);
+  const [categories, setCategories] = useState(initial?.categories || []);
+  const [availability, setAvailability] = useState(initial?.availability || {});
   // null = nothing open, every product shows together
   const [tab, setTab] = useState(null);
   const [picks, setPicks] = useState({}); // productId → chosen variant name
@@ -245,6 +238,7 @@ export default function Storefront() {
             />
           ) : null}
         </div>
+        <div className="thumbStrip" aria-hidden="true" />
 
         <h3 className="shopName">{p.name}</h3>
         {p.description && <p className="shopDesc">{p.description}</p>}
@@ -323,16 +317,21 @@ export default function Storefront() {
         >
           {categories.map((c, i) => {
             const on = c.key === tab;
+            // Spread across the page's seven-stop ramp (globals.css → "page
+            // themes"): one category sits at the dark end, seven take every
+            // stop, anything between is evenly spaced — so neighbours never
+            // blur into one block.
+            const stop =
+              categories.length > 1
+                ? Math.round((i * 6) / (categories.length - 1))
+                : 0;
             return (
               <section
                 key={c.key}
                 className={`slide${on ? " open" : ""}`}
-                // sun-1/sun-2 are too pale to read as a spine — they're close
-                // enough to the page's own cream/tan wash that the spine
-                // nearly disappears into it. Sticking to the saturated half
-                // of the ramp, spread rather than adjacent, so neighbours
-                // don't blur into one orange block either.
-                style={{ "--tone": `var(--sun-${[7, 3, 5, 4, 6][i % 5]})` }}
+                // the darkest stop is the only one that wants cream type
+                data-tone={stop === 0 ? "dark" : undefined}
+                style={{ "--tone": `var(--t${stop + 1})` }}
               >
                 <button
                   type="button"

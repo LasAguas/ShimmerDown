@@ -33,6 +33,9 @@ export default function VideoEmbed({
   badge,
   hidePlayIcon = false,
   className = "",
+  // How wide the poster is drawn, for the browser to pick a file size by.
+  // The default fits three-across; a page that draws it bigger says so.
+  sizes = "(max-width: 760px) 100vw, 33vw",
 }) {
   const [playing, setPlaying] = useState(false);
   const id = url ? youTubeId(url) : null;
@@ -71,8 +74,12 @@ export default function VideoEmbed({
             src={posterSrc}
             alt=""
             fill
-            sizes="(max-width: 760px) 100vw, 33vw"
-            unoptimized={!!id}
+            sizes={sizes}
+            // Only YouTube's own fallback frame is left alone (maxresdefault
+            // can 404, which the optimiser would turn into a broken image).
+            // A poster we supply is a file in /public, and unoptimised that
+            // meant shipping all three ~800KB JPGs at full size.
+            unoptimized={!poster && !!id}
           />
           {!hidePlayIcon && (
             <span className="vidPlay" aria-hidden="true">

@@ -12,7 +12,8 @@ import s from "../styles/links.module.css";
 
 const META = {
   title: "Links",
-  description: "Everything Shimmer Down Studios, in one place.",
+  description:
+    "Everything Shimmer Down Studios in one place: live session films, our work, the shop and how to book the Berlin studio.",
 };
 
 const INTRO = {
@@ -65,11 +66,13 @@ const LINKS = [
 
 export default function Links() {
   return (
-    <Layout {...META} path="/links" field="legal">
+    // noindex: this is the link-in-bio page, a list of links the site's own nav
+    // already carries. "follow" keeps those links counting.
+    <Layout {...META} path="/links" field="legal" robots="noindex, follow">
       <div className={s.page}>
         <div className="shell">
           <div className="sectionHead">
-            <h2>{INTRO.heading}</h2>
+            <h1>{INTRO.heading}</h1>
           </div>
           <p className={`lede ${s.lede}`}>{INTRO.lede}</p>
 

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;family=Space+Grotesk:wght@300;400;500&amp;family=Fraunces:opsz,wght@9..144,300;9..144,500&amp;display=swap">
+<style>
+html{--wall-l:26px;--wall-r:26px;--wall-bg-l:linear-gradient(180deg,#b8405f 0.0000% 14.2857%,#ca5263 14.2857% 28.5714%,#dc6467 28.5714% 42.8571%,#ee766b 42.8571% 57.1429%,#ff8877 57.1429% 71.4286%,#ffa88b 71.4286% 85.7143%,#ffc89f 85.7143% 100.0000%);--wall-bg-l:none;--wall-bg-r:linear-gradient(180deg,#b8405f 0.0000% 14.2857%,#ca5263 14.2857% 28.5714%,#dc6467 28.5714% 42.8571%,#ee766b 42.8571% 57.1429%,#ff8877 57.1429% 71.4286%,#ffa88b 71.4286% 85.7143%,#ffc89f 85.7143% 100.0000%);--footer-ink:#FFFEF1;--ring-1:#F5BE7F;--ring-2:#EFA962;--ring-3:#E8954A;--ring-4:#DF8036;--ring-5:#D46C28;--ring-6:#C65A20;--ring-7:#B5491B;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{--band-top-h:clamp(56px,7.5vw,104px);--band-bottom-h:clamp(56px,7.5vw,104px);--band-gap:0px;--band-inset:0px;--bands-top:var(--bands-fwd);--bands-bottom:var(--bands-rev);--sun-1:#b8405f;--sun-2:#ca5263;--sun-3:#dc6467;--sun-4:#ee766b;--sun-5:#ff8877;--sun-6:#ffa88b;--sun-7:#ffc89f;--paper:#fdf6ea;--paper-2:#241d1a;--paper-3:#e6dbc9;--section-bg:#f0e7d7;--ink:#1c1714;--ink-dim:#5a4f45;--ink-faint:#9a8d7e;--font-display:"Helvetica Neue",Helvetica,Arial,sans-serif;--font-body:"Source Serif 4","Hoefler Text",Georgia,serif;--font-fine:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--film-filter:none;--grain-page:0;--bands-fwd:linear-gradient(180deg,#FAF0E6 0 14.2857%,#F9E3CC 14.2857% 28.5714%,#F8D7B3 28.5714% 42.8571%,#F6CA99 42.8571% 57.1428%,#F5BE7F 57.1428% 71.4285%,#F3B268 71.4285% 85.7142%,#F1A650 85.7142% 100%);--bands-rev:linear-gradient(180deg,#F1A650 0 14.2857%,#F3B268 14.2857% 28.5714%,#F5BE7F 28.5714% 42.8571%,#F6CA99 42.8571% 57.1428%,#F8D7B3 57.1428% 71.4285%,#F9E3CC 71.4285% 85.7142%,#FAF0E6 85.7142% 100%);--bands-h:linear-gradient(90deg,#FAF0E6 0 14.2857%,#F9E3CC 14.2857% 28.5714%,#F8D7B3 28.5714% 42.8571%,#F6CA99 42.8571% 57.1428%,#F5BE7F 57.1428% 71.4285%,#F3B268 71.4285% 85.7142%,#F1A650 85.7142% 100%);--dawn-bands-h:linear-gradient(90deg,#b8a8d8 0 14.2857%,#c8a0cc 14.2857% 28.5714%,#d898c0 28.5714% 42.8571%,#e890b4 42.8571% 57.1428%,#f8a0a8 57.1428% 71.4285%,#ffb09c 71.4285% 85.7142%,#ffc090 85.7142% 100%);--vibrant-bands-h:linear-gradient(90deg,#c84b9b 0 14.2857%,#d65a90 14.2857% 28.5714%,#e46985 28.5714% 42.8571%,#f2787a 42.8571% 57.1428%,#ff8870 57.1428% 71.4285%,#ff9860 71.4285% 85.7142%,#ffa850 85.7142% 100%);--dusk-bands-h:linear-gradient(90deg,#3a4575 0 14.2857%,#4d5588 14.2857% 28.5714%,#60659b 28.5714% 42.8571%,#8470a0 42.8571% 57.1428%,#a87ba5 57.1428% 71.4285%,#cc86aa 71.4285% 85.7142%,#e895ad 85.7142% 100%)}
+body{margin:0;background:var(--paper,#f7f1e7);color:var(--ink,#1c1714)}
+*{box-sizing:border-box}
+img,svg{display:block;max-width:100%}
+a{color:var(--ink,#1c1714);text-decoration:none}
+a:hover{color:var(--sun-3,#F8D7B3)}
+@keyframes footerRingsDrift{0%{transform:rotate(-2.5deg) scale(1)}100%{transform:rotate(2.5deg) scale(1.04)}}
+</style>
+</helmet>
+
+<div style="font-family:var(--font-body);color:var(--ink);background:var(--paper);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden">
+
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:95;mix-blend-mode:multiply;opacity:var(--grain-page);background-image:var(--grain-img)"></div>
+
+  <div ref="{{ glowRef }}" aria-hidden="true" style="position:fixed;left:0;top:0;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;pointer-events:none;z-index:90;background:radial-gradient(circle,rgba(255,186,122,0.6),rgba(255,122,53,0.31) 45%,transparent 72%);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s cubic-bezier(.16,1,.3,1)"></div>
+
+  <header style="position:fixed;left:0;right:0;top:0;z-index:100">
+    <div style="transition:background .42s cubic-bezier(.16,1,.3,1);background: {{ navBg }}">
+      <nav aria-label="Main" style="position:relative;width:min(1240px,100%);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3.5rem);display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:1.5rem;min-height:64px">
+        <a href="Shimmer Down.dc.html" style="flex:0 1 auto;min-width:0;display:block">
+          <img src="assets/wordmark-bold.png" alt="Shimmer Down Recording Studios" style="height:auto;width:100%;max-width:min(34vw,480px);transition:filter .42s;filter: {{ markFilter }}">
+        </a>
+        <ul style="display:flex;flex-wrap:nowrap;align-items:center;gap:clamp(.1rem,.8vw,.4rem);list-style:none;padding:0;margin:0 -13px 0 0">
+          <li><a href="Work Compact.dc.html" style="display:inline-flex;white-space:nowrap;padding:.62em 1em;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .3s,color .3s;color: {{ navInk }}" style-hover="background:var(--dawn-3);color:#1c1714">Work</a></li>
+          <li><a href="Studio.dc.html" style="display:inline-flex;white-space:nowrap;padding:.62em 1em;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .3s,color .3s;color: {{ navInk }}" style-hover="background:var(--dawn-3);color:#1c1714">Studio</a></li>
+          <li><a href="Live Sessions.dc.html" style="display:inline-flex;white-space:nowrap;padding:.62em 1em;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .3s,color .3s;color: {{ navInk }}" style-hover="background:var(--dawn-3);color:#1c1714">Media</a></li>
+          <li><a href="Contact.dc.html" style="display:inline-flex;white-space:nowrap;padding:.62em 1em;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .3s,color .3s;color: {{ navInk }}" style-hover="background:var(--dawn-3);color:#1c1714">Vibe</a></li>
+          <li><a href="Store.dc.html" aria-current="page" style="background:var(--tab-bg,rgba(250,240,230,.14));display:inline-flex;white-space:nowrap;padding:.62em 1em;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background .3s,color .3s;color: {{ navInk }}" style-hover="background:var(--dawn-3);color:#1c1714">Shop</a></li>
+        </ul>
+        <div aria-hidden="true" style="position:absolute;left:clamp(1.25rem,4vw,3.5rem);right:clamp(1.25rem,4vw,3.5rem);bottom:10px;height:2px;transition:background .42s;background: {{ navInk }}"></div>
+      </nav>
+    </div>
+  </header>
+
+  <main style="position:relative;min-height:100svh;overflow:hidden">
+    <div aria-hidden="true" style="height:var(--nav-h,64px);background:#000"></div>
+    <svg aria-hidden="true" viewBox="0 0 200 200" style="position:absolute;left:0;top:calc(50% + var(--nav-h,64px) / 2);width:calc(min(560px,58vw) * var(--deco-scale,1));height:auto;transform:translate(-62%,-50%);opacity:var(--deco-op,.35);pointer-events:none"><circle cx="100" cy="100" r="98" fill="var(--sun-7)" stroke="var(--paper)" stroke-width="3"></circle><circle cx="100" cy="100" r="84" fill="var(--sun-6)" stroke="var(--paper)" stroke-width="3"></circle><circle cx="100" cy="100" r="70" fill="var(--sun-5)" stroke="var(--paper)" stroke-width="3"></circle><circle cx="100" cy="100" r="56" fill="var(--sun-4)" stroke="var(--paper)" stroke-width="3"></circle><circle cx="100" cy="100" r="42" fill="var(--sun-3)" stroke="var(--paper)" stroke-width="3"></circle><circle cx="100" cy="100" r="28" fill="var(--sun-2)" stroke="var(--paper)" stroke-width="3"></circle></svg>
+    <section style="position:relative;padding:clamp(2.5rem,6vw,4.5rem) 0 clamp(4rem,9vw,7rem)">
+      <div style="width:min(1240px,100%);margin-inline:auto;padding-left:clamp(1.25rem,4vw,3.5rem);padding-right:calc(var(--drawer-w,52px) * var(--drawer-n,7) + clamp(1.25rem,4vw,3.5rem))">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:1rem">
+          <h1 style="margin:0;font-family:var(--font-title);font-weight:500;font-size:clamp(2.6rem,7vw,100px);letter-spacing:-.02em;line-height:.9;text-transform:uppercase">Record Store</h1>
+          <span style="font-family:var(--font-shop);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim)">Basket · {{ basketCount }}</span>
+        </div>
+        <ul style="list-style:none;padding:0;margin:clamp(2rem,4vw,3rem) 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),250px));gap:2.2rem 1.75rem">
+            <sc-for list="{{ allItems }}" as="it" hint-placeholder-count="0">
+              <li style="min-width:0;display:flex;flex-direction:column;gap:.55rem">
+                <div style="display:flex;flex-direction:column"><div style="position:relative;aspect-ratio:1;background:#e6dbc9;overflow:hidden"><div role="img" aria-label="{{ it.imgLabel }}" style="position:absolute;inset:0;background-image:{{ it.imgBg }};background-size:cover;background-position:{{ it.pos }};filter:var(--film-filter);transition:transform .9s cubic-bezier(.16,1,.3,1)" style-hover="transform:scale(1.04)"></div></div><div aria-hidden="true" style="height:18px;background:var(--thumb-strip);clip-path:polygon(0 0,100% 0,92% 100%,8% 100%);-webkit-mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.55) 100%);mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.55) 100%)"></div></div>
+                <h3 style="margin:.45rem 0 0;font-family:var(--font-shop);font-weight:400;font-size:17px;line-height:1.05;text-transform:uppercase;color:{{ it.ink }}">{{ it.title }}</h3>
+                <sc-if value="{{ it.desc }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-family:var(--font-shop);font-size:17px;line-height:1.55;color:{{ it.dim }}">{{ it.desc }}</p></sc-if>
+                <p style="margin:0;font-family:var(--font-shop);font-size:12px;letter-spacing:.14em;color:{{ it.ink }}">{{ it.price }}</p>
+                <sc-if value="{{ it.variant }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;padding:.45rem .8rem;border:1px solid {{ it.ink }};border-radius:999px;font-family:var(--font-shop);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:{{ it.ink }}">{{ it.variant }}</span></sc-if>
+                <sc-if value="{{ it.hasSizes }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:.5rem"><sc-for list="{{ it.sizes }}" as="sz" hint-placeholder-count="0"><span style="display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(28,23,20,.18);border-radius:50%;font-family:var(--font-shop);font-size:11px;text-decoration:line-through;color:rgba(28,23,20,.4)">{{ sz }}</span></sc-for></div></sc-if>
+                <button type="button" onClick="{{ it.add }}" disabled="{{ it.soldOut }}" style="align-self:flex-start;margin-top:.3rem;padding:0 0 .25em;border:0;border-bottom:1px solid currentColor;background:none;font-family:var(--font-shop);font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#1c1714;opacity:{{ it.btnOp }};cursor:{{ it.cursor }};transition:opacity .3s" style-hover="opacity:.7">{{ it.btnLabel }}</button>
+              </li>
+            </sc-for>
+        </ul>
+      </div>
+    </section>
+    <div style="position:absolute;top:var(--nav-h,64px);right:0;bottom:0;left:0;display:flex;justify-content:flex-end;pointer-events:none;z-index:5">
+      <sc-for list="{{ drawers }}" as="d" hint-placeholder-count="4">
+        <div style="display:flex;height:100%;pointer-events:auto">
+          <button type="button" onClick="{{ d.toggle }}" aria-expanded="{{ d.open }}" style="width:var(--drawer-w,52px);height:100%;border:0;border-left:1px solid rgba(28,23,20,.08);padding:0;cursor:pointer;background:{{ d.bg }};display:flex;align-items:center;justify-content:center;color:#1c1714;transition:color .3s" style-hover="color:#ffffff">
+            <span style="writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--font-shop);font-size:clamp(16px,1.6vw,22px);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:inherit">{{ d.label }}</span>
+          </button>
+          <div style="width:{{ d.panelW }};height:100%;overflow:hidden;background:{{ d.bg }};transition:width .7s cubic-bezier(.16,1,.3,1)">
+            <div style="width:calc(var(--drawers-avail,100vw) - var(--drawer-w,52px) * var(--drawer-n,7));padding:clamp(3rem,10vh,7rem) clamp(1.5rem,5vw,4rem);display:flex;flex-direction:column;align-items:center">
+              <sc-if value="{{ d.empty }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-family:var(--font-shop);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:{{ d.ink }}">Opening the shop…</p></sc-if>
+              <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),300px));justify-content:center;width:100%;gap:2.2rem 1.75rem">
+                <sc-for list="{{ d.items }}" as="it" hint-placeholder-count="0">
+              <li style="min-width:0;display:flex;flex-direction:column;gap:.55rem">
+                <div style="display:flex;flex-direction:column"><div style="position:relative;aspect-ratio:1;background:#e6dbc9;overflow:hidden"><div role="img" aria-label="{{ it.imgLabel }}" style="position:absolute;inset:0;background-image:{{ it.imgBg }};background-size:cover;background-position:{{ it.pos }};filter:var(--film-filter);transition:transform .9s cubic-bezier(.16,1,.3,1)" style-hover="transform:scale(1.04)"></div></div><div aria-hidden="true" style="height:18px;background:var(--thumb-strip);clip-path:polygon(0 0,100% 0,92% 100%,8% 100%);-webkit-mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.55) 100%);mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.55) 100%)"></div></div>
+                <h3 style="margin:.45rem 0 0;font-family:var(--font-shop);font-weight:400;font-size:17px;line-height:1.05;text-transform:uppercase;color:{{ it.ink }}">{{ it.title }}</h3>
+                <sc-if value="{{ it.desc }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-family:var(--font-shop);font-size:17px;line-height:1.55;color:{{ it.dim }}">{{ it.desc }}</p></sc-if>
+                <p style="margin:0;font-family:var(--font-shop);font-size:12px;letter-spacing:.14em;color:{{ it.ink }}">{{ it.price }}</p>
+                <sc-if value="{{ it.variant }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;padding:.45rem .8rem;border:1px solid {{ it.ink }};border-radius:999px;font-family:var(--font-shop);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:{{ it.ink }}">{{ it.variant }}</span></sc-if>
+                <sc-if value="{{ it.hasSizes }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:.5rem"><sc-for list="{{ it.sizes }}" as="sz" hint-placeholder-count="0"><span style="display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(28,23,20,.18);border-radius:50%;font-family:var(--font-shop);font-size:11px;text-decoration:line-through;color:rgba(28,23,20,.4)">{{ sz }}</span></sc-for></div></sc-if>
+                <button type="button" onClick="{{ it.add }}" disabled="{{ it.soldOut }}" style="align-self:flex-start;margin-top:.3rem;padding:0 0 .25em;border:0;border-bottom:1px solid currentColor;background:none;font-family:var(--font-shop);font-size:13px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#1c1714;opacity:{{ it.btnOp }};cursor:{{ it.cursor }};transition:opacity .3s" style-hover="opacity:.7">{{ it.btnLabel }}</button>
+              </li>
+            </sc-for>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+
+  <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ lbAlt }}" onClick="{{ closeLb }}" style="position:fixed;inset:0;z-index:200;background:rgba(14,11,10,.94);display:grid;grid-template-rows:1fr auto;padding:clamp(1rem,3vw,2.5rem);gap:1rem">
+      <div style="position:relative;min-height:0;display:grid;place-items:center">
+        <div role="img" aria-label="{{ lbAlt }}" style="position:absolute;inset:0;background-image:{{ lbBg }};background-size:contain;background-position:center;background-repeat:no-repeat;filter:var(--film-filter)"></div>
+      </div>
+      <div onClick="{{ stop }}" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;color:#FAF0E6;width:min(1240px,100%);margin-inline:auto">
+        <p style="margin:0;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-wrap:pretty">{{ lbAlt }} <span style="color:rgba(250,240,230,.55);margin-left:.6em">{{ lbCount }}</span></p>
+        <div style="display:flex;gap:.25rem;flex:none">
+          <button type="button" aria-label="Previous" onClick="{{ lbPrev }}" style="min-width:44px;height:44px;border:0;background:none;color:#FAF0E6;font-family:var(--font-display);font-size:26px;font-weight:900;cursor:pointer" style-hover="color:var(--sun-7)">←</button>
+          <button type="button" aria-label="Next" onClick="{{ lbNext }}" style="min-width:44px;height:44px;border:0;background:none;color:#FAF0E6;font-family:var(--font-display);font-size:26px;font-weight:900;cursor:pointer" style-hover="color:var(--sun-7)">→</button>
+          <button type="button" aria-label="Close" onClick="{{ closeLb }}" style="min-width:44px;height:44px;border:0;background:none;color:#FAF0E6;font-family:var(--font-display);font-size:22px;font-weight:900;cursor:pointer" style-hover="color:var(--sun-7)">✕</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+
+  <footer style="position:relative;overflow:hidden;background:var(--paper-2);padding:clamp(3rem,7vw,5.5rem) 0 clamp(1.5rem,3vw,2.25rem)">
+    <div style="width:min(1240px,100%);margin-inline:auto;padding-inline:clamp(1.25rem,4vw,3.5rem)">
+      <div style="position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:clamp(1.75rem,4vw,2.75rem) 2rem">
+        <a href="#" style="display:inline-flex;align-items:baseline;gap:.4em;font-family:var(--font-display);font-weight:900;letter-spacing:.04em;text-transform:uppercase;font-size:22px;line-height:1;padding-bottom:.12em;border-bottom:3px solid currentColor;color:var(--footer-ink);order:2;flex:none;transition:color .3s" style-hover="color:var(--sun-7)">
+          <span>Get in Touch</span><span aria-hidden="true">→</span>
+        </a>
+        <div style="display:flex;flex-direction:column;gap:clamp(2.5rem,6vw,4rem);max-width:34rem">
+          <section style="max-width:46ch">
+            <h2 style="font-family:var(--font-display);font-weight:900;font-size:clamp(1.3rem,2.8vw,2rem);text-transform:uppercase;letter-spacing:-0.02em;line-height:1.1;margin:0 0 .65rem;color:var(--footer-ink)">Be the first to know</h2>
+            <p style="color:var(--footer-dim,#e8dcc6);font-size:.95em;margin:0 0 1.4rem">New live sessions, records released, and the odd exclusive discount rate. Unsubscribe at any time with one click.</p>
+            <div style="display:flex;flex-direction:column;gap:.6rem">
+              <input type="email" placeholder="Email address" style="width:100%;font-family:var(--font-fine);font-size:15px;background:var(--paper);border:1px solid rgba(28,23,20,.14);border-radius:2px;padding:.72rem .85rem;color:var(--ink)">
+              <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+                <input type="text" placeholder="Name" style="flex:1 1 9rem;min-width:0;font-family:var(--font-fine);font-size:15px;background:var(--paper);border:1px solid rgba(28,23,20,.14);border-radius:2px;padding:.72rem .85rem;color:var(--ink)">
+                <input type="text" placeholder="City" style="flex:1 1 9rem;min-width:0;font-family:var(--font-fine);font-size:15px;background:var(--paper);border:1px solid rgba(28,23,20,.14);border-radius:2px;padding:.72rem .85rem;color:var(--ink)">
+              </div>
+            </div>
+            <label style="display:flex;align-items:flex-start;gap:.6rem;margin-top:1.1rem;font-family:var(--font-fine);font-size:13px;line-height:1.5;color:var(--footer-dim,#e8dcc6);cursor:pointer">
+              <input type="checkbox" style="margin-top:.2em;accent-color:var(--sun-5);flex:none">
+              <span>Yes, send me occasional updates from Shimmer Down Studios.</span>
+            </label>
+            <p style="font-family:var(--font-fine);font-size:12px;line-height:1.55;color:var(--footer-faint,#c9b9a4);margin:.6rem 0 1.3rem">We store your details to send you these emails, nothing else. Full detail in the <a href="#" style="color:var(--footer-dim,#e8dcc6);border-bottom:1px solid rgba(250,240,230,.3)">Impressum &amp; privacy</a>.</p>
+            <button type="button" style="display:inline-flex;align-items:center;gap:.7em;font-family:&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-weight:900;font-size:22px;letter-spacing:.04em;text-transform:uppercase;padding:0 0 .12em;border:0;border-bottom:3px solid var(--footer-ink);color:var(--footer-ink);background:none;cursor:pointer;transition:opacity .3s" style-hover="opacity:.6">
+              <span>Sign up</span><span aria-hidden="true">→</span>
+            </button>
+          </section>
+          <div style="padding-top:1.25rem;border-top:1px solid rgba(250,240,230,.2);display:flex;flex-wrap:wrap;align-items:center;gap:.75rem 1.75rem;font-family:var(--font-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--footer-faint,#c9b9a4)">
+            <span>© 2026 Shimmer Down Studios</span>
+            <a href="mailto:shimmerdownstudio@gmail.com" style="margin-right:auto;color:var(--footer-faint,#c9b9a4)" style-hover="color:var(--footer-ink)">shimmerdownstudio@gmail.com</a>
+            <nav aria-label="Legal and social" style="display:flex;flex-wrap:wrap;gap:1.25rem">
+              <a href="https://instagram.com/" style="color:var(--footer-faint,#c9b9a4)" style-hover="color:var(--footer-ink)">Instagram</a>
+              <a href="https://www.youtube.com/@shimmerdownstudios" style="color:var(--footer-faint,#c9b9a4)" style-hover="color:var(--footer-ink)">YouTube</a>
+              <a href="#" style="color:var(--footer-faint,#c9b9a4)" style-hover="color:var(--footer-ink)">Impressum</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;z-index:0;right:var(--fsun-right,0);bottom:0;width:var(--fsun-w,min(560px,90%));aspect-ratio:1;transform:var(--fsun-tf,translate(22%,28%));pointer-events:none;opacity:var(--fsun-op,1)">
+        <div style="width:100%;height:100%;animation:footerRingsDrift 34s ease-in-out infinite alternate">
+        <svg viewBox="0 0 200 200" focusable="false" style="width:100%;height:100%;display:block">
+          <circle cx="100" cy="100" r="98" fill="var(--ring-1)" stroke="var(--paper-2)" stroke-width="var(--fsun-gap,3)"></circle>
+          <circle cx="100" cy="100" r="84" fill="var(--ring-2)" stroke="var(--paper-2)" stroke-width="var(--fsun-gap,3)"></circle>
+          <circle cx="100" cy="100" r="70" fill="var(--ring-3)" stroke="var(--paper-2)" stroke-width="var(--fsun-gap,3)"></circle>
+          <circle cx="100" cy="100" r="56" fill="var(--ring-4)" stroke="var(--paper-2)" stroke-width="var(--fsun-gap,3)"></circle>
+          <circle cx="100" cy="100" r="42" fill="var(--ring-5)" stroke="var(--paper-2)" stroke-width="var(--fsun-gap,3)"></circle>
+          <circle cx="100" cy="100" r="28" fill="var(--ring-6)" stroke="var(--paper-2)" stroke-width="var(--fsun-gap,3)"></circle>
+          <circle cx="100" cy="100" r="14" fill="var(--ring-7)"></circle>
+        </svg>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;bandPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Daylight&quot;,&quot;Sun&quot;,&quot;Dawn&quot;,&quot;Vibrant&quot;,&quot;Dusk&quot;,&quot;Red sun&quot;],&quot;default&quot;:&quot;Red sun&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colour&quot;},&quot;textColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#1c1714&quot;,&quot;options&quot;:[&quot;#1c1714&quot;,&quot;#2b2430&quot;,&quot;#f7f1e7&quot;,&quot;#fdf6ea&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colour&quot;},&quot;secondaryTextColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f2e7d5&quot;,&quot;options&quot;:[&quot;#5a4f45&quot;,&quot;#585067&quot;,&quot;#b8ada0&quot;,&quot;#f2e7d5&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colour&quot;},&quot;faintTextColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#9a8d7e&quot;,&quot;options&quot;:[&quot;#9a8d7e&quot;,&quot;#9b93a8&quot;,&quot;#6e655c&quot;,&quot;#e8dcc6&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colour&quot;},&quot;pageBackground&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#fdf6ea&quot;,&quot;options&quot;:[&quot;#f7f1e7&quot;,&quot;#fdf6ea&quot;,&quot;#f4f2ee&quot;,&quot;#1c1714&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colour&quot;},&quot;sectionBackground&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f0e7d7&quot;,&quot;options&quot;:[&quot;#f0e7d7&quot;,&quot;#e8d9c3&quot;,&quot;#faf3e6&quot;,&quot;#2a2320&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Colour&quot;},&quot;footerBackground&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#241d1a&quot;,&quot;options&quot;:[&quot;#3a1f22&quot;,&quot;#241d1a&quot;,&quot;#191919&quot;,&quot;#2b2118&quot;,&quot;#4a2c1d&quot;,&quot;#6b3b22&quot;,&quot;#efe6d8&quot;,&quot;#f3e3d0&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Footer&quot;},&quot;pageGrain&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;default&quot;:0,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Film&quot;},&quot;filmGrade&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Natural&quot;,&quot;70s film&quot;,&quot;Faded print&quot;,&quot;Warm analog&quot;],&quot;default&quot;:&quot;Natural&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Film&quot;},&quot;displayFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Jost&quot;,&quot;Space Grotesk&quot;,&quot;Fraunces&quot;,&quot;Inter&quot;,&quot;Helvetica&quot;],&quot;default&quot;:&quot;Helvetica&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Type&quot;},&quot;bodyFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Source Serif 4&quot;,&quot;Fraunces&quot;,&quot;Jost&quot;,&quot;Inter&quot;,&quot;Helvetica&quot;],&quot;default&quot;:&quot;Source Serif 4&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Type&quot;},&quot;cursorGlow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;},&quot;footerTextColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FFFEF1&quot;,&quot;options&quot;:[&quot;#FFFEF1&quot;,&quot;#FAF0E6&quot;,&quot;#F5BE7F&quot;,&quot;#1c1714&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Footer&quot;},&quot;sunColours&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Match bands&quot;,&quot;Red sun&quot;,&quot;Red sun reversed&quot;,&quot;Red sun ember&quot;,&quot;Red sun glow&quot;,&quot;Red sun dusk&quot;,&quot;Red sun coral&quot;,&quot;Daylight&quot;,&quot;Daylight reversed&quot;,&quot;Honey&quot;,&quot;Amber&quot;,&quot;Pale gold&quot;,&quot;Plum&quot;,&quot;Plum reversed&quot;,&quot;Plum blush&quot;],&quot;default&quot;:&quot;Red sun dusk&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Footer sun&quot;},&quot;drawerPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Red sun&quot;,&quot;Shop orange&quot;,&quot;Sun&quot;,&quot;Coral&quot;,&quot;Dawn&quot;,&quot;Dusk&quot;,&quot;Daylight&quot;],&quot;default&quot;:&quot;Red sun&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Artist drawers&quot;},&quot;drawerWidth&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:36,&quot;max&quot;:90,&quot;step&quot;:2,&quot;default&quot;:46,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Artist drawers&quot;},&quot;buttonPalette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Red sun&quot;,&quot;Sun&quot;,&quot;Coral&quot;,&quot;Daylight&quot;,&quot;Dawn&quot;,&quot;Dusk&quot;],&quot;default&quot;:&quot;Red sun&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Artist drawers&quot;},&quot;ringOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:80,&quot;step&quot;:1,&quot;default&quot;:71,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Background rings&quot;},&quot;ringSize&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:40,&quot;max&quot;:220,&quot;step&quot;:5,&quot;default&quot;:80,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Background rings&quot;},&quot;shopFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Helvetica&quot;,&quot;Jost&quot;],&quot;default&quot;:&quot;Helvetica&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Artist drawers&quot;},&quot;titleFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Jost&quot;,&quot;Helvetica&quot;],&quot;default&quot;:&quot;Jost&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Artist drawers&quot;},&quot;sunSize&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Small&quot;,&quot;Medium&quot;,&quot;Large&quot;,&quot;Huge&quot;],&quot;default&quot;:&quot;Medium&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Footer sun&quot;},&quot;sunPosition&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Bottom right&quot;,&quot;Rising&quot;,&quot;Bottom centre&quot;,&quot;Bottom left&quot;],&quot;default&quot;:&quot;Bottom right&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Footer sun&quot;},&quot;sunRingGap&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;None&quot;,&quot;Thin&quot;,&quot;Medium&quot;,&quot;Bold&quot;],&quot;default&quot;:&quot;Medium&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Footer sun&quot;},&quot;sunOpacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:20,&quot;max&quot;:100,&quot;step&quot;:5,&quot;default&quot;:100,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Footer sun&quot;}}">
+const SUNS = {
+  'Red sun': ['#b8405f','#ca5263','#dc6467','#ee766b','#ff8877','#ffa88b','#ffc89f'],
+  'Red sun reversed': ['#ffc89f','#ffa88b','#ff8877','#ee766b','#dc6467','#ca5263','#b8405f'],
+  'Red sun ember': ['#5e1a2c','#7e243b','#9a3049','#b8405f','#dc6467','#ff8877','#ffc89f'],
+  'Red sun glow': ['#ffe6d2','#ffd4b8','#ffc89f','#ffa88b','#ff8877','#ee766b','#dc6467'],
+  'Red sun dusk': ['#3a1f3a','#5e2a4a','#8a3a58','#b8405f','#dc6467','#ff8877','#ffa88b'],
+  'Red sun coral': ['#ee766b','#f48470','#ff8877','#ff9a80','#ffa88b','#ffb894','#ffc89f'],
+  Plum: ['#e8b4bc','#d99a9c','#cc7a8c','#b85c78','#9b4466','#7a2f52','#5a2340'],
+  'Plum reversed': ['#5a2340','#7a2f52','#9b4466','#b85c78','#cc7a8c','#d99a9c','#e8b4bc'],
+  'Plum blush': ['#fbe4e6','#f4cdd2','#ecb4bc','#e09aa6','#d07f91','#bd657c','#a64d68'],
+  Daylight: ['#FAF0E6','#F9E3CC','#F8D7B3','#F6CA99','#F5BE7F','#F3B268','#F1A650'],
+  'Daylight reversed': ['#F1A650','#F3B268','#F5BE7F','#F6CA99','#F8D7B3','#F9E3CC','#FAF0E6'],
+  Honey: ['#FFE9B8','#FCD993','#F8C870','#F2B551','#EAA03A','#DE8A2A','#CF7420'],
+  Amber: ['#F5BE7F','#EFA962','#E8954A','#DF8036','#D46C28','#C65A20','#B5491B'],
+  'Pale gold': ['#FFF6E2','#FCEECF','#F8E3B8','#F3D7A0','#EDCA88','#E6BC72','#DEAD5E']
+};
+const PALETTES = {
+  'Shop orange': ['#ff5a20','#f39150','#ff7435','#ff8a40'],
+  Terracotta: ['#6e2a1c','#8e3a22','#ad4f2c','#c66a3c','#d98a58','#e6aa7e','#f0c9a6'],
+  Midnight: ['#141c38','#1f2b52','#2d3d6b','#435585','#62709e','#8d93b8','#bcbcd4'],
+  Plum: ['#5a2340','#7a2f52','#9b4466','#b85c78','#cc7a8c','#d99a9c','#e8b4bc'],
+  Daylight: ['#FAF0E6','#F9E3CC','#F8D7B3','#F6CA99','#F5BE7F','#F3B268','#F1A650'],
+  Sun: ['#dda860','#e89b55','#f28e4a','#fc8140','#ff7435','#ff672b','#ff5a20'],
+  Dawn: ['#b8a8d8','#c8a0cc','#d898c0','#e890b4','#f8a0a8','#ffb09c','#ffc090'],
+  Vibrant: ['#c84b9b','#d65a90','#e46985','#f2787a','#ff8870','#ff9860','#ffa850'],
+  Dusk: ['#3a4575','#4d5588','#60659b','#8470a0','#a87ba5','#cc86aa','#e895ad'],
+  'Red sun': ['#b8405f','#ca5263','#dc6467','#ee766b','#ff8877','#ffa88b','#ffc89f']
+};
+const FONTS = {
+  Jost: '"Jost","Futura","Trebuchet MS",sans-serif',
+  'Space Grotesk': '"Space Grotesk",sans-serif',
+  Fraunces: '"Fraunces",Georgia,serif',
+  'Source Serif 4': '"Source Serif 4","Hoefler Text",Georgia,serif',
+  Inter: '"Inter",sans-serif',
+  Helvetica: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+};
+const GRAIN_IMG = 'url("data:image/svg+xml,' + encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(#n)' opacity='0.5'/></svg>"
+) + '")';
+const GRADES = {
+  Natural: 'none',
+  '70s film': 'sepia(.28) saturate(1.25) contrast(1.06)',
+  'Faded print': 'sepia(.18) saturate(.72) contrast(.92) brightness(1.06)',
+  'Warm analog': 'sepia(.24) saturate(1.42) contrast(1.05) brightness(.97) hue-rotate(-9deg)'
+};
+const G = 'https://www.shimmer-down-studios.com/images/gallery/';
+const GALLERY = [
+  ['studio-amps-wide', 'The backline wall — Vox, Fender, Ampeg and Marshall stacked with guitars racked between', 'w'],
+  ['studio-rhodes-wide', 'A Rhodes Fifty Four beside the window, lamp lit', 'w'],
+  ['studio-control-vinyls-wide', 'The control desk with the vinyl shelf alongside', 'w'],
+  ['studio-percussion-mid', 'The percussion corner', 't'],
+  ['studio-marshall-amps-mid-1', 'A Marshall half-stack', ''],
+  ['studio-marshall-amps-mid-2', 'A second Marshall stack, close up', ''],
+  ['studio-fender-amp-detail', 'A Fender Deluxe Reverb, close up', ''],
+  ['studio-ampeg-head-detail', 'An Ampeg bass head, racked', ''],
+  ['studio-ampeg-detail', 'An Ampeg cabinet, detail', 't'],
+  ['studio-organ-detail', 'A combo organ, close up', ''],
+  ['studio-rhodes-mid', 'The Rhodes, seen across the room', ''],
+  ['studio-rhodes-detail', "The Rhodes' badge and controls, close up", ''],
+  ['studio-control-wide', 'The control desk, monitors either side, facing the live room', 'w'],
+  ['studio-piano-detail-1', "The piano's keys and pedals, close up", ''],
+  ['studio-piano-detail-2', 'The piano, another detail', ''],
+  ['studio-snare-mid', 'A snare drum, miked', 't'],
+  ['studio-control-mid', 'The control desk, closer in', ''],
+  ['studio-amps-mid', 'Guitars racked in front of the amp wall', 'w'],
+  ['studio-control-detail', 'The outboard gear on the desk, close up', '']
+];
+const BACKLINE = [
+  { name: 'Keyboards', items: ['Placeholder 1', 'Placeholder 2', 'Placeholder 3'] },
+  { name: 'Amps', items: ['Placeholder Ampeg', 'Placeholder Marshal', 'Placeholder Fender'] },
+  { name: 'Guitars', items: ['Keyboard Types Placeholder', 'Placeholder', 'Placeholder 3'] }
+];
+const ROOM_B = [
+  ['The mix room — desk, console and outboard rack', 'w', 'uploads/studio-live-wide.jpg'],
+  ['High-ceilinged live space in daylight', 't', 'uploads/studio-live-light.jpg'],
+  ['Neumann KH 310 on its isolation pad', '', 'uploads/images%20(1).jpeg'],
+  ['KH 310 in the treated room, warm light behind', 't', 'uploads/images%20(2).jpeg'],
+  ['Guitars, keys and console in the den', 'w', 'uploads/studio-den.jpg'],
+  ['The lounge', 't', 'uploads/studio-lounge.jpg'],
+  ['KH 310 on the rack, a second pair behind', '', 'uploads/images.jpeg'],
+  ['Console, monitors and synths', 'w', 'uploads/work-golden-hour.jpg'],
+  ['KH 310 above the console', 'w', 'uploads/kh310alinks_REC0010362-000.webp']
+];
+const ALL = GALLERY.map(([file, alt]) => ({ src: G + file + '.jpg', alt })).concat(ROOM_B.map(([alt, , src]) => ({ src, alt })));
+function stops(cols, dir) {
+  const step = 100 / cols.length;
+  return 'linear-gradient(' + dir + ',' + cols.map((c, i) =>
+    c + ' ' + (i * step).toFixed(4) + '% ' + ((i + 1) * step).toFixed(4) + '%').join(',') + ')';
+}
+
+
+const __DC_DEFAULTS = (() => {
+  try {
+    const el = document.querySelector('script[data-dc-script]');
+    const raw = JSON.parse(el.getAttribute('data-props') || '{}');
+    const d = {};
+    for (const k in raw) if (k[0] !== '$' && raw[k] && 'default' in raw[k]) d[k] = raw[k].default;
+    return d;
+  } catch (e) { return {}; }
+})();
+class Component extends DCLogic {
+  pp() {
+    const o = { ...__DC_DEFAULTS };
+    const p = this.props || {};
+    for (const k in p) if (p[k] !== undefined) o[k] = p[k];
+    return o;
+  }
+  state = { lb: -1, reelPlaying: false, landed: false, drawer: -1, basket: {} };
+  glowRef = React.createRef();
+  reelRef = React.createRef();
+
+  componentDidMount() {
+    this.applyVars();
+    this.measureNav = () => {
+      const n = document.querySelector('header nav');
+      if (n) document.documentElement.style.setProperty('--nav-h', Math.round(n.getBoundingClientRect().height) + 'px');
+    };
+    this.measureNav();
+    window.addEventListener('resize', this.measureNav);
+    this.measureAvail = () => document.documentElement.style.setProperty('--drawers-avail', document.documentElement.clientWidth + 'px');
+    window.addEventListener('resize', this.measureAvail);
+    const navEl = document.querySelector('header nav');
+    if (navEl && window.ResizeObserver) { this._ro = new ResizeObserver(this.measureNav); this._ro.observe(navEl); }
+    this.onMove = (e) => {
+      const g = this.glowRef.current;
+      if (!g || this.pp().cursorGlow === false) return;
+      g.style.opacity = 1;
+      g.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+    };
+    if (matchMedia('(pointer:fine)').matches) window.addEventListener('pointermove', this.onMove);
+    this.onKey = (e) => {
+      if (this.state.lb < 0) return;
+      if (e.key === 'Escape') this.setState({ lb: -1 });
+      if (e.key === 'ArrowRight') this.step(1);
+      if (e.key === 'ArrowLeft') this.step(-1);
+    };
+    window.addEventListener('keydown', this.onKey);
+    this.onScroll = () => {
+      const dark = document.querySelector('main section');
+      const nav = document.querySelector('header nav');
+      if (!dark || !nav) return;
+      const landed = dark.getBoundingClientRect().bottom <= nav.getBoundingClientRect().height;
+      if (landed !== this.state.landed) this.setState({ landed });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onScroll();
+  }
+  componentDidUpdate() {
+    this.applyVars();
+    if (this.pp().cursorGlow === false && this.glowRef.current) this.glowRef.current.style.opacity = 0;
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.measureNav);
+    window.removeEventListener('pointermove', this.onMove);
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('scroll', this.onScroll);
+    if (this._ro) this._ro.disconnect();
+  }
+
+  applyVars() {
+    const p = this.pp();
+    const s = document.documentElement.style;
+    const cols = PALETTES[p.bandPalette] || PALETTES['Red sun'];
+    cols.forEach((c, i) => s.setProperty('--sun-' + (i + 1), c));
+    s.setProperty('--bands-h', stops(cols, '90deg'));
+    s.setProperty('--bands-rev', stops(cols.slice().reverse(), '180deg'));
+    s.setProperty('--bands-fwd', stops(cols, '180deg'));
+    const side = ['Both', 'Right only', 'Left only', 'Off'].includes(p.wallSide) ? p.wallSide : 'Both';
+    const ww = (p.wallWidth ?? 26) + 'px';
+    const pick = (name, fb) => name === 'Match bands' ? cols : (PALETTES[name] || PALETTES[fb]);
+    const ord = (c) => (p.wallOrder ?? 'Light top') === 'Light top' ? c : c.slice().reverse();
+    const wallA = ord(pick(p.rightWallPalette ?? 'Match bands', 'Red sun'));
+    const wallB = ord(pick(p.leftWallPalette ?? 'Match bands', 'Red sun'));
+    s.setProperty('--wall-r', side === 'Both' || side === 'Right only' ? ww : '0px');
+    s.setProperty('--wall-l', side === 'Both' || side === 'Left only' ? ww : '0px');
+    s.setProperty('--wall-bg-l', stops(wallB, '180deg'));
+    s.setProperty('--wall-bg-r', stops(wallA, '180deg'));
+    const flip = p.bandOrder === 'Dark → light';
+    s.setProperty('--bands-top', flip ? 'var(--bands-rev)' : 'var(--bands-fwd)');
+    s.setProperty('--bands-bottom', flip ? 'var(--bands-fwd)' : 'var(--bands-rev)');
+    s.setProperty('--drawer-w', (p.drawerWidth ?? 46) + 'px');
+    s.setProperty('--thumb-strip', stops(['#5e1a2c', cols[0], cols[2], cols[4], cols[6], p.pageBackground ?? '#fdf6ea'], '180deg'));
+    s.setProperty('--drawers-avail', document.documentElement.clientWidth + 'px');
+    s.setProperty('--deco-scale', String((p.ringSize ?? 80) / 100));
+    s.setProperty('--deco-op', String((p.ringOpacity ?? 71) / 100));
+    s.setProperty('--font-title', (p.titleFont ?? 'Jost') === 'Helvetica' ? '"Helvetica Neue",Helvetica,Arial,sans-serif' : '"Jost","Futura","Trebuchet MS",sans-serif');
+    s.setProperty('--font-shop', (p.shopFont ?? 'Helvetica') === 'Jost' ? '"Jost","Futura","Trebuchet MS",sans-serif' : '"Helvetica Neue",Helvetica,Arial,sans-serif');
+    { const bb0 = PALETTES[p.buttonPalette ?? 'Red sun'] || PALETTES['Red sun']; const bb = bb0.length >= 7 ? [bb0[2], bb0[3], bb0[4], bb0[5], bb0[6]] : bb0; const st = 100 / bb.length;
+      s.setProperty('--btn-bands', 'linear-gradient(90deg,' + bb.map((c, i) => c + ' ' + (i * st).toFixed(3) + '% ' + ((i + 1) * st).toFixed(3) + '%').join(',') + ')'); }
+    s.setProperty('--band-top-h', p.topBandHeight != null ? p.topBandHeight + 'px' : 'clamp(56px,7.5vw,104px)');
+    s.setProperty('--band-bottom-h', p.bottomBandHeight != null ? p.bottomBandHeight + 'px' : 'clamp(56px,7.5vw,104px)');
+    s.setProperty('--band-gap', (p.bandGap ?? 0) + 'px');
+    s.setProperty('--band-inset', p.bandWidth === 'Content column' ? 'calc(max(0px, (100vw - 1240px) / 2) + clamp(1.25rem, 4vw, 3.5rem))' : '0px');
+    PALETTES.Dawn.forEach((c, i) => s.setProperty('--dawn-' + (i + 1), c));
+    s.setProperty('--paper', p.pageBackground ?? '#fdf6ea');
+    s.setProperty('--paper-2', p.footerBackground ?? '#241d1a');
+    s.setProperty('--footer-ink', p.footerTextColor ?? '#FFFEF1');
+    s.setProperty('--footer-dim', '#e8dcc6');
+    s.setProperty('--footer-faint', '#c9b9a4');
+    const rings = SUNS[p.sunColours] || (p.sunColours === 'Match bands' || !p.sunColours ? cols : SUNS.Amber);
+    s.setProperty('--fsun-w', { Small: 'min(380px,70%)', Medium: 'min(560px,90%)', Large: 'min(760px,110%)', Huge: 'min(980px,130%)' }[p.sunSize ?? 'Medium']);
+    const spos = p.sunPosition ?? 'Bottom right';
+    s.setProperty('--fsun-right', spos === 'Bottom centre' ? '50%' : spos === 'Bottom left' ? '100%' : '0px');
+    s.setProperty('--fsun-tf', spos === 'Bottom centre' ? 'translate(50%,52%)' : spos === 'Bottom left' ? 'translate(78%,28%)' : spos === 'Rising' ? 'translate(18%,50%)' : 'translate(22%,28%)');
+    s.setProperty('--fsun-gap', String({ None: 0, Thin: 1.5, Medium: 3, Bold: 6 }[p.sunRingGap ?? 'Medium']));
+    s.setProperty('--fsun-op', String((p.sunOpacity ?? 100) / 100));
+    rings.forEach((c, i) => s.setProperty('--ring-' + (i + 1), c));
+    s.setProperty('--section-bg', p.sectionBackground ?? '#f0e7d7');
+    s.setProperty('--ink', p.textColor ?? '#1c1714');
+    s.setProperty('--ink-dim', p.secondaryTextColor ?? '#5a4f45');
+    s.setProperty('--ink-faint', p.faintTextColor ?? '#9a8d7e');
+    s.setProperty('--font-display', FONTS[p.displayFont] || FONTS.Helvetica);
+    s.setProperty('--font-body', FONTS[p.bodyFont] || FONTS['Source Serif 4']);
+    s.setProperty('--grain-img', GRAIN_IMG);
+    s.setProperty('--grain-page', String((p.pageGrain ?? 0) / 100));
+    s.setProperty('--film-filter', GRADES[p.filmGrade] || GRADES.Natural);
+    document.body.style.background = p.pageBackground ?? '#fdf6ea';
+  }
+
+  step(d) { this.setState(s => ({ lb: (s.lb + d + ALL.length) % ALL.length })); }
+  playReel() {
+    const v = this.reelRef.current;
+    if (!v) return;
+    v.src = this.pp().showreelUrl ?? 'uploads/Hero_video_2_compressed.mp4';
+    v.muted = false;
+    this.setState({ reelPlaying: true });
+    v.play().catch(() => { v.muted = true; v.play().catch(() => {}); });
+  }
+
+  renderVals() {
+    const lb = this.state.lb;
+    const P = this.pp();
+    const dp = PALETTES[P.drawerPalette ?? 'Red sun'] || PALETTES['Red sun'];
+    const shopCols = dp;
+    const ITEMS = [
+      { id: 'fuego', img: 'assets/vinyl-1.jpg', pos: 'center 70%', artist: 0, title: 'El Fuego Vinyl', desc: 'Los Baby Jaguars’ recent double single', price: '€10.00', variant: 'LBJS - El Fuego Vinyl' },
+      { id: 'tee', img: 'assets/vinyl-2.jpg', pos: 'center 65%', artist: 6, title: 'Shimmer Down Studios T-Shirt', price: '€20.00', sizes: ['S', 'M', 'L', 'XL'], soldOut: true },
+      { id: 'example', img: 'assets/vinyl-3.jpg', pos: '30% 55%', artist: 3, title: 'Example Item', price: '€1.00' }
+    ];
+    const LABELS = ['Los Baby Jaguars', 'Saturno 4000', 'Deltawelle', 'James Michael Rogers', 'Panna Cotta', 'Thom and the Wolves', 'Shimmer Down Studios'];
+    const lum = (h) => { const n = parseInt(h.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; };
+    const deco = (it, onColour) => {
+      const inBasket = !!this.state.basket[it.id];
+      return { ...it, desc: it.desc || '', variant: it.variant || '', hasSizes: !!it.sizes, sizes: it.sizes || [],
+        imgLabel: it.title + ' — product photo', imgBg: 'url("' + it.img + '")', ink: '#1c1714', dim: onColour ? '#2b211c' : 'var(--ink-dim)',
+        soldOut: !!it.soldOut, btnOp: it.soldOut ? '.45' : '1', cursor: it.soldOut ? 'default' : 'pointer',
+        btnLabel: it.soldOut ? 'Sold out' : inBasket ? 'In basket ✓' : 'Add to basket',
+        add: () => { if (!it.soldOut) this.setState(s => ({ basket: { ...s.basket, [it.id]: !s.basket[it.id] } })); } };
+    };
+    const open = this.state.drawer;
+    const cur = lb >= 0 ? ALL[lb] : null;
+    return {
+      basketCount: Object.values(this.state.basket).filter(Boolean).length,
+      allItems: ITEMS.map(it => deco(it, false)),
+      drawers: LABELS.map((label, i) => {
+        const items = ITEMS.filter(it => it.artist === i).map(it => deco(it, true));
+        const bg = shopCols[i % shopCols.length];
+        return { label, bg, ink: lum(bg) < 0.45 ? '#FAF0E6' : '#1c1714', open: open === i, items, empty: items.length === 0,
+          panelW: open === i ? 'calc(var(--drawers-avail,100vw) - var(--drawer-w,52px) * var(--drawer-n,7))' : '0px',
+          toggle: () => this.setState(s => ({ drawer: s.drawer === i ? -1 : i })) };
+      }),
+      glowRef: this.glowRef,
+      navBg: this.state.landed ? (this.pp().pageBackground ?? '#f7f1e7') : '#000',
+      navInk: this.state.landed ? '#1c1714' : '#FAF0E6',
+      markFilter: this.state.landed ? 'none' : 'invert(1)',
+      reelRef: this.reelRef,
+      reelPlaying: this.state.reelPlaying,
+      showPoster: !this.state.reelPlaying,
+      playReel: () => this.playReel(),
+      gallery: GALLERY.map(([f, alt, shape], i) => ({
+        src: G + f + '.jpg', alt,
+        col: shape === 'w' ? 'span 2' : 'span 1',
+        row: shape === 't' ? 'span 2' : 'span 1',
+        open: () => this.setState({ lb: i })
+      })),
+      backline: BACKLINE,
+      roomB: ROOM_B.map(([alt, shape, src], j) => ({ alt, src, col: shape === 'w' ? 'span 2' : 'span 1', row: shape === 't' ? 'span 2' : 'span 1', open: () => this.setState({ lb: GALLERY.length + j }) })),
+      lightboxOpen: lb >= 0,
+      lbBg: cur ? 'url("' + cur.src + '")' : 'none',
+      lbAlt: cur ? cur.alt : '',
+      lbCount: cur ? (lb + 1) + ' / ' + ALL.length : '',
+      closeLb: () => this.setState({ lb: -1 }),
+      lbPrev: (e) => { e.stopPropagation(); this.step(-1); },
+      lbNext: (e) => { e.stopPropagation(); this.step(1); },
+      stop: (e) => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>

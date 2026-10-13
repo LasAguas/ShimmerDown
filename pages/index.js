@@ -12,12 +12,53 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import Hero from "../components/Hero";
 import VideoEmbed from "../components/VideoEmbed";
+import RecordShelf from "../components/RecordShelf";
+import { catalogueForStaticProps } from "../lib/catalogue";
+import { SITE_ORIGIN } from "../lib/site";
 import s from "../styles/home.module.css";
 
+// The home page leads its <title> with the brand, so it hands over the whole
+// string instead of taking Layout's "Page — Shimmer Down Studios" shape.
 const META = {
-  title: null, // home page shows the studio name alone
+  titleFull: "Shimmer Down Studios — Recording Studio in Berlin",
   description:
-    "Shimmer Down Studios — a recording, mixing and tracking room where top-quality audio meets a live session you can watch. Berlin.",
+    "Shimmer Down Studios is a recording and mixing studio in Berlin: a bright live room, a dry treated mix room and filmed live sessions you can watch.",
+};
+
+// Structured data — what the studio is, for search engines. Not visible on the
+// page. Only facts that are already public on the site; there's no street
+// address, phone or opening hours here because none are confirmed for the
+// studio itself (TODO.md items 5 and 6): add `streetAddress`, `postalCode`
+// and the Instagram URL to `sameAs` when they are.
+const SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_ORIGIN}/#website`,
+      url: `${SITE_ORIGIN}/`,
+      name: "Shimmer Down Studios",
+      inLanguage: "en",
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": `${SITE_ORIGIN}/#studio`,
+      name: "Shimmer Down Studios",
+      url: `${SITE_ORIGIN}/`,
+      description:
+        "A recording and mixing studio in Berlin with a live room, a mix room and filmed live sessions.",
+      image: `${SITE_ORIGIN}/images/og/studio-control.jpg`,
+      logo: `${SITE_ORIGIN}/images/logos/shimmer-down-logo-simple-medium.png`,
+      email: "shimmerdownstudio@gmail.com",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Berlin",
+        addressCountry: "DE",
+      },
+      areaServed: "Berlin",
+      sameAs: ["https://www.youtube.com/@shimmerdownstudios"],
+    },
+  ],
 };
 
 const HERO = {
@@ -55,9 +96,36 @@ const SESSIONS = {
   ],
 };
 
-export default function Home() {
+// The first three products in the shop, with a way through to the rest. The
+// products themselves — names, prices, photos — come from the dashboard
+// (Admin → Webstore); only the words around them are here. The shelf draws
+// nothing while the shop is closed or empty (components/RecordShelf.js).
+const RECORDS = {
+  heading: "Record Store",
+  cta: "All shop items",
+  href: "/store",
+};
+
+// The shelf is baked into the page (and refreshed every minute) so the
+// products are in the HTML a crawler reads, not just fetched in the browser.
+// Only the fields RecordShelf draws are kept — the full catalogue would bloat
+// the page for nothing. `?? null` because Next can't serialise `undefined`.
+export async function getStaticProps() {
+  const catalogue = await catalogueForStaticProps();
+  const records = (catalogue?.products || []).slice(0, 3).map((p) => ({
+    id: p.id,
+    name: p.name,
+    images: p.images || [],
+    price_cents: p.price_cents ?? null,
+    price_min_cents: p.price_min_cents ?? null,
+    price_max_cents: p.price_max_cents ?? null,
+  }));
+  return { props: { records }, revalidate: 60 };
+}
+
+export default function Home({ records }) {
   return (
-    <Layout {...META} path="/" field="home" overHero>
+    <Layout {...META} path="/" field="home" overHero jsonLd={SCHEMA}>
       <Hero title={HERO.title} slides={HERO.slides}>
         <Link href="/contact" className="ctaLink onDark">
           Book a session
@@ -81,6 +149,8 @@ export default function Home() {
                   title={film.title}
                   artist={film.artist}
                   poster={film.poster}
+                  // matches home.module.css → .films: one column, then two, then three
+                  sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
                 />
                 <div className={s.filmMeta}>
                   <p className="label">{film.artist}</p>
@@ -100,6 +170,8 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      <RecordShelf {...RECORDS} className={s.records} initial={records} />
     </Layout>
   );
 }

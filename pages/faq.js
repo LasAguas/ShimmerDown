@@ -14,9 +14,9 @@ import Layout from "../components/Layout";
 import s from "../styles/faq.module.css";
 
 const META = {
-  title: "FAQ",
+  title: "Studio Booking & Recording FAQ",
   description:
-    "Answers to the questions we get most, before a session, an order or a Live Session enquiry.",
+    "Answers to common questions about booking Shimmer Down Studios in Berlin: sessions, the room and gear, live sessions, mixing and the shop.",
 };
 
 const INTRO = {
@@ -64,7 +64,7 @@ export default function Faq() {
       <div className={s.page}>
         <div className="shell">
           <div className="sectionHead">
-            <h2>{INTRO.heading}</h2>
+            <h1>{INTRO.heading}</h1>
           </div>
           <p className={`lede ${s.lede}`}>{INTRO.lede}</p>
 

@@ -24,7 +24,11 @@ pages/
   live-sessions.js    the three films, and why the room works this way
   store.js            the shop frame
   contact.js          the big mailto
+  faq.js              booking, room, shop questions
   impressum.js        § 5 DDG + privacy
+  404.js              the "page not found" page
+  sitemap.xml.js      /sitemap.xml — ADD NEW PAGES TO ITS PATHS LIST
+  robots.txt.js       /robots.txt
   api/
     store/            resolve · checkout · confirm   → the dashboard
     newsletter/       track · subscribe              → the dashboard
@@ -37,8 +41,25 @@ styles/
 components/           behaviour only; no page copy except nav + footer
 lib/
   dashboard.js        the only thing that talks to lasaguasproductions.com
-  artists.js          splits one flat store into per-artist tabs
+  catalogue.js        the shop's products, for the API route and getStaticProps
+  site.js             the public origin + site name (canonicals, sitemap, schema)
+  categories.js       splits one flat store into category tabs
 ```
+
+## Search engines
+
+Every page renders through `components/Layout.js`, which writes the title,
+description, canonical, Open Graph / Twitter tags and (when a page passes
+`jsonLd`) its structured data. Per page: pass `title` (becomes "Title — Shimmer
+Down Studios") or `titleFull`, a `description` of roughly 120–155 characters,
+and an `ogImage` from `public/images/og/` (1200×630). Pass `robots="noindex,
+follow"` to keep a page out of results. The site's address comes from the
+`SITE_ORIGIN` env var via `lib/site.js` — set it in Vercel, or every canonical
+points at the fallback.
+
+`/` and `/store` are built with `getStaticProps` and refreshed every minute, so
+the shop's products are in the HTML a crawler reads; the browser still refreshes
+stock on load. See TODO.md items 7, 22 and 28.
 
 ## The design system, in one paragraph
 
