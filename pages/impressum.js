@@ -107,10 +107,12 @@ function Block({ heading, lines }) {
 export default function Impressum() {
   return (
     <Layout {...META} path="/impressum" field="legal">
-      <div className={s.page}>
+      {/* the page is German (see the note at the top of the file), the site
+          around it isn't */}
+      <div className={s.page} lang="de">
         <div className="shell">
           <div className="sectionHead">
-            <h2>Impressum</h2>
+            <h1>Impressum</h1>
           </div>
 
           <div className={s.cols}>

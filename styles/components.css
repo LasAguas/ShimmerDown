@@ -2,8 +2,8 @@
    Shimmer Down Studios — the shared components.
 
    Anything drawn by a file in components/ and used on more than one page ends
-   up here: the sign-up, the video facades, the hero, the record player, the
-   carousels and the storefront. Page-specific layout lives in that page's own
+   up here: the sign-up, the video facades, the hero, the record player and
+   the storefront. Page-specific layout lives in that page's own
    styles/<page>.module.css; the palette and the type live in globals.css.
    Both files are imported once, in pages/_app.js.
    =========================================================================== */
@@ -485,72 +485,6 @@
 }
 
 /* =========================================================================
-   the carousels
-   ========================================================================= */
-.car {
-  position: relative;
-}
-.carTrack {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 1.25rem;
-  display: grid;
-  grid-auto-flow: column;
-  /* four across on a wide screen, and the card keeps that width as the
-     viewport narrows until it hits the minimum, at which point fewer fit */
-  grid-auto-columns: minmax(230px, calc((100% - 3 * 20px) / 4));
-  gap: 20px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 0;
-  /* the scrollbar is redundant next to the arrows, and it shifts the layout */
-  scrollbar-width: none;
-}
-.carTrack::-webkit-scrollbar {
-  display: none;
-}
-.carTrack > * {
-  scroll-snap-align: start;
-  min-width: 0;
-}
-
-.carNav {
-  display: flex;
-  gap: 0.6rem;
-  margin-top: 0.5rem;
-}
-.carBtn {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 1px solid var(--rule-ink-strong);
-  background: transparent;
-  cursor: pointer;
-  font-size: 15px;
-  transition: background 300ms var(--ease-out), color 300ms var(--ease-out),
-    border-color 300ms var(--ease-out), opacity 300ms var(--ease-out);
-}
-.carBtn:hover:enabled,
-.carBtn:focus-visible:enabled {
-  background: var(--ink);
-  color: var(--paper);
-  border-color: var(--ink);
-}
-.carBtn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-@media (max-width: 640px) {
-  .carTrack {
-    grid-auto-columns: minmax(0, 78%);
-  }
-}
-
-/* =========================================================================
    the shop
    ========================================================================= */
 .shopState,
@@ -603,7 +537,10 @@
    `width` transitions independently per element: the closing spine just
    shrinks in place, the opening one just grows in place, and the row
    reflows around whatever the current widths happen to be — nothing to
-   jointly solve, nothing to glitch.
+   jointly solve, nothing to glitch. The same goes for what's INSIDE a slide:
+   its panel keeps its open width throughout and is clipped by the slide,
+   rather than flexing along with it (see .slidePanel in the desktop block
+   below).
 
    The open width is computed in pure CSS (`calc()`), not measured in JS: it's
    100vw minus however many OTHER spines are staying put at --spine-w each,
@@ -640,24 +577,34 @@
   pointer-events: none;
 }
 .slide {
+  /* How wide this slide is when it's the one that's open: the viewport minus
+     a spine for every OTHER slide. Named once so the slide and the panel
+     inside it (see .slidePanel in the desktop block below) can't disagree. */
+  --open-w: calc(100vw - (var(--rail-count, 1) - 1) * var(--spine-w, 46px));
   pointer-events: auto;
   display: flex;
   min-width: 0;
   flex: none;
-  width: var(--spine-w, 68px);
+  width: var(--spine-w, 46px);
   overflow: hidden;
+  /* clip, not just hidden: the panel inside is wider than the slide for most
+     of the animation, and a hidden box can still be scrolled sideways by the
+     browser — focusing a control in a half-open panel would drag the whole
+     panel along. A clipped box can't be scrolled at all. (hidden above is the
+     fallback for browsers without clip.) */
+  overflow: clip;
   background: var(--paper);
   box-shadow: -1px 0 0 var(--rule-ink); /* a hairline between spines */
   transition: width 1000ms var(--ease-panel), background 800ms var(--ease-panel);
 }
 .slide.open {
-  width: calc(100vw - (var(--rail-count, 1) - 1) * var(--spine-w, 68px));
+  width: var(--open-w);
   background: var(--tone, var(--sun-4));
 }
 
 /* ---- the spine ---- */
 .slideSpine {
-  flex: 0 0 var(--spine-w, 68px);
+  flex: 0 0 var(--spine-w, 46px);
   border: 0;
   padding: 1.1rem 0;
   cursor: pointer;
@@ -714,6 +661,24 @@
 @media (min-width: 821px) {
   .shopBody.railGutter {
     padding-right: calc(var(--rail-w, 0px) + var(--gutter));
+  }
+
+  /* The panel is laid out at its OPEN width, always — even while its slide is
+     still one spine wide, or halfway through collapsing. The slide's own
+     overflow clips it, so opening and closing wipe the panel on and off
+     instead of squeezing it.
+
+     It used to be fluid (flex: 1 1 auto), which put layout inside the width
+     animation: every frame the grid's auto-fill dropped or gained a column,
+     and each card — photo included — resized in sawtooth steps (a 67px jump
+     in a single frame, eleven of them across one close). Switching straight
+     from one category to another is where it showed, because the panel that's
+     closing is still on screen, fading, while its slide collapses under it.
+     With the width fixed nothing in the panel changes size at all; it only
+     moves. */
+  .slidePanel {
+    flex: none;
+    width: calc(var(--open-w) - var(--spine-w, 46px));
   }
 
   /* The rail is a full screen tall and stops at the footer (see .slides
@@ -780,6 +745,29 @@
   }
 }
 
+/* ---- the drawers, in the client's October mockup -------------------------
+   Same rail, narrower (SPINE_W in Storefront.js) and toned from the page's
+   red-sun ramp. Only the darkest stop wants cream type, on the spine and
+   inside the panel it opens; the strip under each card should end in the
+   colour it's sitting on, which inside a drawer is the drawer's own. */
+.slide[data-tone="dark"] .slideSpine {
+  color: #faf0e6;
+}
+.slide[data-tone="dark"] .slidePanel {
+  /* text that just inherits (the names) takes it from here; text that reads
+     var(--ink) or var(--ink-dim) takes the overrides below */
+  color: #faf0e6;
+  --ink: #faf0e6;
+  --ink-dim: rgba(250, 240, 230, 0.78);
+  --rule-ink-strong: rgba(250, 240, 230, 0.4);
+}
+.slide[data-tone="dark"] .shopVariant.on {
+  color: var(--tone);
+}
+.slidePanel {
+  --strip-end: var(--tone, var(--paper));
+}
+
 /* ---- goods on the left, basket on the right ---- */
 .shopBody {
   min-width: 0;
@@ -801,7 +789,6 @@
   aspect-ratio: 1;
   background: var(--paper-3);
   overflow: hidden;
-  margin-bottom: 0.85rem;
 }
 .shopArt :global(img) {
   transition: transform 900ms var(--ease-out);
@@ -810,6 +797,7 @@
   transform: scale(1.04);
 }
 .shopName {
+  margin-top: 0.85rem; /* clears the strip under the art */
   font-family: var(--font-display);
   font-size: clamp(0.9rem, 1.4vw, 1.05rem);
   text-transform: uppercase;
@@ -860,9 +848,24 @@
    neighbour, opening a huge gap above it on any shorter card (e.g. one with
    no variants). A fixed gap keeps it right under whatever precedes it. */
 .shopAdd {
+  align-self: flex-start;
   margin-top: 1rem;
-  padding-top: 0.85em;
-  padding-bottom: 0.85em;
+  /* the mockup's plain underlined link — .cta's pill and band fill are
+     switched off here, and its hover lift with them */
+  padding: 0 0 0.25em;
+  border-radius: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  transition: opacity 300ms var(--ease-out);
+}
+.shopAdd:hover:enabled,
+.shopAdd:focus-visible:enabled {
+  background: none;
+  transform: none;
+  opacity: 0.7;
 }
 .shopAdd:disabled {
   opacity: 0.45;
@@ -1113,5 +1116,186 @@
   }
   .fieldRings {
     opacity: 0.14;
+  }
+}
+
+/* =========================================================================
+   the client's October mockup — shared pieces
+   -------------------------------------------------------------------------
+   Everything below reads the page's palette (--bands, --t1…--t7) from the
+   nearest [data-theme] (globals.css → "page themes"). Each knob carries the
+   mockup's own prop name and value in a comment, so a page can be tightened
+   by hand: change the variable on the page's own module, not in here.
+   ========================================================================= */
+
+/* ---- band blocks --------------------------------------------------------
+   A hard 7-band strip, full width, under the nav or above the footer.
+   .rev runs the ramp the other way. .funnel cuts the ends in and fades the
+   far edge, the way the mockup's Work and Contact bands do.
+     --bandblock-h    topBandHeight / bottomBandHeight   mockup: 104px
+     --funnel-inset   thumbFunnelInset / funnelInset     mockup: 8%
+     --funnel-fade    1 − bandFade                       mockup: .55 */
+.bandBlock {
+  height: var(--bandblock-h, clamp(56px, 7.5vw, 104px));
+  background: var(--bands);
+}
+.bandBlock.rev {
+  background: var(--bands-rev);
+}
+.bandBlock.funnel {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--funnel-inset, 8%)) 100%,
+    var(--funnel-inset, 8%) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    rgba(0, 0, 0, var(--funnel-fade, 0.55)) 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    rgba(0, 0, 0, var(--funnel-fade, 0.55)) 100%
+  );
+}
+.bandBlock.funnel.rev {
+  clip-path: polygon(
+    var(--funnel-inset, 8%) 0,
+    calc(100% - var(--funnel-inset, 8%)) 0,
+    100% 100%,
+    0 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    #000 0,
+    rgba(0, 0, 0, var(--funnel-fade, 0.55)) 100%
+  );
+  mask-image: linear-gradient(
+    0deg,
+    #000 0,
+    rgba(0, 0, 0, var(--funnel-fade, 0.55)) 100%
+  );
+}
+
+/* ---- the strip under a thumbnail ----------------------------------------
+   Dark wine, four stops of the page's ramp, then the ground it sits on, cut
+   into a funnel and faded — the mockup's nod to the stripe under a Qwest
+   "Analogue" thumbnail. Falls back to Red Sun where there's no theme.
+     --strip-h     thumbStripHeight   mockup: 20px
+     --strip-end   the ground below it (default: the page's paper) */
+.thumbStrip {
+  height: var(--strip-h, 20px);
+  background: linear-gradient(
+    180deg,
+    #5e1a2c 0 16.667%,
+    var(--t1, var(--redsun-1)) 16.667% 33.333%,
+    var(--t3, var(--redsun-3)) 33.333% 50%,
+    var(--t5, var(--redsun-5)) 50% 66.667%,
+    var(--t7, var(--redsun-7)) 66.667% 83.333%,
+    var(--strip-end, var(--paper)) 83.333% 100%
+  );
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0, rgba(0, 0, 0, 0.55) 100%);
+  mask-image: linear-gradient(180deg, #000 0, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* ---- the polaroid --------------------------------------------------------
+   A dark card with a white border, tipped a degree or so.
+     --tilt   the angle   mockup: -1.2deg / 1.2deg */
+.polaroid {
+  margin: 0;
+  background: #191919;
+  border: 4px solid #fff;
+  padding: 12px 12px 36px;
+  box-shadow: 0 2px 10px rgba(25, 25, 25, 0.12);
+  transform: rotate(var(--tilt, -1.2deg));
+}
+.polaroid figcaption {
+  padding: 10px 2px 0;
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(250, 240, 230, 0.7);
+}
+
+/* ---- the numbered heading ------------------------------------------------
+   A small numeral, then the big head, sharing a baseline. */
+.numHead {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.numHead .num {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--ink-dim);
+}
+.numHead h1,
+.numHead h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.9rem, 6vw, 78px);
+  letter-spacing: -0.02em;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+/* ---- the record shelf (home page) ---------------------------------------
+   Three goods from the shop, square, each with the strip under it. The grid
+   is the home page's own session grid (home.module.css → .films) so the two
+   sections read as a pair. Rendered by components/RecordShelf.js, which
+   draws nothing at all while the shop is closed or empty. */
+.recordGrid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.1rem, 2.6vw, 2rem);
+}
+.record {
+  min-width: 0;
+}
+.recordArt {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  background: var(--paper-3);
+  overflow: hidden;
+}
+.recordArt img {
+  transition: transform 900ms var(--ease-out);
+}
+.record:hover .recordArt img,
+.recordArt:focus-visible img {
+  transform: scale(1.04);
+}
+.recordMeta {
+  padding-top: 0.95rem;
+}
+.recordName {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin-top: 0.4rem;
+}
+.recordsMore {
+  margin-top: clamp(2rem, 4.5vw, 3rem);
+}
+@media (max-width: 900px) {
+  .recordGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .recordGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 }

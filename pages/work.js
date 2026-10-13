@@ -1,10 +1,15 @@
 // ---------------------------------------------------------------------------
-// /work — two shelves of records, one for each side of what the room does,
-// each sleeve carrying the track you can actually listen to. Then the way
-// through to the films.
+// /work — the records, as two lists: one for what gets cut in the room
+// (Tracking), one for what gets finished in the control room (Mixing), each
+// row carrying the track you can actually listen to. Then the way through to
+// the films.
 //
 // ALL COPY AND ALL RECORDS ARE IN THIS FILE. To add a record, add an object to
 // MIXING or TRACKING below — art in /public/images/art, audio in /public/audio.
+//
+// The look is the client's October mockup (Mockups/Work Compact.dc.html): the
+// peach theme, funnel bands top and bottom, tipped polaroids, the records as
+// rows rather than a carousel. Its knobs are at the top of work.module.css.
 //
 // ⚠️ Every entry below is a PLACEHOLDER: the sleeves are square crops of the
 // studio photographs and every `audio` points at the same silent stand-in.
@@ -13,18 +18,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "../components/Layout";
-import Carousel from "../components/Carousel";
 import AudioPlayer from "../components/AudioPlayer";
+import SunRings, { THEME_RINGS } from "../components/SunRings";
 import s from "../styles/work.module.css";
 
 const META = {
-  title: "Work",
+  title: "Mixing & Tracking Portfolio",
   description:
-    "Records mixed and tracked at Shimmer Down Studios — listen to the work, then watch a session.",
+    "Records tracked and mixed at Shimmer Down Studios in Berlin. Listen to clips from the work, then watch the artists play live in the room.",
 };
 
 const INTRO = {
   heading: "The Work",
+  lede: "Records mixed and tracked at Shimmer Down Studios — listen to the work, then watch a session.",
 };
 
 const PLACEHOLDER_AUDIO = "/audio/placeholder-track.wav";
@@ -45,85 +51,144 @@ const TRACKING = [
   { title: "Record Title Ten", artist: "Artist Name", meta: "Single · 2024", art: "/images/art/placeholder-2.jpg", audio: PLACEHOLDER_AUDIO },
 ];
 
-const SHELVES = [
-  {
-    key: "mixing",
-    label: "Mixing",
-    records: MIXING,
-    // vibrant sunset — colour landing on a record that's already finished
-    ruleColour: "vibrant",
+// Each side of the work gets a polaroid of the room it happens in.
+const TRACKING_BLOCK = {
+  num: "01",
+  label: "Tracking",
+  records: TRACKING,
+  photo: {
+    src: "/images/gallery/work-golden-hour.jpg",
+    alt: "The live room",
+    caption: "Cut here · golden hour",
   },
-  {
-    key: "tracking",
-    label: "Tracking",
-    //blurb: "Cut in the live room, everyone in at once.",
-    records: TRACKING,
-    // deep dusk — echoes the studio page, where this side of the work happens
-    ruleColour: "dusk",
+};
+const MIXING_BLOCK = {
+  num: "02",
+  label: "Mixing",
+  records: MIXING,
+  photo: {
+    src: "/images/gallery/studio-control-wide.jpg",
+    alt: "The control room",
+    caption: "Mixed here · the control room",
   },
-];
+};
 
 const OUTRO = {
   heading: "Live Sessions",
-  //cta: "Watch the live sessions",
 };
 
-function Sleeve({ record }) {
+function Row({ record }) {
   return (
-    <li className={s.sleeve}>
+    <li className={s.row}>
       <div className={s.art}>
         <Image
           src={record.art}
           alt={`${record.title} by ${record.artist} — sleeve`}
           fill
-          sizes="(max-width: 640px) 78vw, (max-width: 1000px) 42vw, 290px"
+          sizes="58px"
           style={{ objectFit: "cover" }}
         />
       </div>
-      <p className="label">{record.artist}</p>
-      <h3 className={s.sleeveTitle}>{record.title}</h3>
-      <p className={s.sleeveMeta}>{record.meta}</p>
+      <div className={s.info}>
+        <h3 className={s.title}>{record.title}</h3>
+        <p className={s.meta}>
+          {record.artist} · {record.meta}
+        </p>
+      </div>
+      {/* the player's own button, scrub bar and clock become cells of the
+          row's grid — see work.module.css → ".row :global(.ap)" */}
       <AudioPlayer src={record.audio} label={`${record.title} by ${record.artist}`} />
     </li>
   );
 }
 
+function Polaroid({ photo, tilt }) {
+  return (
+    <figure className="polaroid" style={{ "--tilt": tilt }}>
+      <div className={s.polaroidImg}>
+        <Image
+          src={photo.src}
+          alt={photo.alt}
+          fill
+          sizes="(max-width: 820px) 90vw, 520px"
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+      <figcaption>{photo.caption}</figcaption>
+    </figure>
+  );
+}
+
 export default function Work() {
   return (
-    <Layout {...META} path="/work" field="work">
+    <Layout {...META} path="/work" field="none" theme="peach" flushFooter>
       <div className={s.page}>
-        <div className="shell">
-          <div className="sectionHead">
-            <h2>{INTRO.heading}</h2>
+        {/* clears the fixed nav, then the funnel band hangs from the nav's own rule */}
+        <div className={s.top}>
+          <div className="shell">
+            <div className={`bandBlock funnel ${s.bandTop}`} aria-hidden="true" />
           </div>
-
-          {SHELVES.map((shelf) => (
-            <section className={s.shelf} key={shelf.key} aria-labelledby={`shelf-${shelf.key}`}>
-              <div className={s.shelfHead}>
-                <h3 id={`shelf-${shelf.key}`} className={s.shelfTitle}>
-                  {shelf.label}
-                </h3>
-                {shelf.blurb && <p className={s.shelfBlurb}>{shelf.blurb}</p>}
-              </div>
-              <hr className={`bandRule ${shelf.ruleColour}`} />
-              <Carousel label={`${shelf.label} records`}>
-                {shelf.records.map((record) => (
-                  <Sleeve key={`${shelf.key}-${record.title}`} record={record} />
-                ))}
-              </Carousel>
-            </section>
-          ))}
-
-          <section className={s.outro}>
-            <h2 className={s.outroHead}>
-            <Link href="/live-sessions">
-              {OUTRO.heading}
-              <span className="arrow" aria-hidden="true">
-                →
-              </span>
-            </Link></h2>
-          </section>
         </div>
+
+        <section className={s.intro}>
+          <div className="shell">
+            <h1 className={s.pageHead}>{INTRO.heading}</h1>
+            <p className={s.lede}>{INTRO.lede}</p>
+          </div>
+        </section>
+
+        <section className={`${s.block} ${s.tracking}`} aria-labelledby="work-tracking">
+          <SunRings className={s.ringsRight} ramp={THEME_RINGS} bg="var(--block-bg)" />
+          <div className="shell">
+            <div className="numHead">
+              <span className="num">{TRACKING_BLOCK.num}</span>
+              <h2 id="work-tracking">{TRACKING_BLOCK.label}</h2>
+            </div>
+            <div className={s.cols}>
+              <Polaroid photo={TRACKING_BLOCK.photo} tilt="-1.2deg" />
+              <ul className={s.rows}>
+                {TRACKING_BLOCK.records.map((record) => (
+                  <Row key={record.title} record={record} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className={`${s.block} ${s.mixing}`} aria-labelledby="work-mixing">
+          <SunRings className={s.ringsLeft} ramp={THEME_RINGS} bg="var(--block-bg)" />
+          <div className="shell">
+            <div className={`${s.cols} ${s.colsFlip}`}>
+              <div className={`numHead ${s.flipHead}`}>
+                <span className="num">{MIXING_BLOCK.num}</span>
+                <h2 id="work-mixing">{MIXING_BLOCK.label}</h2>
+              </div>
+              <div className={s.flipPhoto}>
+                <Polaroid photo={MIXING_BLOCK.photo} tilt="1.2deg" />
+              </div>
+              <ul className={`${s.rows} ${s.flipRows}`}>
+                {MIXING_BLOCK.records.map((record) => (
+                  <Row key={record.title} record={record} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className={s.outro}>
+          <div className="shell">
+            <h2 className={s.outroHead}>
+              <Link href="/live-sessions">
+                {OUTRO.heading}
+                <span className="arrow" aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            </h2>
+          </div>
+        </section>
+
+        <div className={`bandBlock funnel rev ${s.bandBottom}`} aria-hidden="true" />
       </div>
     </Layout>
   );

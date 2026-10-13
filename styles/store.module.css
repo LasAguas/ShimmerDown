@@ -1,6 +1,43 @@
 /* /store — the frame. The shop itself is styled in styles/components.css,
-   since the Storefront component owns all of it. */
+   since the Storefront component owns all of it (the rail and cards, in the
+   client's October mockup look, are under "the artist rail" and "the drawers"
+   there). The palette is the "shop" theme (globals.css → "page themes").
 
+   Knobs, each with the mockup's saved value. Change them here: */
 .page {
-  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem)) 0;
+  --deco-size: calc(min(560px, 58vw) * 0.8); /* ringSize 80% */
+  --deco-op: 0.71; /* ringOpacity 71% */
+  position: relative;
+  overflow: hidden;
+  padding: calc(var(--nav-block) + clamp(2.5rem, 6vw, 4.5rem)) 0
+    clamp(4rem, 9vw, 7rem);
+}
+
+/* the ring figure bleeding off the left edge, behind everything */
+.rings {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: var(--deco-size);
+  height: auto;
+  transform: translate(-62%, -50%);
+  opacity: var(--deco-op);
+  pointer-events: none;
+}
+.content {
+  position: relative;
+}
+
+/* The one place the mockup doesn't use Helvetica Neue: its title is Jost 500
+   (titleFont), which the site already loads. --font-jost rather than the name
+   "Jost": the font is self-hosted through next/font now, which registers it
+   under a hashed name — pages/_app.js defines --font-jost to point at it. */
+.title {
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+  font-family: var(--font-jost);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 7vw, 100px);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  text-transform: uppercase;
 }

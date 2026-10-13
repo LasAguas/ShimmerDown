@@ -7,11 +7,12 @@
 // Mailing → Forms and it can be wired up the same way the footer sign-up is.
 // See TODO.md item 15.
 //
-// Deliberately stripped down to just the email and a way to the FAQ — a big
-// photo doing the talking, the same "one thing this page is for" idea as
-// before, just without the supporting copy and detail columns around it.
-// The address/rates/hours that used to sit here can go on the FAQ instead,
-// or come back here later if the client wants them back.
+// The look is the client's October mockup (Mockups/Contact.dc.html — its
+// "The Vibes" page): a full-bleed photo between two dusk bands, a line of the
+// studio's own words low on the left and the way to the FAQ low on the right.
+// The email stays as large as it'll go up top, because this page is still the
+// contact page; the mockup moved it to the footer. Its knobs are at the top of
+// contact.module.css.
 //
 // ALL COPY IS IN THIS FILE.
 // ---------------------------------------------------------------------------
@@ -21,12 +22,17 @@ import Layout from "../components/Layout";
 import s from "../styles/contact.module.css";
 
 const META = {
-  title: "Contact",
+  title: "Book a Recording Session",
   description:
-    "Book Shimmer Down Studios — recording, mixing, tracking and filmed live sessions in Berlin.",
+    "Book Shimmer Down Studios in Berlin for recording, mixing or a filmed live session. Email with your dates, line-up and a link to your music.",
 };
 
 const BG_IMAGE = "/images/gallery/studio-rhodes-wide.jpg";
+
+// The client's own wording, from the mockup. Its credit line there reads
+// "Artist name · session 2026" — a placeholder — so there isn't one here.
+const QUOTE =
+  "We are a human focused music making organisation, good vibes and quality products of original art are the goals.";
 
 const EMAIL = "shimmerdownstudio@gmail.com";
 // Set this large the address has to wrap somewhere; the @ is the only place
@@ -38,46 +44,71 @@ const MAIL_SUBJECT = "Studio enquiry";
 
 export default function Contact() {
   return (
-    <Layout {...META} path="/contact" field="contact" overHero flushFooter>
-      <section className={s.hero}>
-        <div className={s.heroMedia} aria-hidden="true">
-          <Image
-            src={BG_IMAGE}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            quality={82}
-            style={{ objectFit: "cover" }}
-          />
-          <div className={s.scrim} />
-        </div>
+    <Layout
+      {...META}
+      path="/contact"
+      field="none"
+      theme="dusk"
+      overHero
+      flushFooter
+      ogImage="/images/og/studio-rhodes.jpg"
+      ogImageAlt="A Rhodes Fifty Four beside the window, lamp lit"
+    >
+      <div className={s.page}>
+        {/* the nav is black over the photo, so black fills the gap behind it;
+            then dusk, light into dark, down onto the picture */}
+        <div className={s.navSpacer} aria-hidden="true" />
+        <div className={`bandBlock rev ${s.band}`} aria-hidden="true" />
 
-        <div className={`shell ${s.body}`}>
-          <div className={s.mailWrap}>
-            <a
-              className={s.mail}
-              href={`mailto:${EMAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}`}
-              data-track-type="other"
-              data-track-label="Email"
-              data-track-category="contact"
-            >
-              <span>{MAIL_LOCAL}@</span>
-              <wbr />
-              <span>{MAIL_DOMAIN}</span>
-            </a>
+        <section className={s.hero}>
+          <div className={s.heroMedia} aria-hidden="true">
+            <Image
+              src={BG_IMAGE}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              quality={82}
+              style={{ objectFit: "cover" }}
+            />
+            <div className={s.scrim} />
+            <div className={s.grain} />
           </div>
-        </div>
 
-        <div className={`shell ${s.foot}`}>
-          <p className={s.faqLink}>
-            Answers to the questions we get most are on the{" "}
-            <Link href="/faq">FAQ</Link>.
-          </p>
-        </div>
+          <div className={`shell ${s.body}`}>
+            {/* The page's heading is the address below, which isn't a
+                heading. This gives screen readers and search engines one
+                ("Book" because that's what the page is for) without adding
+                anything to the design. */}
+            <h1 className="sr-only">Book Shimmer Down Studios in Berlin</h1>
+            <div className={s.mailWrap}>
+              <a
+                className={s.mail}
+                href={`mailto:${EMAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}`}
+                data-track-type="other"
+                data-track-label="Email"
+                data-track-category="contact"
+              >
+                <span>{MAIL_LOCAL}@</span>
+                <wbr />
+                <span>{MAIL_DOMAIN}</span>
+              </a>
+            </div>
+          </div>
 
-        <div className={s.bands} aria-hidden="true" />
-      </section>
+          <div className={`shell ${s.foot}`}>
+            <blockquote className={s.quote}>
+              <p>{QUOTE}</p>
+            </blockquote>
+            <p className={s.faqLink}>
+              Answers to the questions we get most are on the{" "}
+              <Link href="/faq">FAQ</Link>.
+            </p>
+          </div>
+        </section>
+
+        <div className={`bandBlock ${s.band}`} aria-hidden="true" />
+      </div>
     </Layout>
   );
 }

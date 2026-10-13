@@ -8,6 +8,12 @@
   padding-block: clamp(3.5rem, 9vw, 7rem) 0;
 }
 
+/* the record shelf under the sessions (components/RecordShelf.js; its cards
+   are styled in components.css → "the record shelf") */
+.records {
+  padding-block: clamp(4rem, 9vw, 7rem) 0;
+}
+
 .lede {
   max-width: 54ch;
   margin-bottom: clamp(2.2rem, 5vw, 3.5rem);

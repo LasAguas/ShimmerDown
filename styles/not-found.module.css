@@ -1,0 +1,12 @@
+/* /404 — the same page furniture as /faq and /links: clear the fixed nav, a
+   title, one line, one way home. */
+
+.page {
+  padding-block: calc(var(--nav-block) + clamp(2.5rem, 7vw, 5rem))
+    clamp(3rem, 7vw, 5rem);
+}
+
+.lede {
+  max-width: 52ch;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}

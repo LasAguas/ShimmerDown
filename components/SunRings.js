@@ -98,6 +98,11 @@ export const DAWN_REDSUN_CORE = [
   "var(--redsun-5)",
 ];
 
+// The ramp for a page that has a `theme` (see globals.css → "page themes"):
+// the theme sets --r1…--r7 itself, so the footer's figure follows the page
+// without this file knowing which page it is.
+export const THEME_RINGS = [1, 2, 3, 4, 5, 6, 7].map((n) => `var(--r${n})`);
+
 // `bg` is the gap-stroke between rings — it should match whatever ground
 // the figure is actually sitting on. Defaults to --paper-2 for the page
 // field's own use (PageField.js, a light backdrop); the footer's rings sit

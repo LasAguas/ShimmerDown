@@ -28,11 +28,13 @@ const LINKS = [
   { href: "/store", label: "Store", field: "store" },
 ];
 
-export default function SiteNav({ overHero = false }) {
+export default function SiteNav({ overHero = false, tone }) {
   const { pathname } = useRouter();
   // Pages without a full-bleed hero start "landed" — there's no photo for
   // cream type to sit on, so the smoked state would be a dark box on paper.
-  const [landed, setLanded] = useState(!overHero);
+  // A toned bar (Live Sessions' plum header) is dark on purpose and never
+  // scroll-flips, so it starts un-landed and stays that way.
+  const [landed, setLanded] = useState(!overHero && !tone);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -54,7 +56,12 @@ export default function SiteNav({ overHero = false }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const cls = ["nav", landed ? "landed" : "", open ? "open" : ""]
+  const cls = [
+    "nav",
+    landed ? "landed" : "",
+    open ? "open" : "",
+    tone === "plum" ? "navPlum" : "",
+  ]
     .filter(Boolean)
     .join(" ");
 

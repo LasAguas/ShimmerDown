@@ -14,6 +14,17 @@ import { useEffect, useState } from "react";
 
 const HOLD_MS = 6500;
 
+// A <video poster> is a plain attribute, so unlike <Image> it doesn't go
+// through Next's optimiser on its own — and the poster is what's on screen
+// (and what LCP is measured against) until the video's first frame arrives.
+// This points it at the optimiser by hand: same picture, a fraction of the
+// bytes. 1920 / 75 are both in Next's defaults, so nothing needs configuring.
+// Only for files in /public — anything else is passed through untouched.
+const optimisedPoster = (src) =>
+  src && src.startsWith("/")
+    ? `/_next/image?url=${encodeURIComponent(src)}&w=1920&q=75`
+    : src;
+
 export default function Hero({ slides = [], title, tagline, children }) {
   const [i, setI] = useState(0);
   // Starts false so server and first client render agree; flips before paint
@@ -75,7 +86,7 @@ export default function Hero({ slides = [], title, tagline, children }) {
                   <video
                     className="heroVideo"
                     src={slide.src}
-                    poster={slide.poster}
+                    poster={optimisedPoster(slide.poster)}
                     autoPlay
                     muted
                     loop

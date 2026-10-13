@@ -12,10 +12,12 @@
    =========================================================================== */
 
 /* ---- fonts ---------------------------------------------------------------
-   Jost (display) + Source Serif 4 (body), loaded via Google Fonts in
-   pages/_document.js — both OFL-licensed, so no webfont-licence question
-   the way Intro Rust and Brodille had (TODO.md items 1 and 2, now resolved
-   by this swap). */
+   Jost (display) + Source Serif 4 (body), self-hosted through next/font in
+   pages/_app.js — both OFL-licensed, so no webfont-licence question the way
+   Intro Rust and Brodille had (TODO.md items 1 and 2, now resolved by this
+   swap). next/font registers them under hashed names, so _app.js re-points
+   --font-display, --font-body and --font-jost at them; the values below are
+   the same stacks and only apply if that ever stops running. */
 
 :root {
   /* ---- the golden-hour ramp, outer → inner, straight off the client's
@@ -65,6 +67,58 @@
   --redsun-5: #ff8877;
   --redsun-6: #ffa88b;
   --redsun-7: #ffc89f;
+
+  /* ---- the client's October mockup (Mockups/*.dc.html) brought five more
+     ramps, one per restyled page — see "page themes" at the bottom of this
+     file for how a page picks one. Same outer → inner convention. Hex values
+     are the mockup's own PALETTES/SUNS tables. */
+  --plum-1: #5a2340; /* plum — live sessions: the nested frame, header, footer */
+  --plum-2: #7a2f52;
+  --plum-3: #9b4466;
+  --plum-4: #b85c78;
+  --plum-5: #cc7a8c;
+  --plum-6: #d99a9c;
+  --plum-7: #e8b4bc;
+
+  --daylight-1: #faf0e6; /* daylight — studio: the bands and Room A's wall strip */
+  --daylight-2: #f9e3cc;
+  --daylight-3: #f8d7b3;
+  --daylight-4: #f6ca99;
+  --daylight-5: #f5be7f;
+  --daylight-6: #f3b268;
+  --daylight-7: #f1a650;
+
+  --peach-1: #ffb597; /* peach — work. Six stops in the mockup; the last repeats */
+  --peach-2: #ffbea3;
+  --peach-3: #ffc8b0;
+  --peach-4: #ffd1bc;
+  --peach-5: #ffdbc9;
+  --peach-6: #ffe4d6;
+  --peach-7: #ffe4d6;
+
+  --terracotta-1: #6e2a1c; /* terracotta — studio: Room B's wall strip */
+  --terracotta-2: #8e3a22;
+  --terracotta-3: #ad4f2c;
+  --terracotta-4: #c66a3c;
+  --terracotta-5: #d98a58;
+  --terracotta-6: #e6aa7e;
+  --terracotta-7: #f0c9a6;
+
+  --amber-1: #f5be7f; /* amber — studio: the footer rings */
+  --amber-2: #efa962;
+  --amber-3: #e8954a;
+  --amber-4: #df8036;
+  --amber-5: #d46c28;
+  --amber-6: #c65a20;
+  --amber-7: #b5491b;
+
+  --redsun-dusk-1: #3a1f3a; /* red sun dusk — the store's footer rings */
+  --redsun-dusk-2: #5e2a4a;
+  --redsun-dusk-3: #8a3a58;
+  --redsun-dusk-4: #b8405f;
+  --redsun-dusk-5: #dc6467;
+  --redsun-dusk-6: #ff8877;
+  --redsun-dusk-7: #ffa88b;
 
   /* ---- ground and ink. Warm cream paper, warm near-black type: a neutral
      grey against this cream reads as dirty, so every "grey" here is browned. */
@@ -121,6 +175,11 @@
   /* how much vertical room the flat bar actually occupies. Pages clear
      THIS, not --nav-h directly, in case that ever diverges again. */
   --nav-block: var(--nav-h);
+  /* The white rule under the bar (.navInner::after): 2px thick, floating 10px
+     above the bar's bottom edge, as in the client's nav mockup. Named because
+     the phone bar centres its row against the part of the bar ABOVE the rule. */
+  --nav-rule-gap: 10px;
+  --nav-rule-h: 2px;
   /* the basket bubble beside the bar — sized close to the bar's own height
      (--nav-h = 64px) so the two read as a matched pair rather than a big
      bar next to a small dot */
@@ -422,6 +481,9 @@ h4 {
 .sectionHead {
   margin-bottom: clamp(1.6rem, 3.5vw, 2.8rem);
 }
+/* h1 as well as h2: /faq, /links and /impressum open with a .sectionHead that
+   is the page's title, so it's an h1 there. Same look either way. */
+.sectionHead h1,
 .sectionHead h2 {
   font-family: var(--font-display);
   font-weight: 500;
@@ -658,8 +720,8 @@ h4 {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 10px;
-  height: 2px;
+  bottom: var(--nav-rule-gap);
+  height: var(--nav-rule-h);
   background: var(--on-dark);
   transition: background 420ms var(--ease-out);
 }
@@ -847,10 +909,21 @@ h4 {
     align-items: stretch;
     height: auto;
     padding-inline: 0;
+    /* The 1.5rem above is the row gap between the wordmark and the links. In
+       this column it turned into dead space under the bar — the collapsed
+       links list still takes its slot — which made the nav 24px taller than
+       --nav-block (every page clears exactly that, so the nav sat on top of
+       the first 24px of whatever came next) and pushed the rule away from
+       the logo. */
+    gap: 0;
   }
   .navBar {
     height: var(--nav-h);
     padding-inline: clamp(0.9rem, 3vw, 1.4rem);
+    /* Centre the logo and hamburger against the part of the bar ABOVE the
+       white rule. The rule is the bar's visual floor, so centring against the
+       full height left them looking pushed up against the top. */
+    padding-bottom: calc(var(--nav-rule-gap) + var(--nav-rule-h));
   }
 
   .navLinks {
@@ -876,6 +949,12 @@ h4 {
   }
   .nav.open .navMark {
     color: var(--ink);
+  }
+  /* The logo is a black PNG recoloured with a filter, not text, so the colour
+     above doesn't reach it: without this it stays cream on the cream panel —
+     invisible — whenever the menu opens over the hero. */
+  .nav.open .navMarkCompact {
+    filter: none;
   }
   /* --on-dark and --paper are the same hex value, so the rule under the
      bar (.navInner::after) would otherwise vanish against the open
@@ -917,6 +996,17 @@ h4 {
   /* centres against the bar's own height — see the .navRow comment above
      for why this isn't flex align-items:center */
   margin-top: calc((var(--nav-h) - var(--cart-size)) / 2);
+}
+/* On a phone the logo and hamburger are centred in the part of the bar above
+   the rule (see .navBar in the phone menu block), and the bubble shares that
+   centre line — so it has to fit in the same space, which 56px doesn't. */
+@media (max-width: 880px) {
+  .navCartWrap {
+    --cart-size: 44px;
+    margin-top: calc(
+      (var(--nav-h) - var(--nav-rule-gap) - var(--nav-rule-h) - var(--cart-size)) / 2
+    );
+  }
 }
 .navCartBtn {
   position: relative;
@@ -1098,4 +1188,179 @@ h4 {
     margin-right: 0;
     flex-basis: 100%;
   }
+}
+
+/* =========================================================================
+   page themes — the client's October mockup (Mockups/*.dc.html)
+   -------------------------------------------------------------------------
+   A page opts in by passing `theme` to <Layout> (components/Layout.js), which
+   wraps nav + page + footer in <div class="themeRoot" data-theme="…">. A page
+   that passes none — the home page, /faq, /impressum, /links — is untouched
+   by anything below.
+
+   The mockup's idea: a page IS its palette. Each theme sets seven stops
+   (--t1…--t7, outer/dark → inner/light), the footer ring-figure's ramp
+   (--r1…--r7, the same seven unless the mockup says otherwise) and the
+   footer's ground. The generic [data-theme] rule then builds --bands,
+   --bands-rev and --bands-h from --t* ONCE, so everything that already reads
+   those — the band rules, the CTAs' sweep, the scrub bar's played portion —
+   follows the page's palette without a rule of its own.
+
+   They're built here, not in :root, on purpose: a var() inside a custom
+   property is resolved where the property is DECLARED, so --bands defined in
+   :root would only ever see :root's --t*, never a theme's.
+
+   Order matters: the specific [data-theme="…"] rules sit after the generic
+   one so their --r* overrides win at equal specificity.
+   ========================================================================= */
+.themeRoot {
+  display: contents;
+}
+
+[data-theme] {
+  --bands: linear-gradient(
+    180deg,
+    var(--t1) 0 14.2857%,
+    var(--t2) 14.2857% 28.5714%,
+    var(--t3) 28.5714% 42.8571%,
+    var(--t4) 42.8571% 57.1428%,
+    var(--t5) 57.1428% 71.4285%,
+    var(--t6) 71.4285% 85.7142%,
+    var(--t7) 85.7142% 100%
+  );
+  --bands-rev: linear-gradient(
+    180deg,
+    var(--t7) 0 14.2857%,
+    var(--t6) 14.2857% 28.5714%,
+    var(--t5) 28.5714% 42.8571%,
+    var(--t4) 42.8571% 57.1428%,
+    var(--t3) 57.1428% 71.4285%,
+    var(--t2) 71.4285% 85.7142%,
+    var(--t1) 85.7142% 100%
+  );
+  --bands-h: linear-gradient(
+    90deg,
+    var(--t1) 0 14.2857%,
+    var(--t2) 14.2857% 28.5714%,
+    var(--t3) 28.5714% 42.8571%,
+    var(--t4) 42.8571% 57.1428%,
+    var(--t5) 57.1428% 71.4285%,
+    var(--t6) 71.4285% 85.7142%,
+    var(--t7) 85.7142% 100%
+  );
+  --r1: var(--t1);
+  --r2: var(--t2);
+  --r3: var(--t3);
+  --r4: var(--t4);
+  --r5: var(--t5);
+  --r6: var(--t6);
+  --r7: var(--t7);
+}
+
+/* work — the mockup's "Sessions" peach, on a slightly warmer cream */
+[data-theme="peach"] {
+  --t1: var(--peach-1);
+  --t2: var(--peach-2);
+  --t3: var(--peach-3);
+  --t4: var(--peach-4);
+  --t5: var(--peach-5);
+  --t6: var(--peach-6);
+  --t7: var(--peach-7);
+  --footer-bg: #3a1f22; /* mockup: footerBackground */
+  --paper: #fdf6ea; /* mockup: pageBackground */
+}
+
+/* studio — daylight bands, amber rings */
+[data-theme="daylight"] {
+  --t1: var(--daylight-1);
+  --t2: var(--daylight-2);
+  --t3: var(--daylight-3);
+  --t4: var(--daylight-4);
+  --t5: var(--daylight-5);
+  --t6: var(--daylight-6);
+  --t7: var(--daylight-7);
+  --r1: var(--amber-1);
+  --r2: var(--amber-2);
+  --r3: var(--amber-3);
+  --r4: var(--amber-4);
+  --r5: var(--amber-5);
+  --r6: var(--amber-6);
+  --r7: var(--amber-7);
+  --footer-bg: #4a2c1d;
+}
+
+/* live sessions — plum all the way through */
+[data-theme="plum"] {
+  --t1: var(--plum-1);
+  --t2: var(--plum-2);
+  --t3: var(--plum-3);
+  --t4: var(--plum-4);
+  --t5: var(--plum-5);
+  --t6: var(--plum-6);
+  --t7: var(--plum-7);
+  --footer-bg: #5a2340;
+}
+
+/* contact — the site's own deep dusk */
+[data-theme="dusk"] {
+  --t1: var(--dusk-1);
+  --t2: var(--dusk-2);
+  --t3: var(--dusk-3);
+  --t4: var(--dusk-4);
+  --t5: var(--dusk-5);
+  --t6: var(--dusk-6);
+  --t7: var(--dusk-7);
+  --footer-bg: #241d1a;
+}
+
+/* red sun — the home page's record shelf, and the store (which adds its own
+   rings, footer and cream) */
+[data-theme="redsun"],
+[data-theme="shop"] {
+  --t1: var(--redsun-1);
+  --t2: var(--redsun-2);
+  --t3: var(--redsun-3);
+  --t4: var(--redsun-4);
+  --t5: var(--redsun-5);
+  --t6: var(--redsun-6);
+  --t7: var(--redsun-7);
+}
+[data-theme="shop"] {
+  --r1: var(--redsun-dusk-1);
+  --r2: var(--redsun-dusk-2);
+  --r3: var(--redsun-dusk-3);
+  --r4: var(--redsun-dusk-4);
+  --r5: var(--redsun-dusk-5);
+  --r6: var(--redsun-dusk-6);
+  --r7: var(--redsun-dusk-7);
+  --footer-bg: #241d1a;
+  --paper: #fdf6ea;
+}
+
+/* The page ground, and the mockup's display face — inside <main> only. The
+   nav and footer are shared with the home page, which isn't restyled yet, so
+   they keep Jost; widen this to :root when the home page follows. Helvetica
+   Neue is an Apple system font: elsewhere it falls through to Arial, whose
+   heaviest cut is Bold, so the 900 below reads lighter off a Mac. */
+[data-theme] main {
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--paper);
+}
+
+/* Live sessions' fixed plum header (SiteNav tone="plum"): the same cream-on-
+   dark state the bar has over a hero, on a plum ground, and it never flips
+   to paper. The basket bubble is its own shape beside the bar, so it needs
+   its own plum. */
+.nav.navPlum {
+  background: var(--plum-1);
+}
+.nav.navPlum .navCartBtn {
+  background: var(--plum-2);
+}
+.nav.navPlum .navCartBtn:hover,
+.nav.navPlum .navCartBtn:focus-visible {
+  background: var(--sun-7);
+}
+.nav.navPlum .navCartBadge {
+  box-shadow: 0 0 0 2px var(--plum-1);
 }
