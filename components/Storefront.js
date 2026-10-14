@@ -278,7 +278,7 @@ export default function Storefront({ initial = null }) {
     return (
       <div className="shopReceipt" role="status">
         <p className="label">Order confirmed</p>
-        <h3 className="shopReceiptHead">Thank you — it's on its way.</h3>
+        <h3 className="shopReceiptHead">Thank you, it's on its way.</h3>
         {receipt.orderCode && (
           <p className="shopReceiptCode">
             Order <strong>{receipt.orderCode}</strong>

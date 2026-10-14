@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   if (hp) return res.status(200).json({ ok: true });
 
   if (!looksLikeEmail(email)) {
-    return res.status(400).json({ error: "That email doesn't look right — mind checking it?" });
+    return res.status(400).json({ error: "That email doesn't look right. Mind checking it?" });
   }
 
   const payload = {

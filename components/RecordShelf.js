@@ -63,7 +63,7 @@ export default function RecordShelf({
               <Link
                 href={href}
                 className="recordArt"
-                aria-label={`${p.name} — see it in the shop`}
+                aria-label={`See ${p.name} in the shop`}
               >
                 {p.images?.[0] ? (
                   <Image

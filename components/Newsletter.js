@@ -27,7 +27,7 @@ const COPY = {
   button: "Sign up",
   sending: "Signing you up…",
   success: "You're on the list. See you soon!",
-  invalidEmail: "That email doesn't look right — please double check it.",
+  invalidEmail: "That email doesn't look right. Please double check it.",
   consentRequired: "Please tick the box so we know it's OK to email you.",
   error: "Something went wrong at our end. Try again in a minute.",
 };

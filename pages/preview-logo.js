@@ -23,7 +23,7 @@ import p from "../styles/previewLogo.module.css";
 
 const META = {
   title: "Logo preview",
-  description: "Internal preview — logo lockup in the nav and hero.",
+  description: "Internal preview: logo lockup in the nav and hero.",
 };
 
 const HERO = {
@@ -40,7 +40,7 @@ const HERO = {
 const SESSIONS = {
   heading: "Live Sessions",
   lede:
-    "Every one of these was recorded and filmed while it happened — one room, one band, no overdubs hiding in the mix. Most sessions at Shimmer Down aren't filmed like this; these are the ones that were.",
+    "Every one of these was recorded and filmed while it happened: one room, one band, no overdubs hiding in the mix. Most sessions at Shimmer Down aren't filmed like this; these are the ones that were.",
   films: [
     {
       url: "https://www.youtube.com/watch?v=9v6JAjmAU9M",

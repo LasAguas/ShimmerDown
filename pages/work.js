@@ -30,7 +30,7 @@ const META = {
 
 const INTRO = {
   heading: "The Work",
-  lede: "Records mixed and tracked at Shimmer Down Studios — listen to the work, then watch a session.",
+  lede: "Records mixed and tracked at Shimmer Down Studios. Listen to the work, then watch a session.",
 };
 
 const PLACEHOLDER_AUDIO = "/audio/placeholder-track.wav";
@@ -57,9 +57,9 @@ const TRACKING_BLOCK = {
   label: "Tracking",
   records: TRACKING,
   photo: {
-    src: "/images/gallery/work-golden-hour.jpg",
-    alt: "The live room",
-    caption: "Cut here · golden hour",
+    src: "/images/gallery/studio-control-wide.jpg",
+    alt: "A drum kit miked up in the live room",
+    caption: "Cut here · the live room",
   },
 };
 const MIXING_BLOCK = {
@@ -67,8 +67,8 @@ const MIXING_BLOCK = {
   label: "Mixing",
   records: MIXING,
   photo: {
-    src: "/images/gallery/studio-control-wide.jpg",
-    alt: "The control room",
+    src: "/images/mixing studio/Mixing Room Hero.png",
+    alt: "The mixing room",
     caption: "Mixed here · the control room",
   },
 };
@@ -83,7 +83,7 @@ function Row({ record }) {
       <div className={s.art}>
         <Image
           src={record.art}
-          alt={`${record.title} by ${record.artist} — sleeve`}
+          alt={`Sleeve of ${record.title} by ${record.artist}`}
           fill
           sizes="58px"
           style={{ objectFit: "cover" }}

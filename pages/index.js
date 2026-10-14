@@ -20,7 +20,7 @@ import s from "../styles/home.module.css";
 // The home page leads its <title> with the brand, so it hands over the whole
 // string instead of taking Layout's "Page — Shimmer Down Studios" shape.
 const META = {
-  titleFull: "Shimmer Down Studios — Recording Studio in Berlin",
+  titleFull: "Shimmer Down Studios | Recording Studio in Berlin",
   description:
     "Shimmer Down Studios is a recording and mixing studio in Berlin: a bright live room, a dry treated mix room and filmed live sessions you can watch.",
 };
@@ -73,7 +73,7 @@ const HERO = {
 };
 
 const SESSIONS = {
-  heading: "Live Sessions",
+  heading: "Sessions",
   films: [
     {
       url: "https://www.youtube.com/watch?v=rWM3Y1eG_WI",

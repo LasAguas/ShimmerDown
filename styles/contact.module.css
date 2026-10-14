@@ -65,6 +65,17 @@
   padding-top: clamp(2rem, 5vw, 3rem);
 }
 
+/* the numbered heading, on the photo — mockup: 05 / The Vibes */
+.head {
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+.head :global(.num) {
+  color: rgba(250, 240, 230, 0.75);
+}
+.head h1 {
+  font-size: clamp(2.4rem, 6.5vw, 78px);
+}
+
 .foot {
   position: relative;
   z-index: 1;

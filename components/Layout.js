@@ -60,7 +60,7 @@ export default function Layout({
 }) {
   // Normally "Page — Shimmer Down Studios"; a page can hand over the whole
   // title with `titleFull`. Neither given means just the studio name.
-  const fullTitle = titleFull || (title ? `${title} — ${SITE_NAME}` : SITE_NAME);
+  const fullTitle = titleFull || (title ? `${title} | ${SITE_NAME}` : SITE_NAME);
   const url = `${SITE_ORIGIN}${path}`;
   const imageUrl = `${SITE_ORIGIN}${ogImage}`;
   const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];

@@ -27,7 +27,8 @@ const META = {
 };
 
 const INTRO = {
-  heading: "Live Sessions",
+  num: "03",
+  heading: "The Media",
 };
 
 // `uploaded` (the YouTube upload date) and `duration` (ISO 8601) are for the
@@ -68,7 +69,7 @@ const FILMS = [
 const SCHEMA = FILMS.map((film) => ({
   "@context": "https://schema.org",
   "@type": "VideoObject",
-  name: `${film.artist} — ${film.title} (live session)`,
+  name: `${film.title} by ${film.artist} (live session)`,
   description: `${film.note} A live session filmed and recorded at ${SITE_NAME}.`,
   thumbnailUrl: `${SITE_ORIGIN}${film.poster}`,
   uploadDate: film.uploaded,
@@ -120,6 +121,7 @@ export default function LiveSessions() {
         <Frame>
           <div className="shell">
             <div className="numHead">
+              <span className="num">{INTRO.num}</span>
               <h1>{INTRO.heading}</h1>
             </div>
 

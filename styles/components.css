@@ -1221,6 +1221,78 @@
   color: rgba(250, 240, 230, 0.7);
 }
 
+/* ---- the lightbox --------------------------------------------------------
+   components/Lightbox.js — a photograph opened full-screen. The mockup's:
+   near-black veil, the picture contained in it, the caption and controls in
+   a row along the foot. Above the nav (100), like the basket drawer (200). */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 1rem;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  background: rgba(14, 11, 10, 0.94);
+  animation: lightboxIn 260ms var(--ease-out);
+}
+@keyframes lightboxIn {
+  from {
+    opacity: 0;
+  }
+}
+.lightboxStage {
+  position: relative;
+  min-height: 0;
+}
+.lightboxBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(1240px, 100%);
+  margin-inline: auto;
+  color: #faf0e6;
+}
+.lightboxCaption {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-wrap: pretty;
+}
+.lightboxCount {
+  margin-left: 0.6em;
+  color: rgba(250, 240, 230, 0.55);
+  white-space: nowrap;
+}
+.lightboxControls {
+  display: flex;
+  gap: 0.25rem;
+  flex: none;
+}
+.lightboxControls button {
+  min-width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: #faf0e6;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: color 200ms var(--ease-out);
+}
+.lightboxControls .lightboxClose {
+  font-size: 22px;
+}
+.lightboxControls button:hover,
+.lightboxControls button:focus-visible {
+  color: var(--t7, #f5be7f);
+}
+
 /* ---- the numbered heading ------------------------------------------------
    A small numeral, then the big head, sharing a baseline. */
 .numHead {

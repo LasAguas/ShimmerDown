@@ -183,6 +183,7 @@
 }
 
 /* ---- the two rooms --------------------------------------------------------
+   (Room B is switched off in studio.js for now.)
    Each room's section carries a banded wall strip down one edge — Room A's
    daylight on the right, Room B's terracotta on the left — and the section's
    padding on that side keeps the photographs clear of it. */
@@ -260,8 +261,23 @@
 .frame:hover :global(img) {
   transform: scale(1.05);
 }
+/* the whole frame is the button that opens the photo full-screen */
+.open {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.open:focus-visible {
+  outline: 3px solid var(--t5);
+  outline-offset: -3px;
+}
 
-/* ---- the specs and the way out ---- */
+/* ---- the specs and the way out (switched off in studio.js for now) ---- */
 .closing {
   background: var(--paper);
   padding-block: clamp(0.5rem, 2vw, 1.5rem) clamp(3rem, 8vw, 5.5rem);
@@ -345,6 +361,26 @@
   .tall {
     grid-column: span 2;
     grid-row: span 1;
+  }
+  /* a mosaic gallery: six columns of short rows; each frame claims its own
+     --m-span columns and --m-rows rows, so the widths and shapes vary */
+  .galleryMosaic {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: 24vw;
+  }
+  .galleryMosaic .frame {
+    grid-column: span var(--m-span, 3);
+    grid-row: span var(--m-rows, 2);
+  }
+  /* a mixed gallery: one column, every frame its own --ratio */
+  .galleryMixed {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+  }
+  .galleryMixed .frame {
+    grid-column: auto;
+    grid-row: auto;
+    aspect-ratio: var(--ratio, 3 / 2);
   }
   .specs {
     grid-template-columns: 1fr;

@@ -8,10 +8,11 @@
 // See TODO.md item 15.
 //
 // The look is the client's October mockup (Mockups/Contact.dc.html — its
-// "The Vibes" page): a full-bleed photo between two dusk bands, a line of the
-// studio's own words low on the left and the way to the FAQ low on the right.
-// The email stays as large as it'll go up top, because this page is still the
-// contact page; the mockup moved it to the footer. Its knobs are at the top of
+// "The Vibes" page): a full-bleed photo between two dusk bands, the page's
+// numbered heading up top, a line of the studio's own words low on the left
+// and the way to the FAQ low on the right. The email stays large under the
+// heading, because this page is still the contact page; the mockup moved it
+// to the footer. Its knobs are at the top of
 // contact.module.css.
 //
 // ALL COPY IS IN THIS FILE.
@@ -28,6 +29,11 @@ const META = {
 };
 
 const BG_IMAGE = "/images/gallery/studio-rhodes-wide.jpg";
+
+const INTRO = {
+  num: "05",
+  heading: "The Vibes",
+};
 
 // The client's own wording, from the mockup. Its credit line there reads
 // "Artist name · session 2026" — a placeholder — so there isn't one here.
@@ -76,11 +82,10 @@ export default function Contact() {
           </div>
 
           <div className={`shell ${s.body}`}>
-            {/* The page's heading is the address below, which isn't a
-                heading. This gives screen readers and search engines one
-                ("Book" because that's what the page is for) without adding
-                anything to the design. */}
-            <h1 className="sr-only">Book Shimmer Down Studios in Berlin</h1>
+            <div className={`numHead ${s.head}`}>
+              <span className="num">{INTRO.num}</span>
+              <h1>{INTRO.heading}</h1>
+            </div>
             <div className={s.mailWrap}>
               <a
                 className={s.mail}

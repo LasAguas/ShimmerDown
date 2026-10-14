@@ -39,19 +39,19 @@ const LINKS = [
     trackCategory: "social",
   },
   {
-    label: "Live Sessions — watch the films",
+    label: "Live Sessions · watch the films",
     href: "/live-sessions",
     trackType: "other",
     trackCategory: "live_sessions",
   },
   {
-    label: "Work — records made here",
+    label: "Work · records made here",
     href: "/work",
     trackType: "other",
     trackCategory: "discography",
   },
   {
-    label: "Store — records, prints, merch",
+    label: "Store · records, prints, merch",
     href: "/store",
     trackType: "merch",
     trackCategory: "merch",

@@ -21,7 +21,7 @@ export default function LayoutLogo({
   field = "work",
   ogImage = "/images/gallery/studio-control-wide.jpg",
 }) {
-  const fullTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
+  const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME;
   const url = `${SITE_ORIGIN}${path}`;
 
   return (

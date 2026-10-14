@@ -18,7 +18,7 @@ import s from "../styles/impressum.module.css";
 
 const META = {
   title: "Impressum & Privacy",
-  description: "Impressum und Datenschutzerklärung — Shimmer Down Studios.",
+  description: "Impressum und Datenschutzerklärung von Shimmer Down Studios.",
 };
 
 const IMPRESSUM = [
@@ -58,7 +58,7 @@ const PRIVACY = [
   {
     heading: "Newsletter",
     lines: [
-      "Wenn Sie sich für unseren Newsletter anmelden, speichern wir Ihre E-Mail-Adresse sowie — sofern angegeben — Ihren Namen und Ihre Stadt, um Ihnen die angeforderten E-Mails zu senden. Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO.",
+      "Wenn Sie sich für unseren Newsletter anmelden, speichern wir Ihre E-Mail-Adresse sowie, sofern angegeben, Ihren Namen und Ihre Stadt, um Ihnen die angeforderten E-Mails zu senden. Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO.",
       "Die Verarbeitung erfolgt über Las Aguas Productions als Auftragsverarbeiter. Sie können Ihre Einwilligung jederzeit widerrufen, indem Sie uns unter shimmerdownstudio@gmail.com schreiben.",
     ],
   },
@@ -78,7 +78,7 @@ const PRIVACY = [
     heading: "Reichweitenmessung",
     lines: [
       "Diese Website nutzt eine selbst betriebene, datensparsame Analyse (eine Supabase Edge Function auf Servern in der EU), um Seitenaufrufe, Klicks auf Links und Käufe im Shop auszuwerten. Es werden keine Cookies oder Skripte von Drittanbietern eingebunden und keine Daten an Werbenetzwerke weitergegeben.",
-      "Ohne Einwilligung erfasst: die aufgerufene Seite, geklickte Links, die grobe Herkunft (Land/Stadt, aus der IP-Adresse abgeleitet — die IP-Adresse selbst wird dabei nicht gespeichert), Gerätetyp und Browser (aus dem User-Agent abgeleitet, die vollständige Zeichenfolge wird nicht gespeichert) sowie UTM-Parameter aus der Aufruf-URL. Rechtsgrundlage ist unser berechtigtes Interesse an der Reichweitenmessung, Art. 6 Abs. 1 lit. f DSGVO.",
+      "Ohne Einwilligung erfasst: die aufgerufene Seite, geklickte Links, die grobe Herkunft (Land/Stadt, aus der IP-Adresse abgeleitet; die IP-Adresse selbst wird dabei nicht gespeichert), Gerätetyp und Browser (aus dem User-Agent abgeleitet, die vollständige Zeichenfolge wird nicht gespeichert) sowie UTM-Parameter aus der Aufruf-URL. Rechtsgrundlage ist unser berechtigtes Interesse an der Reichweitenmessung, Art. 6 Abs. 1 lit. f DSGVO.",
       "Nur mit Ihrer Einwilligung über den Cookie-Hinweis erfasst: wiederkehrende Besuche, Scrolltiefe und Verweildauer auf der Seite. Rechtsgrundlage ist Ihre Einwilligung, Art. 6 Abs. 1 lit. a DSGVO. Sie können diese jederzeit widerrufen, indem Sie die entsprechenden Cookies in Ihrem Browser löschen.",
       "Die Verarbeitung erfolgt über Las Aguas Productions als Auftragsverarbeiter.",
     ],
