@@ -170,6 +170,7 @@
         });
       }
       track('consent_granted');
+      window.dispatchEvent(new Event('sds:consent')); // _app.js listens: loads the Meta Pixel
     });
     document.getElementById(PFX + 'decline').addEventListener('click', function () { setConsent('false'); banner.remove(); });
   }

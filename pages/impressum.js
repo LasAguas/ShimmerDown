@@ -77,10 +77,17 @@ const PRIVACY = [
   {
     heading: "Reichweitenmessung",
     lines: [
-      "Diese Website nutzt eine selbst betriebene, datensparsame Analyse (eine Supabase Edge Function auf Servern in der EU), um Seitenaufrufe, Klicks auf Links und Käufe im Shop auszuwerten. Es werden keine Cookies oder Skripte von Drittanbietern eingebunden und keine Daten an Werbenetzwerke weitergegeben.",
+      "Diese Website nutzt eine selbst betriebene, datensparsame Analyse (eine Supabase Edge Function auf Servern in der EU), um Seitenaufrufe, Klicks auf Links und Käufe im Shop auszuwerten. Ohne Ihre Einwilligung werden keine Cookies oder Skripte von Drittanbietern eingebunden und keine Daten an Werbenetzwerke weitergegeben.",
       "Ohne Einwilligung erfasst: die aufgerufene Seite, geklickte Links, die grobe Herkunft (Land/Stadt, aus der IP-Adresse abgeleitet; die IP-Adresse selbst wird dabei nicht gespeichert), Gerätetyp und Browser (aus dem User-Agent abgeleitet, die vollständige Zeichenfolge wird nicht gespeichert) sowie UTM-Parameter aus der Aufruf-URL. Rechtsgrundlage ist unser berechtigtes Interesse an der Reichweitenmessung, Art. 6 Abs. 1 lit. f DSGVO.",
       "Nur mit Ihrer Einwilligung über den Cookie-Hinweis erfasst: wiederkehrende Besuche, Scrolltiefe und Verweildauer auf der Seite. Rechtsgrundlage ist Ihre Einwilligung, Art. 6 Abs. 1 lit. a DSGVO. Sie können diese jederzeit widerrufen, indem Sie die entsprechenden Cookies in Ihrem Browser löschen.",
       "Die Verarbeitung erfolgt über Las Aguas Productions als Auftragsverarbeiter.",
+    ],
+  },
+  {
+    heading: "Meta Pixel (Facebook/Instagram)",
+    lines: [
+      "Nur mit Ihrer Einwilligung über den Cookie-Hinweis laden wir das Meta Pixel der Meta Platforms Ireland Limited. Es übermittelt Seitenaufrufe sowie Browser- und Geräteinformationen (einschließlich Ihrer IP-Adresse) an Meta und kann Cookies setzen. Wir nutzen es, um die Wirkung unserer Anzeigen auf Facebook und Instagram zu messen und Anzeigen gezielter auszuspielen. Meta kann die Daten in Drittländer, insbesondere die USA, übermitteln. Rechtsgrundlage ist Ihre Einwilligung, Art. 6 Abs. 1 lit. a DSGVO.",
+      "Wenn Sie nur die notwendigen Cookies zulassen, wird das Pixel nicht geladen und es findet keine Verbindung zu Meta statt. Eine erteilte Einwilligung können Sie jederzeit widerrufen, indem Sie die Cookies dieser Website in Ihrem Browser löschen.",
     ],
   },
   {

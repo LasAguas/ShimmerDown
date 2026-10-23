@@ -64,8 +64,49 @@ function useTrackerRouting() {
   }, [router.events]);
 }
 
+// Meta Pixel. The loader below is Meta's snippet unchanged, but it only runs
+// once the visitor has accepted the cookie banner (the sds_consent cookie that
+// public/js/tracker.js sets, which also fires "sds:consent" on Accept) — the
+// privacy notice promises no third-party scripts without consent, and the
+// banner is the only consent there is. The <noscript> tracking image from
+// Meta's snippet is left out on purpose: it would fire without consent.
+// Client-side navigations don't reload the page, so PageView is re-sent from
+// routeChangeComplete too.
+const META_PIXEL_ID = "1762873801611794";
+
+function loadMetaPixel() {
+  if (window.fbq) return;
+  /* eslint-disable */
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  /* eslint-enable */
+  window.fbq("init", META_PIXEL_ID);
+  window.fbq("track", "PageView");
+}
+
+function useMetaPixel() {
+  const router = useRouter();
+  useEffect(() => {
+    if (/(?:^|;\s*)sds_consent=true/.test(document.cookie)) loadMetaPixel();
+    window.addEventListener("sds:consent", loadMetaPixel);
+    const onComplete = () => { if (window.fbq) window.fbq("track", "PageView"); };
+    router.events.on("routeChangeComplete", onComplete);
+    return () => {
+      window.removeEventListener("sds:consent", loadMetaPixel);
+      router.events.off("routeChangeComplete", onComplete);
+    };
+  }, [router.events]);
+}
+
 export default function App({ Component, pageProps }) {
   useTrackerRouting();
+  useMetaPixel();
   return (
     <CartProvider>
       <style dangerouslySetInnerHTML={{ __html: FONT_VARS }} />
