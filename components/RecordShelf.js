@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { priceLabel } from "../lib/price";
+import { preorderState } from "../lib/preorder";
 
 // `initial` is the shelf as it stood when the page was built (pages/index.js →
 // getStaticProps), so the products are in the HTML a crawler reads. The
@@ -74,6 +75,7 @@ export default function RecordShelf({
                     style={{ objectFit: "cover" }}
                   />
                 ) : null}
+                {preorderState(p).all && <span className="shopFlag label">Pre-order</span>}
               </Link>
               <div className="thumbStrip" aria-hidden="true" />
               <div className="recordMeta">

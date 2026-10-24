@@ -48,7 +48,7 @@ const SCHEMA = {
       description:
         "A recording and mixing studio in Berlin with a live room, a mix room and filmed live sessions.",
       image: `${SITE_ORIGIN}/images/og/studio-control.jpg`,
-      logo: `${SITE_ORIGIN}/images/logos/shimmer-down-logo-simple-medium.png`,
+      logo: `${SITE_ORIGIN}/images/logos/Shimmer-Down-Logo-Small-Centered.png`,
       email: "shimmerdownstudio@gmail.com",
       address: {
         "@type": "PostalAddress",
@@ -152,6 +152,7 @@ export default function Home({ records }) {
                   // matches home.module.css → .films: one column, then two, then three
                   sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
                 />
+                <div className="thumbStrip" aria-hidden="true" />
                 <div className={s.filmMeta}>
                   <p className="label">{film.artist}</p>
                   <h3 className={s.filmTitle}>{film.title}</h3>

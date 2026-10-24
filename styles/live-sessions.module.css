@@ -7,6 +7,12 @@
 .page {
   --frame-w: 16px; /* frameWidth */
   --frame-r: 80px; /* frameInnerRadius */
+  /* how wide the nested frame is allowed to get. The outer plum ground still
+     runs edge to edge; the rings sit inside it, hugging the content rather
+     than stretching across a wide window. Set to the halfway point between
+     full width and the 1240px content width (so 1340px in a 1440px window,
+     1580px in a 1920px one); 100% is full width, var(--page-max) the tightest. */
+  --frame-max: calc(50% + var(--page-max) / 2);
   --stage-bg: #faf0e6; /* stageBackground */
   --stage-ink: #191919; /* stageTextColor */
   --stage-dim: #5d5348;
@@ -20,8 +26,9 @@
 }
 
 /* ---- the rings -----------------------------------------------------------
-   Ring 1 (darkest) is the page-wide outer box with square corners; each ring
-   inside it is the next plum with a radius 1 ring-width smaller, down to the
+   Ring 1 (darkest) is the page-wide outer box with square corners — the
+   ground the frame sits on; ring 2 onward is capped at --frame-max and
+   centred. Each ring inside it is the next plum with a radius 1 ring-width smaller, down to the
    stage itself at --frame-r. "Dark outside", as the mockup's frameOrder. */
 .ring {
   padding: var(--frame-w);
@@ -31,6 +38,8 @@
   border-radius: 0;
 }
 .ring2 {
+  max-width: var(--frame-max);
+  margin-inline: auto;
   background: var(--plum-2);
   border-radius: calc(var(--frame-r) + 6 * var(--frame-w));
 }

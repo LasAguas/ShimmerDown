@@ -18,6 +18,7 @@ import Layout from "../components/Layout";
 import Storefront from "../components/Storefront";
 import SunRings from "../components/SunRings";
 import { catalogueForStaticProps } from "../lib/catalogue";
+import { shipsOn } from "../lib/preorder";
 import { SITE_ORIGIN } from "../lib/site";
 import s from "../styles/store.module.css";
 
@@ -54,12 +55,16 @@ const stockUrl = (inStock) =>
 
 function productSchema(p, availability) {
   const a = availability?.[p.id];
-  const offer = (price_cents, inStock, name) => ({
+  // A pre-order that's still available is PreOrder, with the date it starts
+  // shipping; sold out stays sold out.
+  const offer = (price_cents, inStock, name, shipsOn) => ({
     "@type": "Offer",
     ...(name ? { name } : {}),
     price: eur(price_cents),
     priceCurrency: "EUR",
-    availability: stockUrl(inStock),
+    availability:
+      shipsOn && inStock ? "https://schema.org/PreOrder" : stockUrl(inStock),
+    ...(shipsOn && inStock ? { availabilityStarts: shipsOn } : {}),
     url: `${SITE_ORIGIN}/store`,
   });
 
@@ -67,14 +72,16 @@ function productSchema(p, availability) {
   const offers = p.has_variants && p.variants?.length > 1
     ? p.variants.map((v) => {
         const left = a?.variants?.[v.name];
-        return offer(v.price_cents ?? p.price_cents, left == null || left > 0, v.name);
+        return offer(v.price_cents ?? p.price_cents, left == null || left > 0, v.name, shipsOn(v));
       })
     : p.has_variants && p.variants?.length === 1
       ? offer(
           p.variants[0].price_cents ?? p.price_cents,
-          a?.variants?.[p.variants[0].name] == null || a.variants[p.variants[0].name] > 0
+          a?.variants?.[p.variants[0].name] == null || a.variants[p.variants[0].name] > 0,
+          undefined,
+          shipsOn(p.variants[0])
         )
-      : offer(p.price_cents, a?.remaining == null || a.remaining > 0);
+      : offer(p.price_cents, a?.remaining == null || a.remaining > 0, undefined, shipsOn(p));
 
   return {
     "@context": "https://schema.org",

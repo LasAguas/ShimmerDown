@@ -11,6 +11,7 @@
 //
 // EDIT THE MENU HERE. It's chrome rather than page content, so it lives beside
 // the component that draws it rather than in any one page.
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -23,7 +24,7 @@ import CartButton from "./CartButton";
 const LINKS = [
   { href: "/work", label: "Work" },
   { href: "/studio", label: "Studio", field: "studio" },
-  { href: "/live-sessions", label: "Live Sessions", field: "sessions" },
+  { href: "/live-sessions", label: "Media", field: "sessions" },
   { href: "/contact", label: "Contact", field: "contact" },
   { href: "/store", label: "Store", field: "store" },
 ];
@@ -91,10 +92,14 @@ export default function SiteNav({ overHero = false, tone }) {
                     width the wordmark gives way to the small rings mark
                     instead of shrinking into illegibility. See
                     .navMarkLogo / .navMarkCompact in globals.css. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/logos/shimmer-down-logo-simple-small.png"
+                {/* The centred cut of the rings mark (the client's own
+                    file, 2000px wide — so it goes through next/image to be
+                    served at the size it's drawn at, not as an 800KB PNG). */}
+                <Image
+                  src="/images/logos/Shimmer-Down-Logo-Small-Centered.png"
                   alt="Shimmer Down Studios"
+                  width={118}
+                  height={100}
                   className="navMarkCompact"
                 />
               </Link>

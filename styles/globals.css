@@ -160,6 +160,9 @@
      item 3. */
   --font-display: "Jost", "Futura", "Trebuchet MS", sans-serif;
   --font-body: "Source Serif 4", "Hoefler Text", Georgia, serif;
+  /* the mockup's heavy headline face: Helvetica Neue on Apple devices, Arial
+     elsewhere (Arial's heaviest cut is Bold, so 900 reads lighter off a Mac) */
+  --font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-fine: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Helvetica, Arial, sans-serif;
 
@@ -682,6 +685,7 @@ h4 {
    centred strip — see .navCartWrap below for why this replaced absolute
    positioning */
 .navRow {
+  position: relative; /* the phone basket is placed against this — see .navCartWrap */
   width: min(var(--page-max), 100%);
   margin-inline: auto;
   padding-inline: var(--gutter);
@@ -772,7 +776,7 @@ h4 {
    the on-dark/landed swap done as a filter rather than `color`. */
 .navMarkCompact {
   display: none;
-  height: clamp(20px, 5.5vw, 26px);
+  height: clamp(26px, 7.15vw, 33.8px); /* the old 20/5.5vw/26, 30% bigger */
   width: auto;
   filter: brightness(0) invert(1);
   transition: filter 420ms var(--ease-out);
@@ -891,8 +895,17 @@ h4 {
 }
 
 @media (max-width: 880px) {
+  .nav {
+    /* the bar's own side padding on a phone; the basket bubble reads it too */
+    --nav-pad: clamp(0.9rem, 3vw, 1.4rem);
+    /* how far the hamburger and the basket sit below the row's centre line
+       (centred above the white rule), so they read level with the logo;
+       both read this, so they always move together */
+    --nav-nudge: 3px;
+  }
   .navToggle {
     display: block;
+    transform: translateY(var(--nav-nudge));
   }
 
   .navMarkLogo {
@@ -900,6 +913,16 @@ h4 {
   }
   .navMarkCompact {
     display: block;
+    /* The bar centres its row above the white rule (see .navBar below), which
+       leaves the logo reading as a little high against the full height of the
+       bar. Dropping it all the way to the middle of the bar (half the rule's
+       footprint, 6px, plus a pixel for the artwork sitting 2-3% above the
+       middle of its own canvas) overshot, so this is half of that: the middle
+       ground between "centred above the rule" and "centred in the whole bar".
+       The basket and hamburger stay put. */
+    transform: translateY(
+      calc((var(--nav-rule-gap) + var(--nav-rule-h)) / 4 + 0.5px)
+    );
   }
 
   /* Opening the menu turns the bar into a taller panel with the links
@@ -919,7 +942,7 @@ h4 {
   }
   .navBar {
     height: var(--nav-h);
-    padding-inline: clamp(0.9rem, 3vw, 1.4rem);
+    padding-inline: var(--nav-pad);
     /* Centre the logo and hamburger against the part of the bar ABOVE the
        white rule. The rule is the bar's visual floor, so centring against the
        full height left them looking pushed up against the top. */
@@ -930,7 +953,7 @@ h4 {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 0 clamp(0.9rem, 3vw, 1.4rem);
+    padding: 0 var(--nav-pad);
     max-height: 0;
     overflow: hidden;
     opacity: 0;
@@ -1001,11 +1024,27 @@ h4 {
    the rule (see .navBar in the phone menu block), and the bubble shares that
    centre line — so it has to fit in the same space, which 56px doesn't. */
 @media (max-width: 880px) {
+  /* Not a flex sibling beside the bar any more: that squeezed the bar
+     narrower whenever the basket showed (always on /store, and once anything
+     is in it). It's taken out of the flow and sits inside the bar, just left
+     of the hamburger, so the bar keeps its full width. The offset from the
+     right edge is the row's gutter + the bar's own padding + the hamburger's
+     box (24px bars + 2 × 0.5rem padding, less its 0.5rem negative margin)
+     + a small gap. */
   .navCartWrap {
     --cart-size: 44px;
+    position: absolute;
+    top: 0;
+    right: calc(var(--gutter) + var(--nav-pad) + 24px + 0.5rem + 0.6rem);
     margin-top: calc(
-      (var(--nav-h) - var(--nav-rule-gap) - var(--nav-rule-h) - var(--cart-size)) / 2
+      (var(--nav-h) - var(--nav-rule-gap) - var(--nav-rule-h) - var(--cart-size)) / 2 +
+        var(--nav-nudge) - 2px /* lifted 2px off the hamburger's line */
     );
+  }
+  /* the bag icon scales with the bubble (22px × 1.1) */
+  .navCartBtn svg {
+    width: 24.2px;
+    height: 24.2px;
   }
 }
 .navCartBtn {
@@ -1025,10 +1064,28 @@ h4 {
   color: var(--ink);
   background: var(--paper);
 }
+/* The hover disc: its own circle at 90% of the bubble's diameter, faded in over
+   the bubble's resting colour (which matches the bar), rather than the bubble
+   itself changing colour at full size. */
+.navCartBtn::before {
+  content: "";
+  position: absolute;
+  inset: 5%; /* 5% a side = a 90% diameter */
+  border-radius: 50%;
+  background: var(--dawn-3); /* the nav links' own hover colour (.navLink[data-field="store"]) */
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+}
+.navCartBtn svg {
+  position: relative; /* above the disc */
+}
 .navCartBtn:hover,
 .navCartBtn:focus-visible {
-  background: var(--sun-7);
-  color: var(--paper);
+  color: var(--ink); /* dark ink reads on the pink, as the nav links' does */
+}
+.navCartBtn:hover::before,
+.navCartBtn:focus-visible::before {
+  opacity: 1;
 }
 .navCartBadge {
   position: absolute;
@@ -1343,7 +1400,7 @@ h4 {
    Neue is an Apple system font: elsewhere it falls through to Arial, whose
    heaviest cut is Bold, so the 900 below reads lighter off a Mac. */
 [data-theme] main {
-  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-helvetica);
   background: var(--paper);
 }
 
@@ -1357,10 +1414,76 @@ h4 {
 .nav.navPlum .navCartBtn {
   background: var(--plum-2);
 }
-.nav.navPlum .navCartBtn:hover,
-.nav.navPlum .navCartBtn:focus-visible {
-  background: var(--sun-7);
-}
 .nav.navPlum .navCartBadge {
   box-shadow: 0 0 0 2px var(--plum-1);
+}
+
+/* The basket's count: small, and in the bar's own colours rather than the
+   ember orange — inverted against the bubble it sits on, the way the bar's own
+   type is (cream on black over a hero, ink on paper once landed, cream on
+   plum). Same size and look on desktop and phone; only its position differs,
+   since the bubble is 56px on desktop and 44px on a phone but the bag inside
+   it keeps the same relationship to the badge. Placed after the plum rule
+   above because the ring rules for each state have equal specificity and the
+   last one wins. */
+.nav .navCartBadge {
+  /* tucked onto the bag's top-right corner rather than hung off the
+     bubble's edge */
+  top: 11px;
+  right: 14px;
+  min-width: 11.4px;
+  height: 11.4px;
+  padding: 0 2.4px;
+  font-size: 6.6px;
+  line-height: 11.4px;
+}
+.nav:not(.landed) .navCartBadge {
+  background: var(--on-dark);
+  color: #000;
+  box-shadow: 0 0 0 1px #000;
+}
+.nav.landed .navCartBadge {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 0 0 1px var(--paper);
+}
+.nav.navPlum .navCartBadge {
+  background: var(--on-dark);
+  color: var(--plum-1);
+  box-shadow: 0 0 0 1px var(--plum-2);
+}
+
+@media (max-width: 880px) {
+  .nav .navCartBadge {
+    top: 4px;
+    right: 7px;
+  }
+
+  /* ---- the menu open ----
+     Opening the menu turns the bar into a paper panel (see the phone menu
+     block above), so everything in it flips to ink on paper, the way the
+     logo and the hamburger/X do. The panel itself used to be only as wide as
+     the bar's content, leaving the nav's own black (or plum) showing down
+     both sides; the whole bar goes paper instead, so the panel always runs the
+     full width of the viewport. These sit last so they beat the hero, landed
+     and plum states above, which have the same specificity. */
+  .nav.open,
+  .nav.navPlum.open {
+    background: var(--paper);
+  }
+  .nav.open .navCartBtn,
+  .nav.navPlum.open .navCartBtn {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .nav.open .navCartBtn:hover,
+  .nav.open .navCartBtn:focus-visible {
+    color: var(--ink);
+  }
+  .nav.open .navCartBadge,
+  .nav.navPlum.open .navCartBadge {
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 0 0 0 1px var(--paper);
+  }
 }

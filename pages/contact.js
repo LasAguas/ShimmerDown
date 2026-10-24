@@ -10,9 +10,9 @@
 // The look is the client's October mockup (Mockups/Contact.dc.html — its
 // "The Vibes" page): a full-bleed photo between two dusk bands, the page's
 // numbered heading up top, a line of the studio's own words low on the left
-// and the way to the FAQ low on the right. The email stays large under the
-// heading, because this page is still the contact page; the mockup moved it
-// to the footer. Its knobs are at the top of
+// and the way to the FAQ low on the right. No email here, per the client —
+// "let the picture do the talking"; the address is in the footer on every
+// page. Its knobs are at the top of
 // contact.module.css.
 //
 // ALL COPY IS IN THIS FILE.
@@ -39,14 +39,6 @@ const INTRO = {
 // "Artist name · session 2026" — a placeholder — so there isn't one here.
 const QUOTE =
   "We are a human focused music making organisation, good vibes and quality products of original art are the goals.";
-
-const EMAIL = "shimmerdownstudio@gmail.com";
-// Set this large the address has to wrap somewhere; the @ is the only place
-// it can do that without reading as a typo.
-const [MAIL_LOCAL, MAIL_DOMAIN] = EMAIL.split("@");
-
-// The subject line is pre-filled so enquiries arrive sorted.
-const MAIL_SUBJECT = "Studio enquiry";
 
 export default function Contact() {
   return (
@@ -85,19 +77,6 @@ export default function Contact() {
             <div className={`numHead ${s.head}`}>
               <span className="num">{INTRO.num}</span>
               <h1>{INTRO.heading}</h1>
-            </div>
-            <div className={s.mailWrap}>
-              <a
-                className={s.mail}
-                href={`mailto:${EMAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}`}
-                data-track-type="other"
-                data-track-label="Email"
-                data-track-category="contact"
-              >
-                <span>{MAIL_LOCAL}@</span>
-                <wbr />
-                <span>{MAIL_DOMAIN}</span>
-              </a>
             </div>
           </div>
 

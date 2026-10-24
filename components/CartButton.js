@@ -20,6 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/router";
 import { useCart } from "../lib/cartContext";
+import { preorderLabel } from "../lib/preorder";
 
 const euro = (cents) => `€${((cents || 0) / 100).toFixed(2)}`;
 
@@ -148,6 +149,9 @@ export default function CartButton() {
                     <div className="shopCartInfo">
                       <p className="shopCartName">{line.name}</p>
                       {line.variant && <p className="shopCartVariant label">{line.variant}</p>}
+                      {line.shipsOn && (
+                        <p className="shopCartPre label">{preorderLabel(line.shipsOn)}</p>
+                      )}
                     </div>
                     <div className="shopQty">
                       <button
@@ -177,6 +181,8 @@ export default function CartButton() {
               </p>
               <p className="shopShipNote">
                 Shipping is worked out at checkout, along with your address.
+                {cart.some((l) => l.shipsOn) &&
+                  " Pre-orders are paid for now and sent out on the date shown."}
               </p>
               <button type="button" className="cta shopPay" onClick={checkout} disabled={leaving}>
                 {leaving ? "Taking you to checkout…" : "Checkout"}

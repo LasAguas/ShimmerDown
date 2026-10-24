@@ -34,6 +34,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useCart, CART_KEY } from "../lib/cartContext";
 import { priceLabel } from "../lib/price";
+import { formatShipDate, preorderLabel, preorderState } from "../lib/preorder";
 
 const SPINE_W = 46; // px — must match the --spine-w fallback in components.css (mockup: drawerWidth)
 
@@ -44,7 +45,7 @@ const SPINE_W = 46; // px — must match the --spine-w fallback in components.cs
 // the dashboard couldn't be reached at build time; then it's the old
 // "Opening the shop…" until the fetch lands.
 export default function Storefront({ initial = null }) {
-  const { cart, addLine, clear } = useCart();
+  const { cart, addLine, clear, syncPreorders } = useCart();
   const [status, setStatus] = useState(
     initial ? (initial.products?.length ? "open" : "closed") : "loading"
   ); // loading | open | closed
@@ -132,6 +133,7 @@ export default function Storefront({ initial = null }) {
         setProducts(data.products || []);
         setCategories(data.categories || []);
         setAvailability(data.availability || {});
+        syncPreorders(data.products || []);
         // Categories are optional tags, not a partition — a fully untagged
         // catalogue is still an open shop, just with nothing to filter by.
         setStatus((data.products || []).length ? "open" : "closed");
@@ -214,7 +216,16 @@ export default function Storefront({ initial = null }) {
     const unit = p.has_variants
       ? p.variants?.find((v) => v.name === variant)?.price_cents
       : p.price_cents;
-    addLine({ productId: p.id, variant, qty: 1, name: p.name, price_cents: unit, image: p.images?.[0] });
+    const { date } = preorderState(p, variant);
+    addLine({
+      productId: p.id,
+      variant,
+      qty: 1,
+      name: p.name,
+      price_cents: unit,
+      image: p.images?.[0],
+      ...(date ? { shipsOn: date } : {}),
+    });
   };
 
   // One card. Shared between the flat "everything" grid and each category's
@@ -225,6 +236,11 @@ export default function Storefront({ initial = null }) {
     const allVariantsGone =
       p.has_variants && p.variants?.length > 0 && p.variants.every((v) => stockLeft(p.id, v.name) === 0);
     const soldOut = allVariantsGone || left === 0;
+    // Pre-order: `date` is the one date to state, if there is one yet; `all`
+    // means nothing on this card is a regular purchase; `active` is what the
+    // button would add right now (so the button can say "Pre-order").
+    const pre = preorderState(p, variant);
+    const preButton = pre.active || pre.all;
     return (
       <li key={p.id} className="shopCard">
         <div className="shopArt">
@@ -237,12 +253,20 @@ export default function Storefront({ initial = null }) {
               style={{ objectFit: "cover" }}
             />
           ) : null}
+          {pre.all && <span className="shopFlag label">Pre-order</span>}
         </div>
         <div className="thumbStrip" aria-hidden="true" />
 
         <h3 className="shopName">{p.name}</h3>
         {p.description && <p className="shopDesc">{p.description}</p>}
         <p className="shopPrice label">{priceLabel(p)}</p>
+        {pre.date ? (
+          <p className="shopPre label">{preorderLabel(pre.date)}</p>
+        ) : (
+          // options with different dates (or only some of them) — the date
+          // appears under the price once one is picked
+          pre.some && <p className="shopPre label">Some options are pre-order</p>
+        )}
 
         {p.has_variants && (
           <div className="shopVariants">
@@ -259,6 +283,7 @@ export default function Storefront({ initial = null }) {
                   onClick={() => setPicks((prev) => ({ ...prev, [p.id]: v.name }))}
                 >
                   {v.name}
+                  {v.preorder && <span className="sr-only"> (pre-order)</span>}
                 </button>
               );
             })}
@@ -266,7 +291,7 @@ export default function Storefront({ initial = null }) {
         )}
 
         <button type="button" className="cta shopAdd" disabled={soldOut} onClick={() => add(p)}>
-          {soldOut ? "Sold out" : "Add to basket"}
+          {soldOut ? "Sold out" : preButton ? "Pre-order" : "Add to basket"}
         </button>
         {left != null && left > 0 && left <= 3 && <p className="shopLow label">Only {left} left</p>}
       </li>
@@ -275,14 +300,46 @@ export default function Storefront({ initial = null }) {
 
   // ---- states -------------------------------------------------------------
   if (receipt) {
+    // confirm marks only pre-order lines (`preorder: true`, `ships_on`)
+    const items = Array.isArray(receipt.items) ? receipt.items : [];
+    const preLines = items.filter((it) => it.preorder);
+    const allPre = preLines.length > 0 && preLines.length === items.length;
     return (
       <div className="shopReceipt" role="status">
-        <p className="label">Order confirmed</p>
-        <h3 className="shopReceiptHead">Thank you, it's on its way.</h3>
+        <p className="label">{allPre ? "Pre-order confirmed" : "Order confirmed"}</p>
+        <h3 className="shopReceiptHead">
+          {preLines.length === 0
+            ? "Thank you, it's on its way."
+            : allPre
+              ? "Thank you, you're on the list."
+              : "Thank you, your order is in."}
+        </h3>
         {receipt.orderCode && (
           <p className="shopReceiptCode">
             Order <strong>{receipt.orderCode}</strong>
           </p>
+        )}
+        {preLines.length > 0 && (
+          <>
+            <ul className="shopReceiptPre">
+              {preLines.map((it, i) => (
+                <li key={`${it.name}-${it.variant || ""}-${i}`}>
+                  <span className="shopReceiptPreName">
+                    {it.name}
+                    {it.variant ? ` · ${it.variant}` : ""}
+                    {it.qty > 1 ? ` × ${it.qty}` : ""}
+                  </span>
+                  <span className="label">
+                    {it.ships_on ? `Ships ${formatShipDate(it.ships_on)}` : "Pre-order"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="shopReceiptNote">
+              You've paid already. Records and merch ship on the date shown, and we'll
+              email you when they do; downloads are emailed to you on the day.
+            </p>
+          </>
         )}
         <p className="shopReceiptNote">
           A receipt is on its way to the email address you gave Stripe.

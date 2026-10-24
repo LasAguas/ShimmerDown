@@ -1,8 +1,8 @@
 /* /contact — the client's October mockup (Mockups/Contact.dc.html, its "The
    Vibes" page). The palette is the "dusk" theme (globals.css → "page
    themes"); the bands are shared (components.css → "the client's October
-   mockup"). A full-bleed photo between two dusk bands, the email as large as
-   it'll go up top, the studio's own words and the way to the FAQ at the foot.
+   mockup"). A full-bleed photo between two dusk bands, the studio's own words
+   and the way to the FAQ at the foot. No email on the page — the footer has it.
    Structured like Hero.js's own markup (media, scrim) without pulling the
    component in, since there's no slideshow or video here — just the one photo.
 
@@ -11,6 +11,9 @@
   --contact-band: 64px; /* topBandHeight / bottomBandHeight */
   --grain-op: 0.32; /* the photo's film grain (mockup: a fixed .32) */
   --quote-size: 38px; /* quoteSize */
+  /* how much taller than one screen the photo runs, pushing the two bands
+     further apart (1 = exactly the first screen between them) */
+  --photo-stretch: 1.3;
 }
 
 .navSpacer {
@@ -23,8 +26,11 @@
 
 .hero {
   position: relative;
-  /* the top band and the photo fill the first screen between them */
-  min-height: calc(100svh - var(--nav-block) - var(--contact-band));
+  /* the top band and the photo fill the first screen between them, and then
+     some (--photo-stretch) */
+  min-height: calc(
+    (100svh - var(--nav-block) - var(--contact-band)) * var(--photo-stretch)
+  );
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -85,40 +91,6 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 1.5rem 3rem;
-}
-
-/* Deliberately enormous — it is the single thing this page is for.
-
-   The size comes off the width of this wrapper rather than the window, and
-   the address wraps at the @ — each half has to fit on its own line. */
-.mailWrap {
-  container-type: inline-size;
-}
-.mail {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(1.5rem, 5.6vw, 4.6rem);
-  font-size: clamp(1.35rem, 5.2cqi, 4.6rem);
-  text-transform: uppercase;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: #faf0e6;
-  text-shadow: 0 1px 40px rgba(28, 23, 20, 0.35);
-  /* a plain underline, invisible at rest — see globals.css → .footerMail,
-     the same treatment */
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 0.1em;
-  text-decoration-thickness: clamp(2px, 0.28vw, 4px);
-  transition: text-decoration-color 340ms var(--ease-out);
-}
-.mail span {
-  white-space: nowrap;
-}
-.mail:hover,
-.mail:focus-visible {
-  text-decoration-color: currentColor;
 }
 
 .quote {

@@ -290,8 +290,10 @@
      big. Bolder than the rest of .display — the client asked for a heavier
      title, so this is Jost's own boldest loaded weight rather than the 300
      that used to keep it close to the logo's thin cut. */
-  font-weight: 700;
-  font-size: clamp(2.4rem, 9vw, 8rem);
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-size: clamp(2.6rem, 9vw, 118px);
   /* no max-width of its own any more — .heroBody is .shell (see Hero.js),
      the same box .navRow uses, so leaving the title to wrap at its
      parent's natural width lines its line breaks up with the nav's own
@@ -594,7 +596,6 @@
      fallback for browsers without clip.) */
   overflow: clip;
   background: var(--paper);
-  box-shadow: -1px 0 0 var(--rule-ink); /* a hairline between spines */
   transition: width 1000ms var(--ease-panel), background 800ms var(--ease-panel);
 }
 .slide.open {
@@ -613,11 +614,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* the hairline between spines, drawn INSIDE the spine: it used to be an
+     outer box-shadow on .slide, and Safari left faint grey ghost lines of
+     those shadows behind when the rail slid away. An inset shadow can't paint
+     outside its own box. */
+  box-shadow: inset 1px 0 0 var(--rule-ink);
   transition: filter 320ms var(--ease-out);
 }
 .slideSpine:hover,
 .slideSpine:focus-visible {
   filter: brightness(1.07);
+}
+/* the artist's name lights up under the cursor, as in the mockup */
+.slideSpine,
+.slideSpineInner {
+  transition: filter 320ms var(--ease-out), color 300ms var(--ease-out);
+}
+.slideSpine:hover,
+.slideSpine:focus-visible {
+  color: #fff;
 }
 /* reads bottom-to-top, the way a spine on a shelf does */
 .slideSpineInner {
@@ -717,6 +732,7 @@
     width: 100%;
   }
   .slideSpine {
+    box-shadow: none;
     flex: 0 0 auto;
     padding: 1.05rem 1.15rem;
     justify-content: space-between;
@@ -747,11 +763,16 @@
 
 /* ---- the drawers, in the client's October mockup -------------------------
    Same rail, narrower (SPINE_W in Storefront.js) and toned from the page's
-   red-sun ramp. Only the darkest stop wants cream type, on the spine and
-   inside the panel it opens; the strip under each card should end in the
+   red-sun ramp. Only the darkest stop wants cream type inside the panel it
+   opens (and, on a touch screen, on its spine); the strip under each card should end in the
    colour it's sitting on, which inside a drawer is the drawer's own. */
-.slide[data-tone="dark"] .slideSpine {
-  color: #faf0e6;
+/* The darkest spine's name is ink at rest like the others and lights up on
+   hover. Only a touch screen, which can't hover, keeps it cream so it stays
+   legible on the dark red. */
+@media (hover: none) {
+  .slide[data-tone="dark"] .slideSpine {
+    color: #faf0e6;
+  }
 }
 .slide[data-tone="dark"] .slidePanel {
   /* text that just inherits (the names) takes it from here; text that reads
@@ -876,26 +897,81 @@
   color: var(--ember);
 }
 
-/* ---- the basket ----
-   Lives as a dropdown off the nav's cart icon now (CartButton.js +
-   .navCartDrop in globals.css), not a sidebar on the store page — this rule
-   is just the panel's own look, positioning is the dropdown wrapper's job.
-   The ring is a solid-colour padding-box background plus the ramp on the
-   border-box, behind a transparent border — not border-image, which (like
-   the nav frame, see globals.css) ignores border-radius. */
-.shopCart {
-  border-radius: 1.5rem;
-  border: var(--frame-w) solid transparent;
-  background: linear-gradient(var(--paper-2), var(--paper-2)) padding-box,
-    var(--bands-h) border-box;
-  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+/* ---- pre-orders ----
+   A corner flag on the art (the shop cards and the home shelf's records),
+   the release date under the price, and the same date on the basket line and
+   the receipt. The flag's colours are fixed rather than var(--ink)/--paper:
+   the dark category panels swap those two to cream, which would turn it
+   cream-on-cream. */
+.shopFlag {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  padding: 0.5em 0.85em;
+  border-radius: 999px;
+  background: #1c1714;
+  color: #faf0e6;
+  font-size: 10px;
+  pointer-events: none;
 }
-.shopCartHead {
+.shopPre {
+  margin-top: 0.35rem;
   color: var(--ink);
-  margin-bottom: 1rem;
+}
+.shopCartPre {
+  margin-top: 0.15rem;
+  color: var(--ink-dim);
+}
+.shopReceiptPre {
+  list-style: none;
+  padding: 0;
+  margin: 0.2rem 0 0.4rem;
+}
+.shopReceiptPre li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rule-ink);
+}
+.shopReceiptPreName {
+  font-size: 0.95em;
+}
+
+/* ---- the basket ----
+   Lives as a dropdown off the nav's cart icon (CartButton.js + .navCartDrop in
+   globals.css), not a sidebar on the store page — this rule is just the
+   panel's own look, positioning is the dropdown wrapper's job.
+   Restyled to the site's current look: a flat paper card (no rounded corners,
+   no gradient ring) under a hard-banded red-sun strip, headings and names in
+   the heavy Helvetica Neue, hairline rules between lines, and the checkout as
+   an underlined link whose rule the band ramp sweeps across on hover — the
+   same fixtures as the shop cards and the booking links. Markup and behaviour
+   are CartButton.js's and untouched. */
+.shopCart {
+  border: 0;
+  border-top: 8px solid transparent;
+  border-image: var(--redsun-bands-h) 1;
+  border-radius: 0;
+  background: var(--paper);
+  /* a hairline edge, then the dropdown's lift (.navCartDrop in globals.css) */
+  box-shadow: 0 0 0 1px var(--rule-ink), 0 18px 40px -14px rgba(28, 23, 20, 0.35);
+  padding: clamp(1.1rem, 2.4vw, 1.5rem);
+}
+.shopCart .shopCartHead {
+  margin-bottom: 1.1rem;
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--ink);
 }
 .shopCartEmpty {
-  color: var(--ink-faint);
+  color: var(--ink-dim);
   font-size: 0.95em;
 }
 .shopCartList {
@@ -920,15 +996,23 @@
   min-width: 0;
 }
 .shopCartName {
-  font-size: 0.92em;
-  line-height: 1.3;
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 .shopCartVariant {
-  margin-top: 0.15rem;
-  color: var(--ink-faint);
+  margin-top: 0.2rem;
+  color: var(--ink-dim);
 }
 .shopCartSum {
   grid-area: sum;
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
@@ -950,6 +1034,8 @@
   background: transparent;
   cursor: pointer;
   line-height: 1;
+  transition: background 240ms var(--ease-out), color 240ms var(--ease-out),
+    border-color 240ms var(--ease-out);
 }
 .shopQty button:hover {
   background: var(--ink);
@@ -964,16 +1050,60 @@
   gap: 1rem;
   margin-top: 1.1rem;
 }
+.shopSubtotal strong {
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
 .shopShipNote {
   font-family: var(--font-fine);
   font-size: 12px;
   color: var(--ink-faint);
-  margin: 0.5rem 0 1.1rem;
+  margin: 0.5rem 0 1.4rem;
   line-height: 1.5;
 }
+/* Checkout: the underlined-link treatment (.shopAdd, .ctaLink) at the width
+   of the panel, in place of the old gradient pill. The hairline is replaced
+   by the red-sun ramp scaling in from the left on hover. */
 .shopPay {
+  position: relative;
   width: 100%;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 0 0.6em;
+  border-radius: 0;
+  border-bottom: 1px solid var(--rule-ink-strong);
+  background: none;
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.shopPay::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--redsun-bands-h);
+  background-size: 200% 100%;
+  background-position: 0% 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 460ms var(--ease-out), background-position 760ms var(--ease-out);
+}
+.shopPay:hover:enabled,
+.shopPay:focus-visible:enabled {
+  background: none;
+  transform: none;
+  border-bottom-color: transparent;
+}
+.shopPay:hover:enabled::after,
+.shopPay:focus-visible:enabled::after {
+  transform: scaleX(1);
+  background-position: 100% 0;
 }
 .shopPay:disabled {
   opacity: 0.55;

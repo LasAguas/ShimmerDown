@@ -33,31 +33,32 @@
 
 .filmMeta {
   padding-top: 0.95rem;
-  /* the band tucked under each film, drawn short and thickening on hover of
-     the card as a whole */
-  border-top: 4px solid transparent;
-  border-image: var(--bands-h) 1;
-}
-/* each film its own palette rather than three of the same golden strip —
-   the home page's own piece of the "wider, more experimental" colour pass.
-   :nth-child(3n+…) rather than 1/2/3 so a fourth film added later keeps
-   cycling through the same three instead of falling back to plain gold. */
-.film:nth-child(3n + 1) .filmMeta {
-  border-image: var(--dawn-bands-h) 1;
-}
-.film:nth-child(3n + 2) .filmMeta {
-  border-image: var(--vibrant-bands-h) 1;
-}
-.film:nth-child(3n + 3) .filmMeta {
-  border-image: var(--dusk-bands-h) 1;
 }
 
 .filmTitle {
-  font-family: var(--font-display);
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
   margin-top: 0.4rem;
+}
+
+/* the section headings and record names, in the mockup's heavy Helvetica Neue
+   (sizes straight off Mockups/Shimmer Down.dc.html) */
+.sessions :global(.sectionHead) h2,
+.records :global(.sectionHead) h2 {
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: clamp(1.9rem, 6vw, 78px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.records :global(.recordName) {
+  font-family: var(--font-helvetica);
+  font-weight: 900;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  letter-spacing: -0.02em;
 }
 
 .more {
