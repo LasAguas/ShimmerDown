@@ -82,6 +82,16 @@
   font-size: clamp(2.4rem, 6.5vw, 78px);
 }
 
+/* what the studio is and where, under the heading */
+.lede {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  line-height: 1.5;
+  color: #faf0e6;
+  text-wrap: pretty;
+}
+
 .foot {
   position: relative;
   z-index: 1;

@@ -9,7 +9,7 @@ import SiteNav from "./SiteNav";
 import SiteFooter from "./SiteFooter";
 import CursorGlow from "./CursorGlow";
 import { THEME_RINGS } from "./SunRings";
-import { SITE_ORIGIN, SITE_NAME } from "../lib/site";
+import { SITE_ORIGIN, SITE_NAME, DEFAULT_LOCALE } from "../lib/site";
 
 // The origin lives in lib/site.js now (it also feeds sitemap.xml, robots.txt
 // and the JSON-LD blocks). Re-exported because LayoutLogo still imports it
@@ -32,6 +32,12 @@ export default function Layout({
   robots,
   // The 404 page has no address of its own, so it must not claim one.
   noCanonical = false,
+  // The same page in each language, as { en: "/studio", de: "/de/studio" } —
+  // paths, every language listing all the others and itself. Left out, the page
+  // just names itself as the English version, which is what a single-language
+  // site is meant to say. Every language version must pass the same map, or
+  // Google ignores the pairing.
+  alternates,
   // Structured data for the page: one schema.org object, or an array of them.
   // Each page builds its own, next to its copy.
   jsonLd,
@@ -64,6 +70,12 @@ export default function Layout({
   const url = `${SITE_ORIGIN}${path}`;
   const imageUrl = `${SITE_ORIGIN}${ogImage}`;
   const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+  // No hreflang on a page that isn't meant to be found (404, noindex).
+  const hreflangs =
+    noCanonical || /noindex/i.test(robots || "")
+      ? []
+      : Object.entries(alternates || { [DEFAULT_LOCALE]: path });
+  const defaultPath = alternates?.[DEFAULT_LOCALE] ?? path;
 
   const page = (
     <>
@@ -84,6 +96,12 @@ export default function Layout({
         <meta name="description" content={description} />
         {robots && <meta name="robots" content={robots} />}
         {!noCanonical && <link rel="canonical" href={url} />}
+        {hreflangs.map(([lang, p]) => (
+          <link key={lang} rel="alternate" hrefLang={lang} href={`${SITE_ORIGIN}${p}`} />
+        ))}
+        {hreflangs.length > 0 && (
+          <link rel="alternate" hrefLang="x-default" href={`${SITE_ORIGIN}${defaultPath}`} />
+        )}
         <meta property="og:site_name" content={SITE_NAME} />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:title" content={fullTitle} />

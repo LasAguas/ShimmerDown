@@ -26,10 +26,12 @@ const META = {
 };
 
 // Structured data — what the studio is, for search engines. Not visible on the
-// page. Only facts that are already public on the site; there's no street
-// address, phone or opening hours here because none are confirmed for the
-// studio itself (TODO.md items 5 and 6): add `streetAddress`, `postalCode`
-// and the Instagram URL to `sameAs` when they are.
+// page. Only facts that are already public on the site. The street address is
+// the studio's (Frank-Zappa-Straße 16); the Impressum lists the owner's legal
+// address instead, which is a different place. The phone is the Impressum's.
+// Google compares this block with the Business Profile, so keep them identical.
+// No opening hours (none confirmed); add the Instagram URL to `sameAs` once
+// TODO.md item 6 is answered.
 const SCHEMA = {
   "@context": "https://schema.org",
   "@graph": [
@@ -50,8 +52,11 @@ const SCHEMA = {
       image: `${SITE_ORIGIN}/images/og/studio-control.jpg`,
       logo: `${SITE_ORIGIN}/images/logos/Shimmer-Down-Logo-Small-Centered.png`,
       email: "shimmerdownstudio@gmail.com",
+      telephone: "+49 176 56942822",
       address: {
         "@type": "PostalAddress",
+        streetAddress: "Frank-Zappa-Straße 16",
+        postalCode: "12681",
         addressLocality: "Berlin",
         addressCountry: "DE",
       },
@@ -74,6 +79,10 @@ const HERO = {
 
 const SESSIONS = {
   heading: "Sessions",
+  // Plain words on the page for people (and crawlers) landing here: what the
+  // studio is and where. The hero above is a video with only the name on it.
+  intro:
+    "Shimmer Down Studios is a recording and mixing studio in Berlin, with a bright live room, a dry treated mix room and filmed live sessions. Book it for tracking, mixing or a session on camera.",
   films: [
     {
       url: "https://www.youtube.com/watch?v=rWM3Y1eG_WI",
@@ -140,6 +149,8 @@ export default function Home({ records }) {
           <div className="sectionHead">
             <h2>{SESSIONS.heading}</h2>
           </div>
+
+          <p className={s.intro}>{SESSIONS.intro}</p>
 
           <ul className={s.films}>
             {SESSIONS.films.map((film) => (

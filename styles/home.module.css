@@ -19,6 +19,12 @@
   margin-bottom: clamp(2.2rem, 5vw, 3.5rem);
 }
 
+/* what the studio is and where, under the "Sessions" heading */
+.intro {
+  max-width: 54ch;
+  margin-bottom: clamp(2.2rem, 5vw, 3.5rem);
+}
+
 .films {
   list-style: none;
   padding: 0;

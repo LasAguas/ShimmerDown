@@ -33,6 +33,10 @@ const BG_IMAGE = "/images/gallery/studio-rhodes-wide.jpg";
 const INTRO = {
   num: "05",
   heading: "The Vibes",
+  // The one line of plain description on the page — what and where the studio
+  // is, and how to book. Deliberately without the address; the footer has it.
+  lede:
+    "Shimmer Down Studios is a recording and mixing studio in Berlin. To book the live room, the mix room or a filmed live session, email us your dates, line-up and a link to your music.",
 };
 
 // The client's own wording, from the mockup. Its credit line there reads
@@ -78,6 +82,7 @@ export default function Contact() {
               <span className="num">{INTRO.num}</span>
               <h1>{INTRO.heading}</h1>
             </div>
+            <p className={s.lede}>{INTRO.lede}</p>
           </div>
 
           <div className={`shell ${s.foot}`}>

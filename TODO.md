@@ -260,9 +260,17 @@ self-hosted fonts.
 Still needs something from the client or a decision:
 
 - **Studio address, phone, opening hours.** The business markup in
-  `pages/index.js` (`SCHEMA`) only says "Berlin" — add `streetAddress` and
-  `postalCode` once item 5 is answered, and the Instagram URL to `sameAs`
-  once item 6 is. Needed for a Google Business Profile too.
+  `pages/index.js` (`SCHEMA`) now carries the studio's address
+  (Frank-Zappa-Straße 16, 12681 Berlin) and the Impressum's phone. **Confirm
+  the phone is the studio's** (item 5), and add `openingHours`, plus the
+  Instagram URL to `sameAs` once item 6 is. The studio's address isn't shown
+  anywhere on the page yet (item 5's placeholder is long gone from the footer
+  and `/contact`); the Impressum still carries the owner's Mehringdamm address,
+  which is correct for § 5 DDG. Needed for a Google Business Profile too, whose
+  name/address/phone must match this exactly.
+- **hreflang.** `Layout` emits `hreflang="en"` + `x-default` on every indexable
+  page. If a German version is built, pass `alternates={{ en: "/x", de: "/de/x" }}`
+  from both versions (and consider `xhtml:link` entries in the sitemap).
 - **The hero video.** It's a ~57 MB mp4 (item 9) that autoplays for everyone,
   including on mobile data. A 3–5 MB silent loop cut for the hero is the
   single biggest remaining speed win, and speed is a ranking factor.

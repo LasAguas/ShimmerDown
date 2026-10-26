@@ -75,6 +75,7 @@ export default function SiteFooter({ ramp }) {
                     {label}
                   </a>
                 ))}
+                <Link href="/faq">FAQ</Link>
                 <Link href="/impressum">Impressum</Link>
               </nav>
             </div>
