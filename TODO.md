@@ -84,19 +84,24 @@ dedicated silent loop for the hero specifically if that weight ever shows up
 in load-time numbers; `components/Hero.js` needs no changes to take it,
 just a new `src`/`poster` on the slide.
 
-## 10. **[CONTENT]** Real sleeve art for /work
+## 10. **[DONE]** Real sleeve art for /work
 
-Ten records, all using square crops of the studio photos. Replace the `art`
-paths in `pages/work.js` with real artwork (square, ideally 1000×1000+) and
-delete `public/images/art/placeholder-*.jpg`.
+Real sleeve art for 9 of the 10 records is in, square crops from the
+artists, in `public/images/art/` (kebab-case filenames). `placeholder-*.jpg`
+is no longer referenced from `pages/work.js` — delete the files themselves
+(blocked by a sandbox restriction when this was done from the agent; run
+`rm public/images/art/placeholder-*.jpg` by hand).
 
-## 11. **[CONTENT]** Real audio for /work
+**Radiohop's "Tribute" has no cover art yet** and isn't on the page — its
+audio is sitting unused in `public/audio/radiohop-tribute.mp3`. Add art and
+a `MIXING`/`TRACKING` entry in `pages/work.js` once it exists.
 
-Every record points at `public/audio/placeholder-track.wav`, a 24-second quiet
-hum. Drop real files into `public/audio/` and update the `audio` field on each
-record. **Use MP3 or AAC, not WAV** — and use clips (60–90s), not full masters:
-these are shop-window samples, and full-length lossless files are both a
-bandwidth bill and a licensing question. Then delete the placeholder.
+## 11. **[DONE]** Real audio for /work
+
+Real 60–90s MP3 clips are in `public/audio/` (kebab-case filenames) and
+`pages/work.js` points each record at its own clip. `placeholder-track.wav`
+is no longer referenced — delete it by hand (same sandbox restriction as
+above): `rm public/audio/placeholder-track.wav`.
 
 ## 12. **[DONE]** The showreel
 

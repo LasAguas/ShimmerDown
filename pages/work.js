@@ -10,10 +10,6 @@
 // The look is the client's October mockup (Mockups/Work Compact.dc.html): the
 // peach theme, funnel bands top and bottom, tipped polaroids, the records as
 // rows rather than a carousel. Its knobs are at the top of work.module.css.
-//
-// ⚠️ Every entry below is a PLACEHOLDER: the sleeves are square crops of the
-// studio photographs and every `audio` points at the same silent stand-in.
-// See TODO.md items 10 and 11.
 // ---------------------------------------------------------------------------
 import Image from "next/image";
 import Link from "next/link";
@@ -33,22 +29,21 @@ const INTRO = {
   lede: "Records mixed and tracked at Shimmer Down Studios. Listen to the work, then watch a session.",
 };
 
-const PLACEHOLDER_AUDIO = "/audio/placeholder-track.wav";
-
 const MIXING = [
-  { title: "Record Title One", artist: "Artist Name", meta: "LP · 2026", art: "/images/art/placeholder-1.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Two", artist: "Artist Name", meta: "EP · 2025", art: "/images/art/placeholder-2.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Three", artist: "Artist Name", meta: "Single · 2025", art: "/images/art/placeholder-3.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Four", artist: "Artist Name", meta: "LP · 2024", art: "/images/art/placeholder-4.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Five", artist: "Artist Name", meta: "EP · 2024", art: "/images/art/placeholder-5.jpg", audio: PLACEHOLDER_AUDIO },
+  { title: "Mind Your Business", artist: "Pax Nicholas", meta: "Single · 2025", art: "/images/art/pax-nicholas-mind-your-business.jpg", audio: "/audio/pax-nicholas-mind-your-business.mp3" },
+  { title: "Resonate", artist: "Beau Reve", meta: "EP · 2025", art: "/images/art/beau-reve-feels-like-diving.png", audio: "/audio/beau-reve-resonate.mp3" },
+  { title: "Disco Salvaje", artist: "Los Baby Jaguars", meta: "LP · 2026", art: "/images/art/los-baby-jaguars-disco-salvaje.jpg", audio: "/audio/los-baby-jaguars-disco-salvaje.mp3" },
+  { title: "Schatten", artist: "Deltawelle", meta: "EP · 2025", art: "/images/art/deltawelle-aufschwung.jpg", audio: "/audio/deltawelle-schatten.mp3" },
+  { title: "Whatever", artist: "Thom and the Wolves", meta: "EP · 2025", art: "/images/art/thom-and-the-wolves.png", audio: "/audio/thom-and-the-wolves-whatever.mp3" },
 ];
 
 const TRACKING = [
-  { title: "Record Title Six", artist: "Los Baby Jaguars", meta: "LP · 2026", art: "/images/art/placeholder-6.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Seven", artist: "ARIA", meta: "Single · 2026", art: "/images/art/placeholder-3.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Eight", artist: "Baby Smith", meta: "EP · 2025", art: "/images/art/placeholder-1.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Nine", artist: "Artist Name", meta: "LP · 2025", art: "/images/art/placeholder-5.jpg", audio: PLACEHOLDER_AUDIO },
-  { title: "Record Title Ten", artist: "Artist Name", meta: "Single · 2024", art: "/images/art/placeholder-2.jpg", audio: PLACEHOLDER_AUDIO },
+  { title: "El Ritmo Campeón", artist: "Los Baby Jaguars", meta: "Single · 2023", art: "/images/art/los-baby-jaguars-el-ritmo-campeon.jpg", audio: "/audio/los-baby-jaguars-el-ritmo-campeon.mp3" },
+  { title: "Across the Burning Skies", artist: "Thom and the Wolves", meta: "EP · 2025", art: "/images/art/thom-and-the-wolves.png", audio: "/audio/thom-and-the-wolves-across-the-burning-skies.mp3" },
+  { title: "Aufschwung", artist: "Deltawelle", meta: "EP · 2025", art: "/images/art/deltawelle-aufschwung.jpg", audio: "/audio/deltawelle-aufschwung.mp3" },
+  { title: "El Fuego (Side A)", artist: "Los Baby Jaguars", meta: "Single · 2024", art: "/images/art/los-baby-jaguars-el-fuego-side-a.jpg", audio: "/audio/los-baby-jaguars-el-fuego-side-a.mp3" },
+  // Radiohop — "Tribute" (live) belongs here too, but it still has no cover
+  // art (see TODO.md item 10): add its entry once art is in.
 ];
 
 // Each side of the work gets a polaroid of the room it happens in.
