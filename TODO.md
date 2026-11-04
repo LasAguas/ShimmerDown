@@ -33,38 +33,48 @@ use the display face. Unlike Brodille, Source Serif 4 doesn't break down below
 technical necessity — it could go away and the site would drop to two faces,
 if you'd rather.
 
-## 4. **[BLOCKER]** The Impressum has real data now — still get it lawyered
+## 4. **[DONE]** The Impressum has real data now, and it's been lawyered
 
 `pages/impressum.js` has the right *shape* (§ 5 DDG, § 18 Abs. 2 MStV, EU-ODR,
-plus a privacy section) and is now filled in with the freelancer's real
-details (Barney Jack Walsinghan Riley, Mehringdamm 97, 10965 Berlin,
-Steuernummer DE 14/494/00849 — the studio is not a UG/GmbH/GbR, so there's no
-Handelsregister entry or separate managing director). A wrong German
-Impressum is still an Abmahnung risk with real costs — needs a lawyer's read
-before the site goes live.
+plus a privacy section) and is filled in with the freelancer's real details
+(Barney Jack Walsinghan Riley, Mehringdamm 97, 10965 Berlin, Steuernummer
+DE 14/494/00849 — the studio is not a UG/GmbH/GbR, so there's no
+Handelsregister entry or separate managing director). Confirmed up to date.
 
 ## 5. **[CONTENT]** Real studio details
 
-Address, day rate, block rate, opening hours. Currently "Placeholder Straße 12,
-10999 Berlin" in three places: `components/SiteFooter.js` (`FACTS`),
-`pages/contact.js` (`DETAILS`), `pages/impressum.js`.
+Not the Impressum (item 4) — that's the legal operator's registered address
+(Mehringdamm 97), confirmed correct and separate on purpose. This is the
+*studio's* own public-facing details: day rate, block rate, opening hours,
+and whether the street address should be shown to visitors at all.
 
-## 6. **[CONTENT]** Real social URLs
+Current state: no placeholder is shown anywhere any more (the old
+"Placeholder Straße" text is gone from the footer and `/contact`), but
+nothing real has replaced it either — right now the site shows no address,
+no rate and no hours to a visitor. The studio's street address
+(Frank-Zappa-Straße 16, 12681 Berlin) and the Impressum's phone number
+*are* already used in the invisible JSON-LD on `/` (`pages/index.js` →
+`SCHEMA`) for Google — but that's markup, not something a visitor sees.
 
-`components/SiteFooter.js` → `SOCIAL`. The Instagram link currently points at
-instagram.com with no handle.
+Relevant once you have the real numbers: `pages/faq.js` (the day-rate
+answer), the `SCHEMA.openingHours` gap noted in item 28, and wherever you'd
+like the address to actually appear on the page (it doesn't today).
 
-## 7. **[BLOCKER]** The real domain
+## 6. **[DONE]** Real social URLs
+
+Instagram is `https://www.instagram.com/shimmerdownstudios/` — fixed in all
+three places it was hardcoded: `components/SiteFooter.js` → `SOCIAL`,
+`pages/links.js` → `LINKS`, and added to `pages/index.js` → `SCHEMA.sameAs`
+(it was missing there entirely). YouTube was already correct everywhere.
+
+## 7. **[DONE]** The real domain
 
 `lib/site.js` → `SITE_ORIGIN` builds every canonical, `og:url` and `og:image`,
 the sitemap and the structured data. It was a guess
 (`https://shimmerdownstudios.com`, which doesn't resolve), so every canonical
-pointed at a site that doesn't exist. It now reads the `SITE_ORIGIN`
-environment variable and, until that's set, falls back to
-`https://www.shimmer-down-studios.com` — the address the site is live at today
-(the apex redirects to `www`). **Still open:** confirm that's the launch
-domain, and set `SITE_ORIGIN` in Vercel (see item 18) to match. A localhost
-value is ignored on purpose.
+pointed at a site that doesn't exist. It reads the `SITE_ORIGIN` environment
+variable, now set in Vercel to `https://www.shimmer-down-studios.com` (the
+apex redirects to `www`) — see item 18.
 
 ## 8. **[POLISH]** YouTube poster frames come from Google's CDN
 
@@ -86,15 +96,11 @@ just a new `src`/`poster` on the slide.
 
 ## 10. **[DONE]** Real sleeve art for /work
 
-Real sleeve art for 9 of the 10 records is in, square crops from the
-artists, in `public/images/art/` (kebab-case filenames). `placeholder-*.jpg`
-is no longer referenced from `pages/work.js` — delete the files themselves
+Real sleeve art for all 10 records is in, square crops from the artists, in
+`public/images/art/` (kebab-case filenames). `placeholder-*.jpg` is no
+longer referenced from `pages/work.js` — delete the files themselves
 (blocked by a sandbox restriction when this was done from the agent; run
 `rm public/images/art/placeholder-*.jpg` by hand).
-
-**Radiohop's "Tribute" has no cover art yet** and isn't on the page — its
-audio is sitting unused in `public/audio/radiohop-tribute.mp3`. Add art and
-a `MIXING`/`TRACKING` entry in `pages/work.js` once it exists.
 
 ## 11. **[DONE]** Real audio for /work
 
@@ -129,13 +135,15 @@ If you'd rather capture enquiries in the dashboard: create a form in
 **Mailing → Forms**, and it can be wired up exactly like the footer sign-up
 (`components/Newsletter.js` + `pages/api/newsletter/*`).
 
-## 16. **[BLOCKER]** Keep the privacy notice true
+## 16. **[DONE]** Keep the privacy notice true
 
-The Datenschutz section of `/impressum` describes what the site does *today*:
-newsletter to the dashboard, click-to-load YouTube, Stripe via the dashboard
-for the shop. **If the site gains analytics, a Meta pixel, an embedded map or a
-contact form, that section has to change with it** — and analytics or a pixel
-would also mean a real consent banner, which the site currently does not need.
+Confirmed current: the Datenschutz section of `/impressum` matches what the
+site does *today* — newsletter to the dashboard, click-to-load YouTube,
+Stripe via the dashboard for the shop, the self-hosted analytics, the
+consent-gated Meta Pixel. Standing rule, not a one-time task: **if the site
+later gains a new analytics tool, an embedded map or a contact form, that
+section has to change with it** — and a new tracker would also mean
+revisiting the consent banner.
 
 ## 17. **[CONTENT]** Rename the shop's products so the artist rack works
 
@@ -161,15 +169,15 @@ array, so the cards show blank grey squares. And El Fuego Vinyl's stock is 0,
 so it reads "Sold out" — intended if true, worth checking if not. Shipping is
 €0 on both, which is also worth a look.
 
-## 18. **[BLOCKER]** Vercel environment variables + the return-URL allowlist
+## 18. **[DONE]** Vercel environment variables + the return-URL allowlist
 
-Set from `.env.local.example`: `LAS_AGUAS_API`, `STORE_SLUG`,
-`NEWSLETTER_FORM_SLUG`, `NEWSLETTER_FORM_ID`, `SITE_ORIGIN`.
-
-⚠️ **Ask the Las Aguas team to add the live hostname to
-`STORE_RETURN_URL_ALLOWLIST`** on the dashboard's own Vercel project. Without
-it, checkout still charges correctly but buyers get returned to
-lasaguasproductions.com instead of back to `/store`, and never see a receipt.
+Set on the **ShimmerDown** Vercel project from `.env.local.example`:
+`LAS_AGUAS_API`, `STORE_SLUG`, `NEWSLETTER_FORM_SLUG`, `NEWSLETTER_FORM_ID`,
+`SITE_ORIGIN`. The live hostname (`www.shimmer-down-studios.com`) is also
+now on `STORE_RETURN_URL_ALLOWLIST` on the **dashboard's** Vercel project
+(`las_aguas_dashboard`) — that's the separate one enforcing checkout's
+return URL, so buyers land back on `/store` with a receipt instead of on
+lasaguasproductions.com.
 
 ## 19. **[DONE]** Source images are 6–8MB each
 
@@ -262,37 +270,41 @@ sitemap + robots, a real 404, JSON-LD (studio + website on `/`, VideoObject on
 HTML of `/store` and `/`, optimised film thumbnails and hero poster, and
 self-hosted fonts.
 
+Also now done: Instagram added to `SCHEMA.sameAs` (item 6); turned out "Berlin"
+already appears in visible body copy on both `/` (the Sessions intro) and
+`/contact` (the lede), and the footer already carries a visible "FAQ" link —
+those two copy items in the old version of this list were stale. `/faq` is
+now `robots="noindex, follow"` and out of the sitemap, since every answer on
+it is still invented (item 25) and shouldn't rank while it is.
+
 Still needs something from the client or a decision:
 
-- **Studio address, phone, opening hours.** The business markup in
-  `pages/index.js` (`SCHEMA`) now carries the studio's address
-  (Frank-Zappa-Straße 16, 12681 Berlin) and the Impressum's phone. **Confirm
-  the phone is the studio's** (item 5), and add `openingHours`, plus the
-  Instagram URL to `sameAs` once item 6 is. The studio's address isn't shown
-  anywhere on the page yet (item 5's placeholder is long gone from the footer
-  and `/contact`); the Impressum still carries the owner's Mehringdamm address,
-  which is correct for § 5 DDG. Needed for a Google Business Profile too, whose
-  name/address/phone must match this exactly.
+- **Studio opening hours.** `SCHEMA.openingHours` is still missing — no hours
+  confirmed yet (item 5). The address and phone are already in there
+  (Frank-Zappa-Straße 16, 12681 Berlin; the Impressum's phone), separate from
+  the Impressum's own Mehringdamm address, which stays correct for § 5 DDG.
+  Needed for a Google Business Profile too, whose name/address/phone must
+  match this exactly.
 - **hreflang.** `Layout` emits `hreflang="en"` + `x-default` on every indexable
   page. If a German version is built, pass `alternates={{ en: "/x", de: "/de/x" }}`
   from both versions (and consider `xhtml:link` entries in the sitemap).
 - **The hero video.** It's a ~57 MB mp4 (item 9) that autoplays for everyone,
   including on mobile data. A 3–5 MB silent loop cut for the hero is the
   single biggest remaining speed win, and speed is a ranking factor.
-- **Placeholder content is indexed as written.** `/work` (item 10), the
-  `/studio` specs (item 14) and the `/faq` answers (item 25) read as junk to
-  a crawler until they're real. Fill them before asking Google to index, or
-  add `robots="noindex"` to those pages until then.
-- **An "Example Item" (€1.00) is live in the dashboard store**, and so is now
-  in the product markup. Remove or unpublish it in **Admin → Webstore**.
-- **Copy that needs the client's OK** (it changes what's on screen): a plain
-  line saying what and where the studio is on `/` and `/contact` (the home
-  page has almost no body text and "Berlin" appears nowhere on it), a visible
-  "FAQ" link in the footer, and — the biggest long-term win — a page per
-  Live Session film.
+- **`/studio`'s specs are still placeholder** (item 14 — "Placeholder 1",
+  "Placeholder Ampeg", literally). Deliberately *not* blanket-`noindex`ed like
+  `/faq` was, since the rest of that page (real photography, the real
+  showreel) is worth indexing — but the gear list reads as junk to a crawler
+  until it's real. Fill it in, or wrap just that block from crawlable text if
+  you want it to stay invented for longer.
+- **Copy that needs the client's OK** (it changes what's on screen): a page
+  per Live Session film — the biggest long-term SEO win left, but real work
+  (a page, copy and probably its own share image per film), not a quick add.
 - **Impressum indexing.** `/impressum` is indexable and carries a personal
   name, address, phone and tax number. Legally it must be reachable; whether
   it's *indexed* is the client's call (`robots="noindex"` if not).
 - **German-language reach.** Most local searches for a Berlin studio are
   probably German ("Tonstudio Berlin"). Decide whether the site stays
   English-only.
+- **The "Example Item" (€1.00)** — being removed directly in the dashboard
+  (Admin → Webstore), not a code change.

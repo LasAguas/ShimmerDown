@@ -30,8 +30,7 @@ const META = {
 // the studio's (Frank-Zappa-Straße 16); the Impressum lists the owner's legal
 // address instead, which is a different place. The phone is the Impressum's.
 // Google compares this block with the Business Profile, so keep them identical.
-// No opening hours (none confirmed); add the Instagram URL to `sameAs` once
-// TODO.md item 6 is answered.
+// No opening hours yet — none confirmed (TODO.md item 5).
 const SCHEMA = {
   "@context": "https://schema.org",
   "@graph": [
@@ -61,7 +60,10 @@ const SCHEMA = {
         addressCountry: "DE",
       },
       areaServed: "Berlin",
-      sameAs: ["https://www.youtube.com/@shimmerdownstudios"],
+      sameAs: [
+        "https://www.youtube.com/@shimmerdownstudios",
+        "https://www.instagram.com/shimmerdownstudios/",
+      ],
     },
   ],
 };

@@ -4,8 +4,6 @@
 //
 // EDIT THE STUDIO'S DETAILS HERE — it's the same block on all six pages, so it
 // sits with the component rather than being repeated in each one.
-// ⚠️ Everything below is PLACEHOLDER until the client confirms — see TODO.md
-// items 5 and 6.
 //
 // `ramp` lets the ring-figure pick up whatever palette blend the current
 // page is using (Layout.js passes it, keyed off the same PageField.RING_RAMPS
@@ -21,7 +19,7 @@ import SunRings from "./SunRings";
 const EMAIL = "shimmerdownstudio@gmail.com";
 
 const SOCIAL = [
-  { label: "Instagram", href: "https://instagram.com/", platform: "instagram" },
+  { label: "Instagram", href: "https://www.instagram.com/shimmerdownstudios/", platform: "instagram" },
   { label: "YouTube", href: "https://www.youtube.com/@shimmerdownstudios", platform: "youtube" },
 ];
 

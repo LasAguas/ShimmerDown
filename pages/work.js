@@ -42,8 +42,7 @@ const TRACKING = [
   { title: "Across the Burning Skies", artist: "Thom and the Wolves", meta: "EP · 2025", art: "/images/art/thom-and-the-wolves.png", audio: "/audio/thom-and-the-wolves-across-the-burning-skies.mp3" },
   { title: "Aufschwung", artist: "Deltawelle", meta: "EP · 2025", art: "/images/art/deltawelle-aufschwung.jpg", audio: "/audio/deltawelle-aufschwung.mp3" },
   { title: "El Fuego (Side A)", artist: "Los Baby Jaguars", meta: "Single · 2024", art: "/images/art/los-baby-jaguars-el-fuego-side-a.jpg", audio: "/audio/los-baby-jaguars-el-fuego-side-a.mp3" },
-  // Radiohop — "Tribute" (live) belongs here too, but it still has no cover
-  // art (see TODO.md item 10): add its entry once art is in.
+  { title: "Tribute", artist: "Radiohop", meta: "Single · 2025", art: "/images/art/radiohop-tribute.jpg", audio: "/audio/radiohop-tribute.mp3" },
 ];
 
 // Each side of the work gets a polaroid of the room it happens in.

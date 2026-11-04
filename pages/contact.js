@@ -34,7 +34,8 @@ const INTRO = {
   num: "05",
   heading: "The Vibes",
   // The one line of plain description on the page — what and where the studio
-  // is, and how to book. Deliberately without the address; the footer has it.
+  // is, and how to book. No street address here or anywhere public yet —
+  // see TODO.md item 5.
   lede:
     "Shimmer Down Studios is a recording and mixing studio in Berlin. To book the live room, the mix room or a filmed live session, email us your dates, line-up and a link to your music.",
 };

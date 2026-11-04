@@ -4,13 +4,14 @@
 //   /links       noindex (link-in-bio, duplicates the nav)
 //   /impressum   legally required but not something to promote; it's linked
 //                from every footer, so crawlers find it anyway
+//   /faq         noindex until the answers are real, not invented (item 25)
 //   /preview-logo, /api/*   not pages anyone should land on
 //
 // No <lastmod>: nothing here knows when a page last changed, and a wrong date
 // teaches Google to ignore the field.
 import { SITE_ORIGIN } from "../lib/site";
 
-const PATHS = ["/", "/work", "/studio", "/live-sessions", "/store", "/contact", "/faq"];
+const PATHS = ["/", "/work", "/studio", "/live-sessions", "/store", "/contact"];
 
 export async function getServerSideProps({ res }) {
   const urls = PATHS.map(

@@ -24,7 +24,7 @@ const INTRO = {
 const LINKS = [
   {
     label: "Instagram",
-    href: "https://instagram.com/",
+    href: "https://www.instagram.com/shimmerdownstudios/",
     external: true,
     trackType: "social",
     trackPlatform: "instagram",

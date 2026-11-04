@@ -7,6 +7,7 @@
 //
 // ⚠️ PLACEHOLDER: every answer here is a best guess at what the client would
 // say. Needs a pass before launch. See TODO.md item 25.
+// noindex until then — invented answers (rates, shipping) shouldn't rank.
 // ---------------------------------------------------------------------------
 import { useState } from "react";
 import Link from "next/link";
@@ -60,7 +61,7 @@ export default function Faq() {
   const [open, setOpen] = useState(null);
 
   return (
-    <Layout {...META} path="/faq" field="legal">
+    <Layout {...META} path="/faq" field="legal" robots="noindex, follow">
       <div className={s.page}>
         <div className="shell">
           <div className="sectionHead">
