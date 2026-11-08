@@ -10,9 +10,12 @@
 // noindex until then — invented answers (rates, shipping) shouldn't rank.
 // ---------------------------------------------------------------------------
 import { useState } from "react";
-import Link from "next/link";
 import Layout from "../components/Layout";
 import s from "../styles/faq.module.css";
+
+// Same address as the footer (components/SiteFooter.js), the Impressum and the
+// JSON-LD on the home page — change all of them together.
+const EMAIL = "shimmerdownstudio@gmail.com";
 
 const META = {
   title: "Studio Booking & Recording FAQ",
@@ -96,12 +99,12 @@ export default function Faq() {
 
           <div className={s.more}>
             <span>Can't find what you need?</span>
-            <Link href="/contact" className="ctaLink">
+            <a href={`mailto:${EMAIL}`} className="ctaLink">
               Get in touch
               <span className="arrow" aria-hidden="true">
                 →
               </span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>

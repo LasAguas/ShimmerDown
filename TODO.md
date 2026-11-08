@@ -98,16 +98,14 @@ just a new `src`/`poster` on the slide.
 
 Real sleeve art for all 10 records is in, square crops from the artists, in
 `public/images/art/` (kebab-case filenames). `placeholder-*.jpg` is no
-longer referenced from `pages/work.js` — delete the files themselves
-(blocked by a sandbox restriction when this was done from the agent; run
-`rm public/images/art/placeholder-*.jpg` by hand).
+longer referenced from `pages/work.js`, and the `placeholder-*.jpg` files
+themselves are deleted from `public/images/art/`.
 
 ## 11. **[DONE]** Real audio for /work
 
 Real 60–90s MP3 clips are in `public/audio/` (kebab-case filenames) and
 `pages/work.js` points each record at its own clip. `placeholder-track.wav`
-is no longer referenced — delete it by hand (same sandbox restriction as
-above): `rm public/audio/placeholder-track.wav`.
+is deleted too.
 
 ## 12. **[DONE]** The showreel
 
@@ -226,8 +224,10 @@ currently repeats the same invented rate structure as the footer and Contact
 page (see item 5), and "How does shipping work in the store?", which describes
 Stripe's own flow generically rather than anything specific to this shop.
 
-The page isn't in the main nav on purpose — it's linked from Contact only, as
-a reference for someone who's already decided to write in.
+The page isn't in the main nav on purpose — it's linked from Contact and the
+footer, as a reference for someone who's already decided to write in. Its
+closing "Get in touch" link is a `mailto:` to the studio address (not a link
+to `/contact`, which has no email on it).
 
 ## 26. **[POLISH]** No newsletter opt-in at checkout
 
@@ -254,7 +254,9 @@ live everywhere.
 Still open: the home hero's giant title. `/preview-logo` compares the real
 logo artwork against the plain text at `/` — note its nav half is now stale
 (it shows an earlier candidate, `logo-text-only.png`, not the Variation G
-wordmark that actually shipped) so judge it on the hero only. If the hero
+wordmark that actually shipped) so judge it on the hero only. The page now
+only exists under `npm run dev`; on the live site it answers 404 (it carries
+draft copy, so visitors shouldn't be able to reach it). If the hero
 treatment should ship, fold it into `pages/index.js` and delete
 `components/SiteNavLogo.js`, `components/LayoutLogo.js`,
 `pages/preview-logo.js` and `styles/previewLogo.module.css`. If not, delete

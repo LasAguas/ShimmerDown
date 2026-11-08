@@ -6,13 +6,14 @@
 //   nav    "Shimmer Down" wordmark  →  logo-text-only.png                (SiteNavLogo)
 //   hero   the giant <h1> title     →  mark + logo-text-only.png, stacked
 //
-// Visit /preview-logo to compare against the real home page at /. If one or
-// both treatments earn their place, fold the change back into SiteNav.js /
-// Hero's caller and delete this file, LayoutLogo.js, SiteNavLogo.js and
-// styles/previewLogo.module.css. Marked noindex so it never shows up in
-// search results in the meantime. Everything else on this page — the
-// sessions section, the footer — is untouched, reused as-is from the real
-// site, for honest side-by-side context.
+// Visit /preview-logo (in `npm run dev` only) to compare against the real
+// home page at /. On the live site this route answers 404 — see
+// getStaticProps below — so visitors never land on this page's draft copy.
+// If one or both treatments earn their place, fold the change back into
+// SiteNav.js / Hero's caller and delete this file, LayoutLogo.js,
+// SiteNavLogo.js and styles/previewLogo.module.css. Everything else on this
+// page — the sessions section, the footer — is untouched, reused as-is from
+// the real site, for honest side-by-side context.
 // ---------------------------------------------------------------------------
 import Link from "next/link";
 import LayoutLogo from "../components/LayoutLogo";
@@ -59,6 +60,12 @@ const SESSIONS = {
     },
   ],
 };
+
+// Dev only: in a production build (Vercel) this page is a 404.
+export function getStaticProps() {
+  if (process.env.NODE_ENV === "production") return { notFound: true };
+  return { props: {} };
+}
 
 export default function PreviewLogo() {
   return (

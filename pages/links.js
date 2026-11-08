@@ -51,7 +51,7 @@ const LINKS = [
     trackCategory: "discography",
   },
   {
-    label: "Store · records, prints, merch",
+    label: "Store · merch",
     href: "/store",
     trackType: "merch",
     trackCategory: "merch",

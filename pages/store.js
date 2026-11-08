@@ -23,9 +23,9 @@ import { SITE_ORIGIN } from "../lib/site";
 import s from "../styles/store.module.css";
 
 const META = {
-  title: "Records, Prints & Merch",
+  title: "Merch",
   description:
-    "Records, prints and merch from Shimmer Down Studios in Berlin and the artists who record here: vinyl, tees and more.",
+    "Merch from Shimmer Down Studios in Berlin and the artists who record here. Browse the shop and order online.",
 };
 
 const INTRO = {
